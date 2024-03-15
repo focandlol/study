@@ -56,6 +56,8 @@ public class MultiAdvisorTest {
         @Override
         public Object invoke(MethodInvocation invocation) throws Throwable {
             log.info("advice1 호출");
+            log.info("invocation1.method = {}",invocation.getMethod().getName());
+            log.info(invocation.getThis().toString());
             return invocation.proceed();
         }
     }
@@ -66,6 +68,8 @@ public class MultiAdvisorTest {
         @Override
         public Object invoke(MethodInvocation invocation) throws Throwable {
             log.info("advice2 호출");
+            log.info("invocation2.method = {}",invocation.getMethod().getName());
+            log.info(invocation.getThis().toString());
             return invocation.proceed();
         }
     }
