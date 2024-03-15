@@ -20,6 +20,10 @@ public class OrderControllerV1Impl implements OrderControllerV1{
         StackTraceElement currentStack = stacks[0];
         String methodName = currentStack.getMethodName();
         log.info("methodName = {}",methodName);
+
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName();
+        log.info("name = {}",name);
+
         //Method method = this.getClass().getMethod(methodName);
         orderServiceV1.orderItem(itemId);
         return "ok";
