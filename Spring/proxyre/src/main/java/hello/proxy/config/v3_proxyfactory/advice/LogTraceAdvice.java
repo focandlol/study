@@ -23,6 +23,7 @@ public class LogTraceAdvice implements MethodInterceptor {
 
 
         try{
+
             Method method = invocation.getMethod();
             String message = method.getDeclaringClass().getSimpleName() + "." + method.getName() + "()";
             status = logTrace.begin(message);
