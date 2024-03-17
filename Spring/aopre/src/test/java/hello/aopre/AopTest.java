@@ -2,10 +2,7 @@ package hello.aopre;
 
 import hello.aopre.order.OrderRepository;
 import hello.aopre.order.OrderService;
-import hello.aopre.order.aop.AspectV1;
-import hello.aopre.order.aop.AspectV2;
-import hello.aopre.order.aop.AspectV3;
-import hello.aopre.order.aop.AspectV4Pointcut;
+import hello.aopre.order.aop.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +18,8 @@ import static org.assertj.core.api.Assertions.*;
 //@Import(AspectV1.class)
 //@Import(AspectV2.class)
 //@Import(AspectV3.class)
-@Import(AspectV4Pointcut.class)
+//@Import(AspectV4Pointcut.class)
+@Import({AspectV5Order.LogAspect.class,AspectV5Order.TxAspect.class})
 public class AopTest {
 
     @Autowired
