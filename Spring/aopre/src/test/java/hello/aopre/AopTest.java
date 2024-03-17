@@ -4,6 +4,7 @@ import hello.aopre.order.OrderRepository;
 import hello.aopre.order.OrderService;
 import hello.aopre.order.aop.AspectV1;
 import hello.aopre.order.aop.AspectV2;
+import hello.aopre.order.aop.AspectV3;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,8 @@ import static org.assertj.core.api.Assertions.*;
 @Slf4j
 @SpringBootTest
 //@Import(AspectV1.class)
-@Import(AspectV2.class)
+//@Import(AspectV2.class)
+@Import(AspectV3.class)
 public class AopTest {
 
     @Autowired
