@@ -10,8 +10,10 @@ public class OrderService {
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
-    public void orderItem(String itemId) {
+    public String orderItem(String itemId) {
         log.info("[orderService] 실행");
-        orderRepository.save(itemId);
+        String save = orderRepository.save(itemId);
+        log.info("orderservice result = {}",save);
+        return save;
     }
 }
