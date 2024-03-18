@@ -15,6 +15,11 @@ public class MemberService2Impl implements MemberService2{
         return "ok";
     }
 
+    @Override
+    public String kkm() {
+        return null;
+    }
+
     public String internal(String param){
         return "ok";
     }
