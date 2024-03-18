@@ -28,6 +28,7 @@ public class ParameterTest {
     void success(){
         log.info("memberService proxy = {}",memberService.getClass());
         memberService.hello("helloA","a","b");
+        memberService.kkm();
     }
 
     @Slf4j
