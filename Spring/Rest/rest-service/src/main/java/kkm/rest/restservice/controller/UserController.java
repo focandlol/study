@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import kkm.rest.restservice.RestServiceApplication;
 import kkm.rest.restservice.bean.User;
 import kkm.rest.restservice.dao.UserDaoService;
+import kkm.rest.restservice.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,12 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User retrieveUser(@PathVariable int id){
-        return service.findOne(id);
+        User user = service.findOne(id);
+        if(user == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found",id));
+        }
+
+        return user;
     }
 
     @PostMapping("/users")
