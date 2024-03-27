@@ -27,7 +27,10 @@ public class AdminUserController {
 
     private final UserDaoService service;
 
-    @GetMapping("/v1/users/{id}")
+    //@GetMapping("/v1/users/{id}")
+    //@GetMapping(value = "/users/{id}",params="version1")
+   // @GetMapping(value = "/users/{id}",headers="version=1")
+    @GetMapping(value = "/users/{id}",produces="application/vnd.company.appv1+json")
     public MappingJacksonValue retrieveUser4Admin(@PathVariable int id){
         User user = service.findOne(id);
 
@@ -49,7 +52,10 @@ public class AdminUserController {
         return mapping;
     }
 
-    @GetMapping("/v2/users/{id}")
+    //@GetMapping("/v2/users/{id}")
+    //@GetMapping(value = "/users/{id}",params="version2")
+    //@GetMapping(value = "/users/{id}",headers="version=2")
+    @GetMapping(value = "/users/{id}",produces="application/v2+json")
     public MappingJacksonValue retrieveUser4AdminV2(@PathVariable int id){
         User user = service.findOne(id);
 
