@@ -1,6 +1,7 @@
 package kkm.rest.restservice.controller;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import kkm.rest.restservice.RestServiceApplication;
 import kkm.rest.restservice.bean.User;
 import kkm.rest.restservice.dao.UserDaoService;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
         User save = service.save(user);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
