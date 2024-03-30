@@ -12,11 +12,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonIgnoreProperties(value = {"password","ssn"})
 @Schema(description = "사용자 상세 정보를 위한 도메인 객체")
 @Entity
@@ -42,5 +43,14 @@ public class User {
     @Schema(title = "사용자 주민번호", description = "사용자 주민번호 입력")
     private String ssn;
 
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
 
+    public User(Integer id, String name, LocalDateTime joinDate, String password, String ssn) {
+        this.id = id;
+        this.name = name;
+        this.joinDate = joinDate;
+        this.password = password;
+        this.ssn = ssn;
+    }
 }
