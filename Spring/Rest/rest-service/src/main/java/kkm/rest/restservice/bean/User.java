@@ -7,16 +7,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"password","ssn"})
 @Schema(description = "사용자 상세 정보를 위한 도메인 객체")
@@ -42,6 +41,7 @@ public class User {
     //@JsonIgnore
     @Schema(title = "사용자 주민번호", description = "사용자 주민번호 입력")
     private String ssn;
+
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();

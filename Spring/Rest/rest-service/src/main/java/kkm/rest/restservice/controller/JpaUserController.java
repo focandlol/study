@@ -1,6 +1,7 @@
 package kkm.rest.restservice.controller;
 
 import jakarta.validation.Valid;
+import kkm.rest.restservice.bean.Post;
 import kkm.rest.restservice.bean.User;
 import kkm.rest.restservice.exception.UserNotFoundException;
 import kkm.rest.restservice.repository.UserRepository;
@@ -46,6 +47,7 @@ public class JpaUserController {
         entityModel.add(linkTo(methodOn(this.getClass()).retrieveAllUsers()).withRel("all-users"));
         return ResponseEntity.ok(entityModel);
 
+
     }
 
     @DeleteMapping("/users/{id}")
@@ -62,5 +64,12 @@ public class JpaUserController {
                 .buildAndExpand(savedUser.getId())
                 .toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/users/{id}/posts")
+    public List<Post> retrieveAllPostsByUser(@PathVariable int id){
+        Optional<User> user = userRepository.findById(id);
+
+        return user.get().getPosts();
     }
 }
