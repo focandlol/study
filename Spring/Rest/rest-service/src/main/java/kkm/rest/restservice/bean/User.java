@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -22,8 +23,8 @@ import java.util.Date;
 @Table(name = "users")
 public class User {
 
-    @Schema(title = "사용자 id", description = "사용자 id는 자동 생성")
     @Id
+    //@Schema(title = "사용자 id", description = "사용자 id는 자동 생성")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -32,7 +33,7 @@ public class User {
     private String name;
 
     @Schema(title = "사용자 등록일", description = "등록일 입력, 입력하지 않을 시 현재 날짜 지정")
-    private Date joinDate;
+    private LocalDateTime joinDate;
 
     //@JsonIgnore
     @Schema(title = "사용자 비밀번호", description = "사용자 비밀번호 입력")
@@ -40,4 +41,6 @@ public class User {
     //@JsonIgnore
     @Schema(title = "사용자 주민번호", description = "사용자 주민번호 입력")
     private String ssn;
+
+
 }
