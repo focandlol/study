@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import kkm.rest.restservice.bean.Post;
 import kkm.rest.restservice.bean.User;
 import kkm.rest.restservice.exception.UserNotFoundException;
+import kkm.rest.restservice.repository.PostRepository;
 import kkm.rest.restservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class JpaUserController {
 
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     @GetMapping("/users")
     public List<User> retrieveAllUsers(){
@@ -71,5 +73,22 @@ public class JpaUserController {
         Optional<User> user = userRepository.findById(id);
 
         return user.get().getPosts();
+    }
+
+    @PostMapping("/users/{id}/posts")
+    public ResponseEntity<Post> createPost(@PathVariable int id, @RequestBody Post post){
+        Optional<User> userOptional = userRepository.findById(id);
+
+        User user = userOptional.get();
+
+        post.setUser(user);
+
+        postRepository.save(post);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(post.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 }
