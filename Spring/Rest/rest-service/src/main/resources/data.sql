@@ -1,0 +1,1 @@
+insert into users(id, join_date,name,password,ssn) values(90001,now(),'User1','test111','707010-111111');

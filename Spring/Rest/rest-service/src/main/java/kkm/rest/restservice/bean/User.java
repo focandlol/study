@@ -3,21 +3,28 @@ package kkm.rest.restservice.bean;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(value = {"password","ssn"})
 @Schema(description = "사용자 상세 정보를 위한 도메인 객체")
+@Entity
+@Table(name = "users")
 public class User {
 
     @Schema(title = "사용자 id", description = "사용자 id는 자동 생성")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Schema(title = "사용자 dlfma", description = "사용자 이름 입력")
