@@ -45,9 +45,13 @@ public class JpaUserController {
         }
 
         System.out.println("user = " + user.get());
-        EntityModel<User> entityModel = EntityModel.of(user.get());
-        entityModel.add(linkTo(methodOn(this.getClass()).retrieveAllUsers()).withRel("all-users"));
-        return ResponseEntity.ok(entityModel);
+       // EntityModel<User> entityModel = EntityModel.of(user.get());
+       // entityModel.add(linkTo(methodOn(this.getClass()).retrieveAllUsers()).withRel("all-users"));
+
+        UserResource userResource = new UserResource(user.get());
+        userResource.add(linkTo(methodOn(this.getClass()).retrieveAllUsers()).withRel("all-users"));
+       // return ResponseEntity.ok(entityModel);
+        return ResponseEntity.ok(userResource);
 
 
     }
