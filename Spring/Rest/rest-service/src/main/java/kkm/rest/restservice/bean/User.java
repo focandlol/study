@@ -24,7 +24,7 @@ import java.util.List;
 public class User {
 
     @Id
-    //@Schema(title = "사용자 id", description = "사용자 id는 자동 생성")
+    @Schema(title = "사용자 id", description = "사용자 id는 자동 생성")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
