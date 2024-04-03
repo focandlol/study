@@ -14,10 +14,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Getter
-@Setter
+//@Getter
+//@Setter
+@Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"password","ssn"})
+//@JsonIgnoreProperties(value = {"password","ssn"})
 //@Schema(description = "사용자 상세 정보를 위한 도메인 객체")
 @Entity
 @Table(name = "users")
