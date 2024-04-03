@@ -33,7 +33,7 @@ public class JpaUserController {
     }
 
     @GetMapping("/users/{id}")
-    public EntityModel<User> retrieveUser(@PathVariable int id){
+    public ResponseEntity retrieveUser(@PathVariable int id){
         Optional<User> user = userRepository.findById(id);
 
 
@@ -41,7 +41,7 @@ public class JpaUserController {
         System.out.println("user = " + user.get());
          EntityModel<User> entityModel = EntityModel.of(user.get());
          entityModel.add(linkTo(methodOn(this.getClass()).retrieveAllUsers()).withRel("all-users"));
-         return entityModel;
+         return ResponseEntity.ok(entityModel);
 
 
 
