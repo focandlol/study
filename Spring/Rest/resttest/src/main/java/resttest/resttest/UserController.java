@@ -30,12 +30,15 @@ public class UserController {
     public EntityModel<User> retrieveUser(@PathVariable int id){
         User user = service.findOne(id);
 
-        EntityModel<User> entityModel = EntityModel.of(user);
-
+        /*EntityModel<User> entityModel = EntityModel.of(user);
         WebMvcLinkBuilder linTo = linkTo(methodOn(this.getClass()).kkm());
         entityModel.add(linTo.withRel("all-users"));
 
-        return entityModel;
+        return entityModel;*/
+
+        UserResource userResource = new UserResource(user);
+        userResource.add(linkTo(methodOn(this.getClass()).kkm()).withRel("all-users"));
+        return userResource;
     }
 
 }
