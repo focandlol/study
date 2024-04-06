@@ -35,13 +35,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    //@Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web) -> web.ignoring()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
     }
 
-    @Bean
+    //@Bean
     protected SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable);

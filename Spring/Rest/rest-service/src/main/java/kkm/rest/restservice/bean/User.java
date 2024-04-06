@@ -16,7 +16,8 @@ import java.util.List;
 
 //@Getter
 //@Setter
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 //@JsonIgnoreProperties(value = {"password","ssn"})
 //@Schema(description = "사용자 상세 정보를 위한 도메인 객체")
