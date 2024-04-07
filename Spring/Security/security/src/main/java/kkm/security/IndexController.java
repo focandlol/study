@@ -1,5 +1,9 @@
 package kkm.security;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndexController {
 
     @GetMapping("/")
-    public String index(){
+    public String index(@CurrentSecurityContext SecurityContext context){
+        System.out.println("context = " + context.getAuthentication().getName());
         return "index";
     }
 
@@ -20,4 +25,6 @@ public class IndexController {
     public String home(){
         return "home";
     }
+
+
 }
