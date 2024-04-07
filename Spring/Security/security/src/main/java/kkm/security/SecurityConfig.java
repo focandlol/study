@@ -48,9 +48,21 @@ public class SecurityConfig {
 //                        .permitAll()
 //                );
 
+        /*http
+                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .httpBasic(basic -> basic.authenticationEntryPoint(new CustomAuthEntryPoint()));*/
+
         http
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .httpBasic(basic -> basic.authenticationEntryPoint(new CustomAuthEntryPoint()));
+                .formLogin(Customizer.withDefaults())
+                .rememberMe(rememberMe -> rememberMe
+                        .alwaysRemember(true)
+                        .tokenValiditySeconds(3600)
+                        .userDetailsService(userDetailsService())
+                        .rememberMeParameter("remember123")
+                        .rememberMeCookieName("remember")
+                        .key("security")
+                );
 
         return http.build();
     }
