@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .httpBasic(basic -> basic.authenticationEntryPoint(new CustomAuthEntryPoint()));*/
 
-        http
+        /*http
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .rememberMe(rememberMe -> rememberMe
@@ -62,6 +62,17 @@ public class SecurityConfig {
                         .rememberMeParameter("remember123")
                         .rememberMeCookieName("remember")
                         .key("security")
+                );*/
+
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/anonymous").hasRole("GUEST")
+                        .requestMatchers("/anonymousContext","/authentication").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults())
+                .anonymous(anonymous -> anonymous
+                        .principal("guest")
+                        .authorities("ROLE_GUEST")
                 );
 
         return http.build();
@@ -70,7 +81,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(){
 
-        UserDetails user = User.withUsername("user")
+        UserDetails user = User.withUsername("kkm")
                 .password("{noop}2222")
                 .roles("USER").build();
 
