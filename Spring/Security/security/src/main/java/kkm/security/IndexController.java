@@ -26,5 +26,22 @@ public class IndexController {
         return "home";
     }
 
+    @GetMapping("/anonymous")
+    public String anaonymous(){
+        return "anonymous";
+    }
 
+    @GetMapping("/authentication")
+    public String authentication(Authentication authentication){
+        if(authentication instanceof AnonymousAuthenticationToken){
+            return "anonymous";
+        }
+        return "null";
+    }
+
+    @GetMapping("/anonymousContext")
+    public String anonymousContext(@CurrentSecurityContext SecurityContext context){
+
+        return context.getAuthentication().getName();
+    }
 }
