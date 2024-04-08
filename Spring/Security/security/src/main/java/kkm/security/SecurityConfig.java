@@ -19,6 +19,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.IOException;
@@ -33,17 +35,17 @@ public class SecurityConfig {
 //        http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
 //                .formLogin(form -> form//.loginPage("/loginPage")
 //                        .loginProcessingUrl("/loginProc")
-//                        .defaultSuccessUrl("/",false)
+//                        //.defaultSuccessUrl("/",false)
 //                        .failureUrl("/failed")
 //                        .usernameParameter("userId")
 //                        .passwordParameter("passwd")
-//                        .successHandler(new AuthenticationSuccessHandler() {
+//                        /*.successHandler(new AuthenticationSuccessHandler() {
 //                            @Override
 //                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 //                                System.out.println("authentication : " + authentication);
-//                                response.sendRedirect("/home");
+//                                response.sendRedirect("/?con");
 //                            }
-//                        })
+//                        })*/
 //                        .failureHandler((request, response, exception) -> {
 //                            System.out.println("exception : "+ exception.getMessage());
 //                            response.sendRedirect("login");
@@ -77,28 +79,42 @@ public class SecurityConfig {
                         .principal("guest")
                         .authorities("ROLE_GUEST")
                 );*/
+//        http
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/logoutSuccess").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                //.csrf(csrf -> csrf.disable())
+//                .logout(logout -> logout.logoutUrl("/logout")
+//                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"))
+//                        .logoutSuccessUrl("/logoutSuccess")
+//                        .logoutSuccessHandler(((request, response, authentication) -> {
+//                            response.sendRedirect("/logoutSuccess");
+//                        }))
+//                        .deleteCookies("JSESSIONID","remember-me")
+//                        .invalidateHttpSession(true)
+//                        .clearAuthentication(true)
+//                        .addLogoutHandler(((request, response, authentication) -> {
+//                            HttpSession session = request.getSession();
+//                            session.invalidate();
+//                            SecurityContextHolder.getContextHolderStrategy().getContext().setAuthentication(null);
+//                            SecurityContextHolder.getContextHolderStrategy().clearContext();
+//                        }))
+//                        .permitAll()
+//                );
+
+
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/logoutSuccess").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-                //.csrf(csrf -> csrf.disable())
-                .logout(logout -> logout.logoutUrl("/logout")
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"))
-                        .logoutSuccessUrl("/logoutSuccess")
-                        .logoutSuccessHandler(((request, response, authentication) -> {
-                            response.sendRedirect("/logoutSuccess");
+                .formLogin(form -> form
+                        .successHandler(((request, response, authentication) -> {
+                            SavedRequest savedRequest = requestCache.getRequest(request, response);
+                            String redirectUrl = savedRequest.getRedirectUrl();
+                            response.sendRedirect(redirectUrl);
                         }))
-                        .deleteCookies("JSESSIONID","remember-me")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .addLogoutHandler(((request, response, authentication) -> {
-                            HttpSession session = request.getSession();
-                            session.invalidate();
-                            SecurityContextHolder.getContextHolderStrategy().getContext().setAuthentication(null);
-                            SecurityContextHolder.getContextHolderStrategy().clearContext();
-                        }))
-                        .permitAll()
                 );
 
 
