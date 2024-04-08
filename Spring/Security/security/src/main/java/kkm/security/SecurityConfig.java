@@ -3,6 +3,7 @@ package kkm.security;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +19,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.IOException;
 
@@ -52,11 +55,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .httpBasic(basic -> basic.authenticationEntryPoint(new CustomAuthEntryPoint()));*/
 
-        /*http
+       /* http
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .rememberMe(rememberMe -> rememberMe
-                        .alwaysRemember(true)
+                        //.alwaysRemember(true)
                         .tokenValiditySeconds(3600)
                         .userDetailsService(userDetailsService())
                         .rememberMeParameter("remember123")
@@ -64,7 +67,7 @@ public class SecurityConfig {
                         .key("security")
                 );*/
 
-        http
+        /*http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/anonymous").hasRole("GUEST")
                         .requestMatchers("/anonymousContext","/authentication").permitAll()
@@ -73,7 +76,31 @@ public class SecurityConfig {
                 .anonymous(anonymous -> anonymous
                         .principal("guest")
                         .authorities("ROLE_GUEST")
+                );*/
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/logoutSuccess").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults())
+                //.csrf(csrf -> csrf.disable())
+                .logout(logout -> logout.logoutUrl("/logout")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"))
+                        .logoutSuccessUrl("/logoutSuccess")
+                        .logoutSuccessHandler(((request, response, authentication) -> {
+                            response.sendRedirect("/logoutSuccess");
+                        }))
+                        .deleteCookies("JSESSIONID","remember-me")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .addLogoutHandler(((request, response, authentication) -> {
+                            HttpSession session = request.getSession();
+                            session.invalidate();
+                            SecurityContextHolder.getContextHolderStrategy().getContext().setAuthentication(null);
+                            SecurityContextHolder.getContextHolderStrategy().clearContext();
+                        }))
+                        .permitAll()
                 );
+
 
         return http.build();
     }
