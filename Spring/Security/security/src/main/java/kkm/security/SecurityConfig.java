@@ -105,6 +105,7 @@ public class SecurityConfig {
 
 
         HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        requestCache.setMatchingRequestParameterName("customParam=y");
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/logoutSuccess").permitAll()
@@ -115,7 +116,9 @@ public class SecurityConfig {
                             String redirectUrl = savedRequest.getRedirectUrl();
                             response.sendRedirect(redirectUrl);
                         }))
-                );
+
+                )
+                .requestCache(cache -> cache.requestCache(requestCache));
 
 
         return http.build();
