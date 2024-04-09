@@ -69,16 +69,16 @@ public class SecurityConfig {
                         .key("security")
                 );*/
 
-        /*http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/anonymous").hasRole("GUEST")
-                        .requestMatchers("/anonymousContext","/authentication").permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-                .anonymous(anonymous -> anonymous
-                        .principal("guest")
-                        .authorities("ROLE_GUEST")
-                );*/
+//        http
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/anonymous").hasRole("GUEST")
+//                        .requestMatchers("/anonymousContext","/authentication").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .anonymous(anonymous -> anonymous
+//                        .principal("guest")
+//                        .authorities("ROLE_GUEST")
+//                );
 //        http
 //                .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/logoutSuccess").permitAll()
