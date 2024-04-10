@@ -104,22 +104,27 @@ public class SecurityConfig {
 //                );
 
 
-        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
-        requestCache.setMatchingRequestParameterName("customParam=y");
+//        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+//        requestCache.setMatchingRequestParameterName("customParam=y");
+//        http
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/logoutSuccess").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(form -> form
+//                        .successHandler(((request, response, authentication) -> {
+//                            SavedRequest savedRequest = requestCache.getRequest(request, response);
+//                            String redirectUrl = savedRequest.getRedirectUrl();
+//                            response.sendRedirect(redirectUrl);
+//                        }))
+//
+//                )
+//                .requestCache(cache -> cache.requestCache(requestCache));
+
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/logoutSuccess").permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .successHandler(((request, response, authentication) -> {
-                            SavedRequest savedRequest = requestCache.getRequest(request, response);
-                            String redirectUrl = savedRequest.getRedirectUrl();
-                            response.sendRedirect(redirectUrl);
-                        }))
-
-                )
-                .requestCache(cache -> cache.requestCache(requestCache));
-
+                       .anyRequest().authenticated())
+               .formLogin(Customizer.withDefaults());
 
         return http.build();
     }
