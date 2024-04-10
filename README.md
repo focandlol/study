@@ -1,2 +1,2 @@
 ## study
-0402 entitymodel -> UserResource
+0409 authentication, securityContextHolder, securityContext
