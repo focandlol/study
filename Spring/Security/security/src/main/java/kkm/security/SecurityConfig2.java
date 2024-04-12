@@ -128,6 +128,13 @@ public class SecurityConfig2 {
 //                .addFilterBefore(customAuthenticationFilter(http)
 //                        , UsernamePasswordAuthenticationFilter.class);
 
+        AuthenticationManagerBuilder managerBuilder= http.getSharedObject(AuthenticationManagerBuilder.class);
+        managerBuilder.authenticationProvider(CustomAuthenticationProvider());
+
+        ProviderManager providerManager = (ProviderManager)configuration.getAuthenticationManager();
+        providerManager.getProviders().remove(0);
+
+        builder.authenticationProvider(new DaoAuthenticationProvider());
 
         http
                 .authorizeHttpRequests(auth -> auth
@@ -138,7 +145,7 @@ public class SecurityConfig2 {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider CustomAuthenticationProvider(){
         return new CustomAuthenticationProvider();
     }
 
