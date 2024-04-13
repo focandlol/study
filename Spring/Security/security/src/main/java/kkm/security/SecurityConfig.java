@@ -135,7 +135,11 @@ public class SecurityConfig {
 //                       .anyRequest().authenticated())
 //                .formLogin(Customizer.withDefaults())
 //                ;
-
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/logoutSuccess").permitAll()
+                       .anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults());
        return http.build();
     }
 

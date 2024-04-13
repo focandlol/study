@@ -9,10 +9,10 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetails user = User.withUsername("kkm")
+
+
+        return User.withUsername("kkm")
                 .password("{noop}2222")
                 .roles("USER").build();
-
-        return (UserDetails) new InMemoryUserDetailsManager(user);
     }
 }
