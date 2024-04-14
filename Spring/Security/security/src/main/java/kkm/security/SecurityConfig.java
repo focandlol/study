@@ -137,7 +137,6 @@ public class SecurityConfig {
 //                ;
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/logoutSuccess").permitAll()
                        .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
        return http.build();
@@ -161,6 +160,11 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return new CustomUserDetailService();
+
+        UserDetails user = User.withUsername("kkm")
+                .password("{noop}2222")
+                .roles("USER").build();
+
+        return new InMemoryUserDetailsManager(user);
     }
 }
