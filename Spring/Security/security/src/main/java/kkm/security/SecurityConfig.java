@@ -135,10 +135,20 @@ public class SecurityConfig {
 //                       .anyRequest().authenticated())
 //                .formLogin(Customizer.withDefaults())
 //                ;
+
+        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        AuthenticationManager authenticationManager = builder.build();
+
         http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/login").permitAll()
                        .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
+                .formLogin(Customizer.withDefaults())
+                //.securityContext(securityContext -> securityContext.requireExplicitSave(false))
+                .authenticationManager(authenticationManager)
+                .addFilterBefore(customAuthenticationFilter(http,authenticationManager),
+                        UsernamePasswordAuthenticationFilter.class)
+        ;
        return http.build();
     }
 
@@ -158,6 +168,12 @@ public class SecurityConfig {
 //        return new InMemoryUserDetailsManager(user);
 //    }
 
+
+    public CustomAuthenticationFilter customAuthenticationFilter(HttpSecurity http, AuthenticationManager authenticationManager){
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(http);
+        customAuthenticationFilter.setAuthenticationManager(authenticationManager);
+        return customAuthenticationFilter;
+    }
     @Bean
     public UserDetailsService userDetailsService(){
 
