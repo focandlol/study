@@ -159,7 +159,7 @@ public class SecurityConfig {
                 .formLogin(Customizer.withDefaults())
                 .sessionManagement(session -> session
                         .maximumSessions(1)
-                        .maxSessionsPreventsLogin(false)
+                        .maxSessionsPreventsLogin(true)
                 );
 
         return http.build();
