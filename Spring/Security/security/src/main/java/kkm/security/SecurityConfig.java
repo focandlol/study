@@ -151,15 +151,18 @@ public class SecurityConfig {
 //        ;
 
         /**
-         * sessionManagemebt().maximumSessions
+         * sessionManagement().maximumSessions
          */
         http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/invalidSessionUrl","/expiredSessionUrl").permitAll()
                        .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .sessionManagement(session -> session
+                        .invalidSessionUrl("/invalidSessionUrl")
                         .maximumSessions(1)
-                        .maxSessionsPreventsLogin(true)
+                        .maxSessionsPreventsLogin(false)
+                        .expiredUrl("/expiredUrl")
                 );
 
         return http.build();
@@ -190,10 +193,12 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(){
 
-        UserDetails user = User.withUsername("kkm")
-                .password("{noop}2222")
-                .roles("USER").build();
+//        UserDetails user = User.withUsername("kkm")
+//                .password("{noop}2222")
+//                .roles("USER").build();
+//
+//        return new InMemoryUserDetailsManager(user);
 
-        return new InMemoryUserDetailsManager(user);
+        return new CustomUserDetailService();
     }
 }

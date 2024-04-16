@@ -3,6 +3,7 @@ package kkm.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,11 +23,11 @@ public class IndexController {
 //    }
 
     @GetMapping("/")
-    public String index(){
+    public String index(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         SecurityContext context = SecurityContextHolder.getContextHolderStrategy().getContext();
         Authentication authentication = context.getAuthentication();
         System.out.println("authentication = " + authentication);
-
+        System.out.println("customUserDetails.getAccountDto() = " + customUserDetails.getAccountDto());
         //securityContextService.getContext();
 
         return "index";
@@ -49,6 +50,8 @@ public class IndexController {
 
     @GetMapping("/authentication")
     public String authentication(Authentication authentication){
+        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+        principal.getAccountDto();
         if(authentication instanceof AnonymousAuthenticationToken){
             return "anonymous";
         }
@@ -57,12 +60,19 @@ public class IndexController {
 
     @GetMapping("/anonymousContext")
     public String anonymousContext(@CurrentSecurityContext SecurityContext context){
-
         return context.getAuthentication().getName();
     }
 
     @GetMapping("/logoutSuccess")
     public String logoutSuccess(){
         return "logout";
+    }
+    @GetMapping("/invalidSessionUrl")
+    public String invalidSessionUrl(){
+        return "invalidSessionUrl";
+    }
+    @GetMapping("/expiredSessionUrl")
+    public String expiredSessionUrl(){
+        return "expiredSessionUrl";
     }
 }
