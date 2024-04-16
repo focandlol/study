@@ -135,12 +135,34 @@ public class SecurityConfig {
 //                       .anyRequest().authenticated())
 //                .formLogin(Customizer.withDefaults())
 //                ;
+
+//        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+//        AuthenticationManager authenticationManager = builder.build();
+//
+//        http
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/api/login").permitAll()
+//                       .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                //.securityContext(securityContext -> securityContext.requireExplicitSave(false))
+//                .authenticationManager(authenticationManager)
+//                .addFilterBefore(customAuthenticationFilter(http,authenticationManager),
+//                        UsernamePasswordAuthenticationFilter.class)
+//        ;
+
+        /**
+         * sessionManagemebt().maximumSessions
+         */
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/logoutSuccess").permitAll()
                        .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
-       return http.build();
+                .formLogin(Customizer.withDefaults())
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false)
+                );
+
+        return http.build();
     }
 
 //    public CustomAuthenticationFilter customAuthenticationFilter(HttpSecurity http, AuthenticationManager authenticationManager){
@@ -159,8 +181,19 @@ public class SecurityConfig {
 //        return new InMemoryUserDetailsManager(user);
 //    }
 
+
+    public CustomAuthenticationFilter customAuthenticationFilter(HttpSecurity http, AuthenticationManager authenticationManager){
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(http);
+        customAuthenticationFilter.setAuthenticationManager(authenticationManager);
+        return customAuthenticationFilter;
+    }
     @Bean
     public UserDetailsService userDetailsService(){
-        return new CustomUserDetailService();
+
+        UserDetails user = User.withUsername("kkm")
+                .password("{noop}2222")
+                .roles("USER").build();
+
+        return new InMemoryUserDetailsManager(user);
     }
 }
