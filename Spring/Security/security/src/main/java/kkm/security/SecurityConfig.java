@@ -151,7 +151,8 @@ public class SecurityConfig {
 //        ;
 
         /**
-         * sessionManagement().maximumSessions
+         * 1.sessionManagement().maximumSessions
+         * 2.sessionManagement().sessionFixation
          */
         http
                 .authorizeHttpRequests(auth -> auth
@@ -163,7 +164,9 @@ public class SecurityConfig {
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false)
                         .expiredUrl("/expiredUrl")
-                );
+                ).sessionManagement(session -> session
+                        .sessionFixation(sessionFixation -> sessionFixation.none()))
+        ;
 
         return http.build();
     }
