@@ -136,20 +136,33 @@ public class SecurityConfig {
 //                .formLogin(Customizer.withDefaults())
 //                ;
 
-        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        AuthenticationManager authenticationManager = builder.build();
+//        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+//        AuthenticationManager authenticationManager = builder.build();
+//
+//        http
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/api/login").permitAll()
+//                       .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                //.securityContext(securityContext -> securityContext.requireExplicitSave(false))
+//                .authenticationManager(authenticationManager)
+//                .addFilterBefore(customAuthenticationFilter(http,authenticationManager),
+//                        UsernamePasswordAuthenticationFilter.class)
+//        ;
 
+        /**
+         * sessionManagemebt().maximumSessions
+         */
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login").permitAll()
                        .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-                //.securityContext(securityContext -> securityContext.requireExplicitSave(false))
-                .authenticationManager(authenticationManager)
-                .addFilterBefore(customAuthenticationFilter(http,authenticationManager),
-                        UsernamePasswordAuthenticationFilter.class)
-        ;
-       return http.build();
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false)
+                );
+
+        return http.build();
     }
 
 //    public CustomAuthenticationFilter customAuthenticationFilter(HttpSecurity http, AuthenticationManager authenticationManager){
