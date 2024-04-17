@@ -156,22 +156,33 @@ public class SecurityConfig {
          * 2.sessionManagement().sessionFixation
          * 3.sessionManagement().sessionCreationPolicy
          */
+//        http
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/invalidSessionUrl","/expiredSessionUrl").permitAll()
+//                       .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .sessionManagement(session -> session
+//                        .invalidSessionUrl("/invalidSessionUrl")
+//                        .maximumSessions(1)
+//                        .maxSessionsPreventsLogin(false)
+//                        .expiredUrl("/expiredUrl")
+//                ).sessionManagement(session -> session
+//                        .sessionFixation(sessionFixation -> sessionFixation.none()))
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+//        ;
+
+        /**
+         * 1.SessionManagementFilter/ConcurrentSessionFilter maxSessionsPriventsLogin(false)
+         */
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/invalidSessionUrl","/expiredSessionUrl").permitAll()
-                       .anyRequest().authenticated())
+                        .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .sessionManagement(session -> session
-                        .invalidSessionUrl("/invalidSessionUrl")
                         .maximumSessions(1)
-                        .maxSessionsPreventsLogin(false)
-                        .expiredUrl("/expiredUrl")
-                ).sessionManagement(session -> session
-                        .sessionFixation(sessionFixation -> sessionFixation.none()))
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-        ;
-
+                        .maxSessionsPreventsLogin(false));
         return http.build();
     }
 
