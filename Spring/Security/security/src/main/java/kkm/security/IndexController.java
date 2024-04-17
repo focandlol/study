@@ -1,6 +1,5 @@
 package kkm.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,7 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+
 public class IndexController {
+
+
+    private final SessionInfoService sessionInfoService;
+
+    public IndexController(SessionInfoService sessionInfoService) {
+        this.sessionInfoService = sessionInfoService;
+    }
+
 
 //    @Autowired
 //    SecurityContextService securityContextService;
@@ -31,6 +39,12 @@ public class IndexController {
         //securityContextService.getContext();
 
         return "index";
+    }
+
+    @GetMapping("/sessionInfo")
+    public String sessionInfo(){
+        sessionInfoService.sessionInfo();
+        return "sessionInfo";
     }
 
     @GetMapping("/loginPage")
