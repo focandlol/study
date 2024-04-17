@@ -174,6 +174,7 @@ public class SecurityConfig {
 
         /**
          * 1.SessionManagementFilter/ConcurrentSessionFilter maxSessionsPriventsLogin(false)
+         * 2.SessionManagementFilter/ConcurrentSessionFilter maxSessionsPriventsLogin(true)
          */
         http
                 .authorizeHttpRequests(auth -> auth
@@ -182,7 +183,7 @@ public class SecurityConfig {
                 .formLogin(Customizer.withDefaults())
                 .sessionManagement(session -> session
                         .maximumSessions(1)
-                        .maxSessionsPreventsLogin(false));
+                        .maxSessionsPreventsLogin(true));
         return http.build();
     }
 
