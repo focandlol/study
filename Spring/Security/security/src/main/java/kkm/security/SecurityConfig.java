@@ -201,16 +201,17 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(new AuthenticationEntryPoint() {
-                            @Override
-                            public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-                                System.out.println("exception" + authException.getMessage());
-                                response.sendRedirect("/login");
-                            }
-                        })
+//                        .authenticationEntryPoint(new AuthenticationEntryPoint() {
+//                            @Override
+//                            public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+//                                System.out.println("exception" + authException.getMessage());
+//                                response.sendRedirect("/login");
+//                            }
+//                        })
                         .accessDeniedHandler(((request, response, accessDeniedException) -> {
                             System.out.println("accessDeniedException.getMessage() = " + accessDeniedException.getMessage());
                             response.sendRedirect("/denied");
