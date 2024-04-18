@@ -89,4 +89,14 @@ public class IndexController {
     public String expiredSessionUrl(){
         return "expiredSessionUrl";
     }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
+    @GetMapping("/denied")
+    public String denied(){
+        return "denied";
+    }
 }

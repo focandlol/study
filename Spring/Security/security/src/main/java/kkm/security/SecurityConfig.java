@@ -1,5 +1,8 @@
 package kkm.security;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,14 +11,18 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.io.IOException;
 
 @EnableWebSecurity
 @Configuration
@@ -178,14 +185,38 @@ public class SecurityConfig {
          * 1.SessionManagementFilter/ConcurrentSessionFilter maxSessionsPriventsLogin(false)
          * 2.SessionManagementFilter/ConcurrentSessionFilter maxSessionsPriventsLogin(true)
          */
+//        http
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/invalidSessionUrl","/expiredSessionUrl").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .sessionManagement(session -> session
+//                        .maximumSessions(2)
+//                        .maxSessionsPreventsLogin(false));
+
+
+        /**
+         * exceptionHandling()
+         */
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/invalidSessionUrl","/expiredSessionUrl").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-                .sessionManagement(session -> session
-                        .maximumSessions(2)
-                        .maxSessionsPreventsLogin(false));
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new AuthenticationEntryPoint() {
+                            @Override
+                            public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+                                System.out.println("exception" + authException.getMessage());
+                                response.sendRedirect("/login");
+                            }
+                        })
+                        .accessDeniedHandler(((request, response, accessDeniedException) -> {
+                            System.out.println("accessDeniedException.getMessage() = " + accessDeniedException.getMessage());
+                            response.sendRedirect("/denied");
+                        }))
+                )
+                ;
         return http.build();
     }
 
