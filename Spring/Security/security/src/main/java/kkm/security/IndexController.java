@@ -99,4 +99,9 @@ public class IndexController {
     public String denied(){
         return "denied";
     }
+
+    @GetMapping("/api/users")
+    public String users(){
+        return "{\"name\":\"kkm\"}";
+    }
 }
