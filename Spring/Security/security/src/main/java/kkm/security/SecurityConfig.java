@@ -222,31 +222,44 @@ public class SecurityConfig {
 //                )
 //                ;
 
+//        /**
+//         * cors
+//         */
+//        http
+//                .authorizeHttpRequests(auth -> auth
+//                        .anyRequest().permitAll())
+//                .formLogin(Customizer.withDefaults())
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//                ;
+
         http
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll())
                 .formLogin(Customizer.withDefaults())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 ;
         return http.build();
 
 
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:8081");
-        config.addAllowedMethod("*");
-        config.addAllowedHeader("*");
-        config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",config);
-        return source;
-    }
+    /**
+     * cors
+     * @return
+     */
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource(){
+//
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.addAllowedOrigin("http://localhost:8081");
+//        config.addAllowedMethod("*");
+//        config.addAllowedHeader("*");
+//        config.setAllowCredentials(true);
+//        config.setMaxAge(3600L);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**",config);
+//        return source;
+//    }
 
     @Bean
     public SessionRegistry sessionRegistry(){
