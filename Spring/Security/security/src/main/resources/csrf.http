@@ -1,3 +1,7 @@
+### GET request with a header
+GET http://localhost:8080/csrf
+Content-Type: application/json
+
 ### POST request with a header
 POST http://localhost:8080/csrf
 Content-Type: application/json
@@ -6,4 +10,8 @@ Content-Type: application/json
 POST http://localhost:8080/csrf
 Content-Type: application/x-www-form-urlencoded
 
-_csrf = BJwnG_GQ-wCZaev0qgTCLfcgLngMYT50Xb4vn__WkJT_v3ekNagfesXxnWW0Ud3Bzyn2SZRGAxk4VQ9ZZY5J_sblqfWe2kaW
+_csrf = IIf4tkE9WTN94AZ5MYW0pD22Cr1ajy-6mW6X3bR7TWi6qjmLE7XAg3kPYVVQ2DVBB6iAlQ7UJ4VsuRyXqAyu5dcZK1uPyVq6
+
+### Send GET request with json body
+GET http://localhost:8080/csrfToken
+Content-Type: application/json
