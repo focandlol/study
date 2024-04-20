@@ -234,8 +234,12 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
+<<<<<<< HEAD
                         .requestMatchers("/csrf").permitAll()
                         .anyRequest().authenticated())
+=======
+                        .anyRequest().permitAll())
+>>>>>>> parent of 9ec1d64 (csrf config)
                 .formLogin(Customizer.withDefaults())
                 //.csrf(csrf -> csrf.disable())
                 ;
