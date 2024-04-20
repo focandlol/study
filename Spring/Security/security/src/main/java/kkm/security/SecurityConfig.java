@@ -236,9 +236,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         .requestMatchers("/csrf").permitAll()
                         .anyRequest().authenticated())
 =======
+=======
+>>>>>>> parent of 9ec1d64 (csrf config)
 =======
 >>>>>>> parent of 9ec1d64 (csrf config)
                         .anyRequest().permitAll())
