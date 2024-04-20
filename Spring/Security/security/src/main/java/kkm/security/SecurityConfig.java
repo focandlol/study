@@ -234,6 +234,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/csrf").permitAll()
                         .anyRequest().permitAll())
                 .formLogin(Customizer.withDefaults())
                 ;
