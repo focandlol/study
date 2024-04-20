@@ -7,6 +7,8 @@ import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndexController {
 
 
-    private final SessionInfoService sessionInfoService;
-
-    public IndexController(SessionInfoService sessionInfoService) {
-        this.sessionInfoService = sessionInfoService;
-    }
+//    private final SessionInfoService sessionInfoService;
+//
+//    public IndexController(SessionInfoService sessionInfoService) {
+//        this.sessionInfoService = sessionInfoService;
+//    }
 
 
 //    @Autowired
@@ -31,11 +33,11 @@ public class IndexController {
 //    }
 
     @GetMapping("/")
-    public String index(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public String index(/*@AuthenticationPrincipal CustomUserDetails customUserDetails*/){
         SecurityContext context = SecurityContextHolder.getContextHolderStrategy().getContext();
         Authentication authentication = context.getAuthentication();
         System.out.println("authentication = " + authentication);
-        System.out.println("customUserDetails.getAccountDto() = " + customUserDetails.getAccountDto());
+        System.out.println("customUserDetails.getAccountDto() = "/* + customUserDetails.getAccountDto()*/);
         //securityContextService.getContext();
 
         return "index";
@@ -43,7 +45,7 @@ public class IndexController {
 
     @GetMapping("/sessionInfo")
     public String sessionInfo(){
-        sessionInfoService.sessionInfo();
+        //sessionInfoService.sessionInfo();
         return "sessionInfo";
     }
 
@@ -64,8 +66,8 @@ public class IndexController {
 
     @GetMapping("/authentication")
     public String authentication(Authentication authentication){
-        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-        principal.getAccountDto();
+        //CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+       // principal.getAccountDto();
         if(authentication instanceof AnonymousAuthenticationToken){
             return "anonymous";
         }
@@ -103,5 +105,15 @@ public class IndexController {
     @GetMapping("/api/users")
     public String users(){
         return "{\"name\":\"kkm\"}";
+    }
+
+    @PostMapping("/csrf")
+    public String csrf(){
+        return "csrf 적용";
+    }
+
+    @GetMapping("/csrf")
+    public String csrf2(){
+        return "csrf 적용";
     }
 }

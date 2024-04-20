@@ -235,8 +235,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/csrf").permitAll()
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
+                //.csrf(csrf -> csrf.disable())
                 ;
         return http.build();
 
@@ -262,10 +263,10 @@ public class SecurityConfig {
 //        return source;
 //    }
 
-    @Bean
-    public SessionRegistry sessionRegistry(){
-        return new SessionRegistryImpl();
-    }
+//    @Bean
+//    public SessionRegistry sessionRegistry(){
+//        return new SessionRegistryImpl();
+//    }
 
 //    public CustomAuthenticationFilter customAuthenticationFilter(HttpSecurity http, AuthenticationManager authenticationManager){
 //        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(http);
@@ -284,20 +285,20 @@ public class SecurityConfig {
 //    }
 
 
-    public CustomAuthenticationFilter customAuthenticationFilter(HttpSecurity http, AuthenticationManager authenticationManager){
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(http);
-        customAuthenticationFilter.setAuthenticationManager(authenticationManager);
-        return customAuthenticationFilter;
-    }
+//    public CustomAuthenticationFilter customAuthenticationFilter(HttpSecurity http, AuthenticationManager authenticationManager){
+//        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(http);
+//        customAuthenticationFilter.setAuthenticationManager(authenticationManager);
+//        return customAuthenticationFilter;
+//    }
     @Bean
     public UserDetailsService userDetailsService(){
 
-//        UserDetails user = User.withUsername("kkm")
-//                .password("{noop}2222")
-//                .roles("USER").build();
-//
-//        return new InMemoryUserDetailsManager(user);
+        UserDetails user = User.withUsername("kkm")
+                .password("{noop}2222")
+                .roles("USER").build();
 
-        return new CustomUserDetailService();
+        return new InMemoryUserDetailsManager(user);
+
+       // return new CustomUserDetailService();
     }
 }
