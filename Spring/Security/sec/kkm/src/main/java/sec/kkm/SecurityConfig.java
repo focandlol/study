@@ -24,11 +24,11 @@ public class SecurityConfig {
         XorCsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new XorCsrfTokenRequestAttributeHandler();
 
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/csrf").permitAll()
+                        .requestMatchers("/csrf","/csrfToken").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-                .csrf(csrf->csrf.csrfTokenRepository(csrfTokenRepository.withHttpOnlyFalse())
-                        .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler))
+                //.csrf(csrf->csrf.csrfTokenRepository(csrfTokenRepository.withHttpOnlyFalse())
+                       // .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler))
                 ;
 
         return http.build();
