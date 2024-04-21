@@ -2,8 +2,10 @@ package sec.kkm;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,17 @@ public class IndexController {
         }else{
             return "customPage";
         }
+    }
+
+    @GetMapping("/sd")
+    public String ss(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        SecurityContext context = SecurityContextHolder.getContextHolderStrategy().getContext();
+        Authentication authentication = context.getAuthentication();
+        System.out.println("authentication = " + authentication);
+        System.out.println("customUserDetails.getAccountDto() = " + customUserDetails.getAccountDto());
+        //securityContextService.getContext();
+
+        return "index";
     }
 
     @GetMapping("/loginPage")
@@ -76,6 +89,12 @@ public class IndexController {
     @PostMapping("/csrf")
     public String csrf(){
         return "csrf 적용";
+    }
+
+
+    @PostMapping("/csrfs")
+    public String csrfs(){
+        return "csrfasd 적용";
     }
 
 }
