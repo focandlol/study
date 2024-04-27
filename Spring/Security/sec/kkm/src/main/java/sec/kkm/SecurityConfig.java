@@ -45,7 +45,7 @@ public class SecurityConfig {
          * javascript csrf cookie
          */
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/csrf","/csrfToken","/form","/formCsrf").permitAll()
+                        .requestMatchers("/csrf","/csrfToken","/cookie","/cookieCsrf").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
