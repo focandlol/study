@@ -20,8 +20,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
-        XorCsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new XorCsrfTokenRequestAttributeHandler();
+        //CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
+        //XorCsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new XorCsrfTokenRequestAttributeHandler();
 
 //        http.authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/csrf","/csrfToken").permitAll()
@@ -31,13 +31,25 @@ public class SecurityConfig {
 //                       // .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler))
 //                ;
 
+        /**
+         * thymeleaf csrf
+         */
+//        http.authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/csrf","/csrfToken","/form","/formCsrf").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(Customizer.withDefaults())
+//                ;
+
+        /**
+         * javascript csrf cookie
+         */
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/csrf","/csrfToken").permitAll()
+                        .requestMatchers("/csrf","/csrfToken","/form","/formCsrf").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-                .csrf(csrf->csrf
-                        .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler))
-                ;
+                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+        ;
 
         return http.build();
     }
