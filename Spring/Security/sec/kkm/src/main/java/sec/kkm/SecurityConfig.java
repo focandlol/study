@@ -23,12 +23,20 @@ public class SecurityConfig {
         CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
         XorCsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new XorCsrfTokenRequestAttributeHandler();
 
+//        http.authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/csrf","/csrfToken").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                //.csrf(csrf->csrf.csrfTokenRepository(csrfTokenRepository.withHttpOnlyFalse())
+//                       // .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler))
+//                ;
+
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/csrf","/csrfToken").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-                //.csrf(csrf->csrf.csrfTokenRepository(csrfTokenRepository.withHttpOnlyFalse())
-                       // .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler))
+                .csrf(csrf->csrf
+                        .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler))
                 ;
 
         return http.build();
