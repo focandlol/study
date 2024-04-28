@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(csrfTokenRequestHandler)
                 )
-                .addFilterBefore(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+               // .addFilterBefore(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
         ;
 
         return http.build();
