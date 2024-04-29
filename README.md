@@ -1,7 +1,7 @@
 ## study
 
 
-0414 Add SecurityContextRepository branch, custom filter test
+
 0416 sessionManagement
 0418 exceptionFilter
 0422 예비군
