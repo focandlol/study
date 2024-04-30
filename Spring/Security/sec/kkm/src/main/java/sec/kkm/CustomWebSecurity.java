@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component("customWebSecurity")
 public class CustomWebSecurity {
 
-    public boolean check(Authentication authentication, HttpServletRequest request) {
-        return authentication.isAuthenticated();
+    public boolean check(Authentication authenticationaaa, HttpServletRequest request) {
+        return authenticationaaa.isAuthenticated();
     }
 }

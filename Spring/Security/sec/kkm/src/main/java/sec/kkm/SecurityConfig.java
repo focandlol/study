@@ -89,17 +89,26 @@ public class SecurityConfig {
         /**
          * custom authroizationManager
          */
-        DefaultHttpSecurityExpressionHandler expressionHandler = new DefaultHttpSecurityExpressionHandler();
-        expressionHandler.setApplicationContext(context);
+//        DefaultHttpSecurityExpressionHandler expressionHandler = new DefaultHttpSecurityExpressionHandler();
+//        expressionHandler.setApplicationContext(context);
+//
+//        WebExpressionAuthorizationManager authorizationManager
+//                = new WebExpressionAuthorizationManager("@customWebSecurity.check(authentication,request)");
+//        authorizationManager.setExpressionHandler(expressionHandler);
+//
+//
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/custom/**").access(authorizationManager)
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults());
 
-        WebExpressionAuthorizationManager authorizationManager
-                = new WebExpressionAuthorizationManager("@customWebSecurity.check(authentication,request)");
-        authorizationManager.setExpressionHandler(expressionHandler);
-
-
+        /**
+         * custom requestMatcher
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/custom/**").access(authorizationManager)
+                        .requestMatchers(new CustomRequestMatcher("/admin")).hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
         return http.build();
