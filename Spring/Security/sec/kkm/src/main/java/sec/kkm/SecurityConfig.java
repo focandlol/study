@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
@@ -61,14 +62,26 @@ public class SecurityConfig {
         /**
          * authorize
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/user").hasRole("USER")
+//                        .requestMatchers("/db").hasRole("DB")
+//                        .requestMatchers("/admin").hasRole("ADMIN")
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        /**
+         * custom access authorizationManager
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user").hasRole("USER")
-                        .requestMatchers("/db").hasRole("DB")
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/user/{name}")
+                        .access(new WebExpressionAuthorizationManager("#name == authentication.name"))
+                        .requestMatchers("/admin/db")
+                        .access(new WebExpressionAuthorizationManager("hasAuthority('ROLE_DB') or hasAuthority('ROLE_ADMIN')"))
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable);
+                .formLogin(Customizer.withDefaults());
 
         return http.build();
     }
