@@ -74,10 +74,6 @@ public class IndexController {
         return "expired";
     }
 
-    @GetMapping("/admin")
-    public String admin(){
-        return "admin";
-    }
 
     @GetMapping("/denied")
     public String denied(){
@@ -118,4 +114,20 @@ public class IndexController {
     public CsrfToken cookieCsrf(CsrfToken csrfToken){
         return csrfToken;
     }
+
+    @GetMapping("/user")
+    public String user(){
+        return "user";
+    }
+
+    @GetMapping("/db")
+    public String db(){
+        return "db";
+    }
+
+    @GetMapping("/admin")
+    public String admin(){
+        return "admin";
+    }
+
 }
