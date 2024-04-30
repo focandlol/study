@@ -1,5 +1,6 @@
 package sec.kkm;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.DefaultHttpSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -21,7 +23,7 @@ import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, ApplicationContext context) throws Exception {
 
         //CookieCsrfTokenRepository csrfTokenRepository = new CookieCsrfTokenRepository();
         //XorCsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new XorCsrfTokenRequestAttributeHandler();
@@ -74,15 +76,32 @@ public class SecurityConfig {
         /**
          * custom access authorizationManager
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/user/{name}")
+//                        .access(new WebExpressionAuthorizationManager("#name == authentication.name"))
+//                        .requestMatchers("/admin/db")
+//                        .access(new WebExpressionAuthorizationManager("hasAuthority('ROLE_DB') or hasAuthority('ROLE_ADMIN')"))
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults());
+
+
+        /**
+         * custom authroizationManager
+         */
+        DefaultHttpSecurityExpressionHandler expressionHandler = new DefaultHttpSecurityExpressionHandler();
+        expressionHandler.setApplicationContext(context);
+
+        WebExpressionAuthorizationManager authorizationManager
+                = new WebExpressionAuthorizationManager("@customWebSecurity.check(authentication,request)");
+        authorizationManager.setExpressionHandler(expressionHandler);
+
+
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user/{name}")
-                        .access(new WebExpressionAuthorizationManager("#name == authentication.name"))
-                        .requestMatchers("/admin/db")
-                        .access(new WebExpressionAuthorizationManager("hasAuthority('ROLE_DB') or hasAuthority('ROLE_ADMIN')"))
+                        .requestMatchers("/custom/**").access(authorizationManager)
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
-
         return http.build();
     }
 

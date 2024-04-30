@@ -9,9 +9,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.HttpMediaTypeException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class IndexController {
@@ -129,5 +127,20 @@ public class IndexController {
     public String admin(){
         return "admin";
     }
+    @GetMapping("/user/{name}")
+    public String userName(@PathVariable String name){
+        return name;
+    }
+
+    @GetMapping("/admin/db")
+    public String adminDb(){
+        return "admin";
+    }
+
+    @GetMapping("/custom")
+    public String custom(){
+        return "custom";
+    }
+
 
 }
