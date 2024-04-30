@@ -106,12 +106,32 @@ public class SecurityConfig {
         /**
          * custom requestMatcher
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers(new CustomRequestMatcher("/admin")).hasAuthority("ROLE_ADMIN")
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults());
+
+        /**
+         * securityMatcher
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(new CustomRequestMatcher("/admin")).hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
         return http.build();
+    }
+
+    /**
+     * securityMatcher filterChain
+     */
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults());
     }
 
     @Bean
