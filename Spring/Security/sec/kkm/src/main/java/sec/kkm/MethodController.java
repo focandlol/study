@@ -1,6 +1,10 @@
 package sec.kkm;
 
+import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +70,30 @@ public class MethodController {
     @GetMapping("/readList")
     public List<Account> readList(){
         return dataService.readList();
+    }
+
+    @GetMapping("/userSecured")
+    @Secured("ROLE_USER")
+    public String userSecured(){
+        return "user";
+    }
+
+    @GetMapping("/adminRoles")
+    @RolesAllowed("ADMIN")
+    public String adminRoles(){
+        return "adminRoles";
+    }
+
+    @GetMapping("/permitAll")
+    @PermitAll
+    public String permitAll(){
+        return "permitAll";
+    }
+
+    @GetMapping("/denyAll")
+    @DenyAll
+    public String denyAll(){
+        return "denyAll";
     }
 
 
