@@ -6,6 +6,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -53,4 +55,12 @@ public class MethodController {
     public List<Account> writeList(@RequestBody List<Account> data){
         return dataService.writeList(data);
     }
+
+    @PostMapping("/writeList")
+    public Map<String,Account> writeMap(@RequestBody List<Account> data){
+        Map<String, Account> map = data.stream().collect(Collectors.toMap(account -> account.getOwner(), account -> account));
+        return dataService.writeMap(map);
+    }
+
+
 }
