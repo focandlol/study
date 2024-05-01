@@ -123,6 +123,10 @@ public class SecurityConfig {
 //                        .anyRequest().authenticated())
 //                .formLogin(Customizer.withDefaults());
 
+        /**
+         * Method authorization
+         * @PreAuthorize
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated())
