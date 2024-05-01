@@ -34,5 +34,13 @@ public class MethodController {
 
     @GetMapping("/owner")
     @PreAuthorize("returnObject.owner == authentication.name")
-    public String authentication(@)
+    public Account owner(String name){
+        return new Account(name,false);
+    }
+
+    @GetMapping("/isSecure")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') and returnObject.isSecure")
+    public Account isSecure(String name,String isSecure){
+        return new Account(name,"y".equals(isSecure));
+    }
 }
