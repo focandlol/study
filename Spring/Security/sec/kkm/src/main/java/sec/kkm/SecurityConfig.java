@@ -102,7 +102,7 @@ public class SecurityConfig {
 //
 //        http
 //                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/custom/**").access(authorizationManager)
+//                        .requestMatchers("/custom").access(authorizationManager)
 //                        .anyRequest().authenticated())
 //                .formLogin(Customizer.withDefaults());
 

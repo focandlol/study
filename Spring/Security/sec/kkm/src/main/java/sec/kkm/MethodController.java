@@ -31,4 +31,8 @@ public class MethodController {
     public String authentication(@PathVariable String id) {
         return id;
     }
+
+    @GetMapping("/owner")
+    @PreAuthorize("returnObject.owner == authentication.name")
+    public String authentication(@)
 }
