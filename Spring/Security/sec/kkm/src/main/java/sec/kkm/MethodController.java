@@ -96,5 +96,17 @@ public class MethodController {
         return "denyAll";
     }
 
+    @GetMapping("/isAdmin")
+    @IsAdmin
+    public String isAdmin(){
+        return "isAdmin";
+    }
+
+    @GetMapping("/ownerShip")
+    @OwnerShip
+    public Account ownerShip(String name){
+        return new Account(name,false);
+    }
+
 
 }
