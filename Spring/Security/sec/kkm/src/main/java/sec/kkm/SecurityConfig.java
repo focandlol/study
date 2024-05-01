@@ -126,11 +126,23 @@ public class SecurityConfig {
         /**
          * Method authorization
          * @PreAuthorize
+         * @PostAuthorize
+         */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults());
+
+        /**
+         * Method authorization
+         * @PreFilter
+         * @PostFilter
          */
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
+                .formLogin(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
