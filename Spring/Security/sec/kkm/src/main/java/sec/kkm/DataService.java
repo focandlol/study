@@ -15,7 +15,7 @@ public class DataService {
         return accounts;
     }
 
-    @PreFilter("filterObject.owner == authentication.name")
+    @PreFilter("filterObject.value.owner == authentication.name")
     public Map<String,Account> writeMap(Map<String,Account> accounts) {
         return accounts;
     }

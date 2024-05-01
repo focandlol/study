@@ -15,6 +15,7 @@ public class MethodController {
 
     private final DataService dataService;
 
+
     @GetMapping("/adminMethod")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String adminMethod() {
@@ -56,7 +57,7 @@ public class MethodController {
         return dataService.writeList(data);
     }
 
-    @PostMapping("/writeList")
+    @PostMapping("/writeMap")
     public Map<String,Account> writeMap(@RequestBody List<Account> data){
         Map<String, Account> map = data.stream().collect(Collectors.toMap(account -> account.getOwner(), account -> account));
         return dataService.writeMap(map);
