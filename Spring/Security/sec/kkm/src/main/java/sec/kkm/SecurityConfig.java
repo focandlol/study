@@ -125,6 +125,7 @@ public class SecurityConfig {
 
         /**
          * Method authorization
+         * 요청 권한 먼저 다음에 메서드 권한 isAutheication
          * @PreAuthorize
          * @PostAuthorize
          */
