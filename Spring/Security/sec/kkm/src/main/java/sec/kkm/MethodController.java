@@ -63,5 +63,10 @@ public class MethodController {
         return dataService.writeMap(map);
     }
 
+    @GetMapping("/readList")
+    public List<Account> readList(){
+        return dataService.readList();
+    }
+
 
 }
