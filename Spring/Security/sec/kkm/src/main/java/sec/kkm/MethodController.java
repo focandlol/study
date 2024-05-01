@@ -1,12 +1,17 @@
 package sec.kkm;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 @RestController
 public class MethodController {
+
+    private final DataService dataService;
 
     @GetMapping("/adminMethod")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -33,14 +38,19 @@ public class MethodController {
     }
 
     @GetMapping("/owner")
-    @PreAuthorize("returnObject.owner == authentication.name")
+    @PostAuthorize("returnObject.owner == authentication.name")
     public Account owner(String name){
         return new Account(name,false);
     }
 
     @GetMapping("/isSecure")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') and returnObject.isSecure")
+    @PostAuthorize("hasAuthority('ROLE_ADMIN') and returnObject.isSecure")
     public Account isSecure(String name,String isSecure){
         return new Account(name,"y".equals(isSecure));
+    }
+
+    @PostMapping("/writeList")
+    public List<Account> writeList(@RequestBody List<Account> data){
+        return dataService.writeList(data);
     }
 }
