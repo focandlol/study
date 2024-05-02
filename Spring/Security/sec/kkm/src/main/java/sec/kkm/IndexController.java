@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class IndexController {
-    @GetMapping("/")
-    public String index(String customParam){
-        if(customParam == null){
-            return "index";
-        }else{
-            return "customPage";
-        }
-    }
+//    @GetMapping("/")
+//    public String index(String customParam){
+//        if(customParam == null){
+//            return "index";
+//        }else{
+//            return "customPage";
+//        }
+//    }
 
     @GetMapping("/sd")
     public String ss(@AuthenticationPrincipal CustomUserDetails customUserDetails){

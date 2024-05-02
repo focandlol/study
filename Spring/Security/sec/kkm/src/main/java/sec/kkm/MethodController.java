@@ -108,5 +108,11 @@ public class MethodController {
         return new Account(name,false);
     }
 
+    @GetMapping("/delete")
+    @PreAuthorize("@myAuthorizer.isUser(#root)")
+    public String delete(){
+        return "delete";
+    }
+
 
 }
