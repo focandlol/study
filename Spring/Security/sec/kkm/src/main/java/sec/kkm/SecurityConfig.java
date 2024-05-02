@@ -8,6 +8,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -26,7 +27,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @Configuration
 public class SecurityConfig {
 
@@ -176,9 +177,21 @@ public class SecurityConfig {
          * static resource v2
          * permitAll()
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/images/**").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        /**
+         * RoleHierarchy
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/images/**").permitAll()
+//                        .requestMatchers("/user").hasRole("USER")
+//                        .requestMatchers("/admin").hasRole("ADMIN")
+//                        .requestMatchers("/db").hasRole("DB")
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
@@ -214,9 +227,10 @@ public class SecurityConfig {
     @Bean
     public RoleHierarchy roleHierarchy(){
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_DB\n" +
-                "ROLE_DB > ROLE_USER\n" +
-                "ROLE_USER > ROLE_ANONYMOUS");
+//        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_DB\n" +
+//                "ROLE_DB > ROLE_USER\n" +
+//                "ROLE_USER > ROLE_ANONYMOUS");
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_DB > ROLE_USER");
         return roleHierarchy;
     }
 
