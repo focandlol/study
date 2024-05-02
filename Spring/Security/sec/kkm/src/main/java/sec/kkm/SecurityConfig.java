@@ -159,8 +159,24 @@ public class SecurityConfig {
 //                .formLogin(Customizer.withDefaults())
 //                .csrf(AbstractHttpConfigurer::disable);
 
+        /**
+         * static resource v1
+         * @bean webSecurityCustomizer
+         * ignoring()
+         */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        /**
+         * static resource v2
+         * permitAll()
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/images/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
@@ -182,13 +198,13 @@ public class SecurityConfig {
 //    }
 
     /**
-     * static resource
+     * static resource v1
      * use @bean ignoring
      */
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer(){
+//        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+//    }
 
     @Bean
     public UserDetailsService userDetailsService(){
