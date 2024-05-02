@@ -21,7 +21,7 @@ public class MethodController {
 
 
     @GetMapping("/adminMethod")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_DB')")
     public String adminMethod() {
         return "adminMethod";
     }
@@ -54,6 +54,12 @@ public class MethodController {
     @PostAuthorize("hasAuthority('ROLE_ADMIN') and returnObject.isSecure")
     public Account isSecure(String name,String isSecure){
         return new Account(name,"y".equals(isSecure));
+    }
+
+    @GetMapping("/role")
+    @PreAuthorize("hasRole('DB')")
+    public String isSecure(){
+        return "role";
     }
 
     @PostMapping("/writeList")
