@@ -5,6 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -206,10 +208,22 @@ public class SecurityConfig {
 //        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 //    }
 
+    /**
+     * RoleHierarchy
+     */
+    @Bean
+    public RoleHierarchy roleHierarchy(){
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_DB\n" +
+                "ROLE_DB > ROLE_USER\n" +
+                "ROLE_USER > ROLE_ANONYMOUS");
+        return roleHierarchy;
+    }
+
     @Bean
     public UserDetailsService userDetailsService(){
         UserDetails user = User.withUsername("user").password("{noop}1111").roles("USER").build();
-        UserDetails manager = User.withUsername("manager").password("{noop}1111").roles("MANAGER").build();
+        UserDetails manager = User.withUsername("db").password("{noop}1111").roles("DB").build();
         UserDetails admin = User.withUsername("admin").password("{noop}1111").roles("ADMIN").build();
         return new InMemoryUserDetailsManager(user,manager,admin);
        // return new CustomUserDetailService();
