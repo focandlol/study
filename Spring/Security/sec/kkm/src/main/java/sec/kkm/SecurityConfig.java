@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -187,11 +188,20 @@ public class SecurityConfig {
         /**
          * RoleHierarchy
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+////                        .requestMatchers("/user").hasRole("USER")
+////                        .requestMatchers("/admin").hasRole("ADMIN")
+////                        .requestMatchers("/db").hasRole("DB")
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
         http
                 .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/user").hasRole("USER")
-//                        .requestMatchers("/admin").hasRole("ADMIN")
-//                        .requestMatchers("/db").hasRole("DB")
+                        .requestMatchers("/user").hasRole("USER")
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/db").hasRole("DB")
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
@@ -224,19 +234,33 @@ public class SecurityConfig {
     /**
      * RoleHierarchy
      */
+//    @Bean
+//    public RoleHierarchy roleHierarchy(){
+//        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+////        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_DB\n" +
+////                "ROLE_DB > ROLE_USER\n" +
+////                "ROLE_USER > ROLE_ANONYMOUS");
+//        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_DB > ROLE_USER");
+//        return roleHierarchy;
+//    }
+
+    /**
+     * change ROLE_ -> KKM_
+     */
     @Bean
-    public RoleHierarchy roleHierarchy(){
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-//        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_DB\n" +
-//                "ROLE_DB > ROLE_USER\n" +
-//                "ROLE_USER > ROLE_ANONYMOUS");
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_DB > ROLE_USER");
-        return roleHierarchy;
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults("KKM_");
     }
 
     @Bean
     public UserDetailsService userDetailsService(){
-        UserDetails user = User.withUsername("user").password("{noop}1111").roles("USER").build();
+
+        /**
+         * change GrantedAuthorityDefaults
+         */
+        UserDetails user = User.withUsername("user").password("{noop}1111").authorities("KKM_USER").build();
+
+        //UserDetails user = User.withUsername("user").password("{noop}1111").roles("USER").build();
         UserDetails manager = User.withUsername("db").password("{noop}1111").roles("DB").build();
         UserDetails admin = User.withUsername("admin").password("{noop}1111").roles("ADMIN").build();
         return new InMemoryUserDetailsManager(user,manager,admin);
