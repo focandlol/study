@@ -152,6 +152,11 @@ public class IndexController {
         return "oauthLogin";
     }
 
+    @GetMapping("/ssecure")
+    public String secure(){
+        return "secure";
+    }
+
 
 
 
