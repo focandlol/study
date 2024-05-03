@@ -6,5 +6,5 @@
 0428 samesite session test
 0429 authorization process
 0430 authorizeHttpRequest()
-
+0503 authorization
 
