@@ -212,12 +212,25 @@ public class SecurityConfig {
         /**
          * authorization class test
          */
+//        http
+//        .authorizeHttpRequests(authorize -> authorize
+//                .requestMatchers("/user").hasRole("USER")
+//                .requestMatchers("/admin").hasRole("ADMIN")
+//                .requestMatchers("/db").access(new WebExpressionAuthorizationManager("hasRole('DB')"))
+//                .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        /**
+         * Custom AuthorizationManager
+         */
         http
-        .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/user").hasRole("USER")
-                .requestMatchers("/admin").hasRole("ADMIN")
-                .requestMatchers("/db").access(new WebExpressionAuthorizationManager("hasRole('DB')"))
-                .anyRequest().authenticated())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/user").hasRole("USER")
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/db").access(new WebExpressionAuthorizationManager("hasRole('DB')"))
+                        .requestMatchers("/ssecure").access(new CustomAuthorizationManager())
+                        .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
@@ -277,7 +290,7 @@ public class SecurityConfig {
 
         UserDetails user = User.withUsername("user").password("{noop}1111").roles("USER").build();
         UserDetails manager = User.withUsername("db").password("{noop}1111").roles("DB").build();
-        UserDetails admin = User.withUsername("admin").password("{noop}1111").roles("ADMIN").build();
+        UserDetails admin = User.withUsername("admin").password("{noop}1111").roles("ADMIN","SECURE").build();
         return new InMemoryUserDetailsManager(user,manager,admin);
        // return new CustomUserDetailService();
     }
