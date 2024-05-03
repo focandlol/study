@@ -11,6 +11,8 @@ public class CustomWebSecurity {
     public boolean check(Authentication authentication, HttpServletRequest request) {
         System.out.println("authentication = " + authentication.isAuthenticated());
         System.out.println("authentication = " + authentication.getName());
+//        CustomUserDetails details = (CustomUserDetails) authentication.getDetails();
+//        details.getAccountDto();
         return authentication.isAuthenticated();
     }
 }

@@ -197,12 +197,27 @@ public class SecurityConfig {
 //                .formLogin(Customizer.withDefaults())
 //                .csrf(AbstractHttpConfigurer::disable);
 
+        /**
+         * authorization
+         */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/user").hasRole("USER")
+//                        .requestMatchers("/admin").hasRole("ADMIN")
+//                        .requestMatchers("/db").hasRole("DB")
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        /**
+         * authorization class test
+         */
         http
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user").hasRole("USER")
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/db").hasRole("DB")
-                        .anyRequest().authenticated())
+        .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/user").hasRole("USER")
+                .requestMatchers("/admin").hasRole("ADMIN")
+                .requestMatchers("/db").access(new WebExpressionAuthorizationManager("hasRole('DB')"))
+                .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
@@ -247,10 +262,10 @@ public class SecurityConfig {
     /**
      * change ROLE_ -> KKM_
      */
-    @Bean
-    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
-        return new GrantedAuthorityDefaults("KKM_");
-    }
+//    @Bean
+//    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+//        return new GrantedAuthorityDefaults("KKM_");
+//    }
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -258,9 +273,9 @@ public class SecurityConfig {
         /**
          * change GrantedAuthorityDefaults
          */
-        UserDetails user = User.withUsername("user").password("{noop}1111").authorities("KKM_USER").build();
+        //UserDetails user = User.withUsername("user").password("{noop}1111").authorities("KKM_USER").build();
 
-        //UserDetails user = User.withUsername("user").password("{noop}1111").roles("USER").build();
+        UserDetails user = User.withUsername("user").password("{noop}1111").roles("USER").build();
         UserDetails manager = User.withUsername("db").password("{noop}1111").roles("DB").build();
         UserDetails admin = User.withUsername("admin").password("{noop}1111").roles("ADMIN").build();
         return new InMemoryUserDetailsManager(user,manager,admin);
