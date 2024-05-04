@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 public class MethodController {
 
-    private final DataService dataService;
+    //private final DateService dataService;
 
 
     @GetMapping("/adminMethod")
@@ -62,21 +62,21 @@ public class MethodController {
         return "role";
     }
 
-    @PostMapping("/writeList")
-    public List<Account> writeList(@RequestBody List<Account> data){
-        return dataService.writeList(data);
-    }
-
-    @PostMapping("/writeMap")
-    public Map<String,Account> writeMap(@RequestBody List<Account> data){
-        Map<String, Account> map = data.stream().collect(Collectors.toMap(account -> account.getOwner(), account -> account));
-        return dataService.writeMap(map);
-    }
-
-    @GetMapping("/readList")
-    public List<Account> readList(){
-        return dataService.readList();
-    }
+//    @PostMapping("/writeList")
+//    public List<Account> writeList(@RequestBody List<Account> data){
+//        return dataService.writeList(data);
+//    }
+//
+//    @PostMapping("/writeMap")
+//    public Map<String,Account> writeMap(@RequestBody List<Account> data){
+//        Map<String, Account> map = data.stream().collect(Collectors.toMap(account -> account.getOwner(), account -> account));
+//        return dataService.writeMap(map);
+//    }
+//
+//    @GetMapping("/readList")
+//    public List<Account> readList(){
+//        return dataService.readList();
+//    }
 
     @GetMapping("/userSecured")
     @Secured("ROLE_USER")

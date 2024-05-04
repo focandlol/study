@@ -15,7 +15,7 @@ public class MethodSecurityConfig {
 
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public Advisor preAdvisor(){
+    public Advisor preAuthorize() {
         return AuthorizationManagerBeforeMethodInterceptor.preAuthorize(new MyPreAuthorizationManager());
     }
 
