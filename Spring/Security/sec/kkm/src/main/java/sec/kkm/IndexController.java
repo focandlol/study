@@ -1,6 +1,7 @@
 package sec.kkm;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,8 +13,13 @@ import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 public class IndexController {
-//    @GetMapping("/")
+
+    private final DateService dataService;
+
+
+    //    @GetMapping("/")
 //    public String index(String customParam){
 //        if(customParam == null){
 //            return "index";
@@ -114,8 +120,8 @@ public class IndexController {
     }
 
     @GetMapping("/user")
-    public String user(){
-        return "user";
+    public String user() {
+        return dataService.getUser();
     }
 
     @GetMapping("/db")
