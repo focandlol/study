@@ -1,4 +1,4 @@
-package sec.kkm;
+package sec.kkm.method;
 
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Role;
 import org.springframework.security.authorization.method.AuthorizationManagerAfterMethodInterceptor;
 import org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = false)
