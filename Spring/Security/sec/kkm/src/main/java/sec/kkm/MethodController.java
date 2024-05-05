@@ -27,7 +27,7 @@ public class MethodController {
     }
 
     @GetMapping("/userMethod")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_USER') and isAuthenticated()")
     public String userMethod() {
         return "userMethod";
     }

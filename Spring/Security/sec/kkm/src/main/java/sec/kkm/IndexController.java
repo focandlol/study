@@ -162,7 +162,10 @@ public class IndexController {
     public String secure(){
         return "secure";
     }
-
+    @GetMapping("/owner2")
+    public Account owner2(String name){
+        return dataService.getOwner(name);
+    }
 
 
 
