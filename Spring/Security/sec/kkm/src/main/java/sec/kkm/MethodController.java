@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RestController
 public class MethodController {
+    private final DateService dateService;
 
     //private final DateService dataService;
 
@@ -49,6 +50,11 @@ public class MethodController {
     public Account owner(String name){
         return new Account(name,false);
     }
+
+//    @GetMapping("/owner2")
+//    public Account owner2(String name){
+//        return dateService.getOwner(name);
+//    }
 
     @GetMapping("/isSecure")
     @PostAuthorize("hasAuthority('ROLE_ADMIN') and returnObject.isSecure")
