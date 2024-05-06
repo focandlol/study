@@ -73,4 +73,9 @@ public class MethodSecurityConfig {
         pointcut.setExpression("execution(* sec.kkm.DateService.*(..))");
         return pointcut;
     }
+
+    @Bean
+    public Advisor serviceAdvisor() {
+        return new DefaultPointcutAdvisor(pointcut(), customMethodInterceptor());
+    }
 }
