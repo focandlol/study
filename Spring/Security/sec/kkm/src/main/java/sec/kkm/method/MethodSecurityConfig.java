@@ -18,42 +18,42 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableMethodSecurity(prePostEnabled = false)
 public class MethodSecurityConfig {
 
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public Advisor preAuthorize() {
-        return AuthorizationManagerBeforeMethodInterceptor.preAuthorize(new MyPreAuthorizationManager());
-    }
-
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public Advisor postAuthorize() {
-        return AuthorizationManagerAfterMethodInterceptor.postAuthorize(new MyPostAuthorizationManager());
-    }
-
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public Advisor pointCutAdvisor(){
-        AspectJExpressionPointcut pattern = new AspectJExpressionPointcut();
-        pattern.setExpression("execution(* sec.kkm.DateService.getUser(..))");
-        AuthorityAuthorizationManager<MethodInvocation> manager = AuthorityAuthorizationManager.hasRole("USER");
-
-        return new AuthorizationManagerBeforeMethodInterceptor(pattern,manager);
-    }
-
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public Advisor pointCutAdvisor2(){
-        AspectJExpressionPointcut pattern = new AspectJExpressionPointcut();
-        pattern.setExpression("execution(* sec.kkm.DateService.getUser(..))");
-
-        AspectJExpressionPointcut pattern2 = new AspectJExpressionPointcut();
-        pattern2.setExpression("execution(* sec.kkm.DateService.getOwner(..))");
-
-        ComposablePointcut composablePointcut = new ComposablePointcut((Pointcut) pattern);
-        composablePointcut.union((Pointcut) pattern2);
-
-        AuthorityAuthorizationManager<MethodInvocation> manager = AuthorityAuthorizationManager.hasRole("USER");
-
-        return new AuthorizationManagerBeforeMethodInterceptor(composablePointcut,manager);
-    }
+//    @Bean
+//    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+//    public Advisor preAuthorize() {
+//        return AuthorizationManagerBeforeMethodInterceptor.preAuthorize(new MyPreAuthorizationManager());
+//    }
+//
+//    @Bean
+//    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+//    public Advisor postAuthorize() {
+//        return AuthorizationManagerAfterMethodInterceptor.postAuthorize(new MyPostAuthorizationManager());
+//    }
+//
+//    @Bean
+//    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+//    public Advisor pointCutAdvisor(){
+//        AspectJExpressionPointcut pattern = new AspectJExpressionPointcut();
+//        pattern.setExpression("execution(* sec.kkm.DateService.getUser(..))");
+//        AuthorityAuthorizationManager<MethodInvocation> manager = AuthorityAuthorizationManager.hasRole("USER");
+//
+//        return new AuthorizationManagerBeforeMethodInterceptor(pattern,manager);
+//    }
+//
+//    @Bean
+//    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+//    public Advisor pointCutAdvisor2(){
+//        AspectJExpressionPointcut pattern = new AspectJExpressionPointcut();
+//        pattern.setExpression("execution(* sec.kkm.DateService.getUser(..))");
+//
+//        AspectJExpressionPointcut pattern2 = new AspectJExpressionPointcut();
+//        pattern2.setExpression("execution(* sec.kkm.DateService.getOwner(..))");
+//
+//        ComposablePointcut composablePointcut = new ComposablePointcut((Pointcut) pattern);
+//        composablePointcut.union((Pointcut) pattern2);
+//
+//        AuthorityAuthorizationManager<MethodInvocation> manager = AuthorityAuthorizationManager.hasRole("USER");
+//
+//        return new AuthorizationManagerBeforeMethodInterceptor(composablePointcut,manager);
+//    }
 }
