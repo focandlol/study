@@ -67,5 +67,10 @@ public class MethodSecurityConfig {
         return new CustomMethodInterceptor(authorizationManager);
     }
 
-
+    @Bean
+    public Pointcut pointcut() {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("execution(* sec.kkm.DateService.*(..))");
+        return pointcut;
+    }
 }
