@@ -8,22 +8,22 @@ import org.springframework.stereotype.Component;
 public class AuthenticationEvents {
     @EventListener
     public void onSuccess(AuthenticationSuccessEvent success) {
-        System.out.println("success = " + success.getAuthentication().getName());
+        System.out.println("success1 = " + success.getAuthentication().getName());
     }
 
     @EventListener
     public void onFailure(AbstractAuthenticationFailureEvent failures) {
-        System.out.println("failures = " + failures.getException().getMessage());
+        System.out.println("failures1 = " + failures.getException().getMessage());
     }
 
     @EventListener
     public void onSuccess(InteractiveAuthenticationSuccessEvent success) {
-        System.out.println("success = " + success.getAuthentication().getName());
+        System.out.println("success2 = " + success.getAuthentication().getName());
     }
 
     @EventListener
     public void onSuccess(CustomAuthenticationSuccessEvent success) {
-        System.out.println("success = " + success.getAuthentication().getName());
+        System.out.println("success3 = " + success.getAuthentication().getName());
     }
 
     @EventListener
@@ -33,7 +33,7 @@ public class AuthenticationEvents {
 
     @EventListener
     public void onFailure(AuthenticationFailureProviderNotFoundEvent failures) {
-        System.out.println("failures = " + failures.getException().getMessage());
+        System.out.println("failures12 = " + failures.getException().getMessage());
     }
 
     @EventListener
