@@ -9,7 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.authentication.AuthenticationEventPublisher;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
+import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.security.authorization.AuthenticatedAuthorizationManager;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.authorization.AuthorizationManager;
@@ -22,6 +25,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,12 +41,12 @@ import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcherEntry;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-import sec.kkm.event.CustomAuthenticationProvider;
-import sec.kkm.event.CustomAuthenticationProvider2;
-import sec.kkm.event.CustomAuthenticationSuccessEvent;
+import sec.kkm.event.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
@@ -277,6 +281,19 @@ public class SecurityConfig {
         /**
          * authentication events
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated())
+//                .formLogin(form -> form.successHandler(((request, response, authentication) -> {
+//                    eventPublisher.publishEvent(new CustomAuthenticationSuccessEvent(authentication));
+//                })))
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authenticationProvider(customAuthenticationProvider2());
+
+        /**
+         * authentication events utilize
+         * custom authenticationFailure event
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated())
@@ -284,7 +301,7 @@ public class SecurityConfig {
                     eventPublisher.publishEvent(new CustomAuthenticationSuccessEvent(authentication));
                 })))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authenticationProvider(customAuthenticationProvider2());
+                .authenticationProvider(customAuthenticationProvider3());
         return http.build();
     }
 
@@ -369,14 +386,31 @@ public class SecurityConfig {
      * use DefaultAuthenticationEventPublisher
      * @return
      */
+//    @Bean
+//    public CustomAuthenticationProvider2 customAuthenticationProvider2(){
+//        return new CustomAuthenticationProvider2(authenticationEventPublisher(null));
+//    }
+//    @Bean
+//    public DefaultAuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
+//        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
+//    }
+
     @Bean
-    public CustomAuthenticationProvider2 customAuthenticationProvider2(){
-        return new CustomAuthenticationProvider2(authenticationEventPublisher(null));
+    public AuthenticationProvider customAuthenticationProvider3(){
+        return new CustomAuthenticationProvider3(customAuthenticationEventPublisher(null));
     }
+
     @Bean
-    public DefaultAuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
-        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
+    public AuthenticationEventPublisher customAuthenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        Map<Class<? extends AuthenticationException>, Class<? extends AbstractAuthenticationFailureEvent>> mapping =
+                Collections.singletonMap(CustomException.class, CustomAuthenticationFailureEvent.class);
+
+        DefaultAuthenticationEventPublisher authenticationEventPublisher = new DefaultAuthenticationEventPublisher(applicationEventPublisher);
+        authenticationEventPublisher.setAdditionalExceptionMappings(mapping); // CustomException 을 던지면 CustomAuthenticationFailureEvent 를 발행하도록 추가 함
+        authenticationEventPublisher.setDefaultAuthenticationFailureEvent(DefaultAuthenticationFailureEvent.class);
+        return authenticationEventPublisher;
     }
+
     @Bean
     public UserDetailsService userDetailsService(){
 

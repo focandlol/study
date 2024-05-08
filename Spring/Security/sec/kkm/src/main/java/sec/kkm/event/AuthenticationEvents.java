@@ -28,7 +28,7 @@ public class AuthenticationEvents {
 
     @EventListener
     public void onFailure(AuthenticationFailureBadCredentialsEvent failures) {
-        System.out.println("failures = " + failures.getException().getMessage());
+        System.out.println("failures2 = " + failures.getException().getMessage());
     }
 
     @EventListener
@@ -38,6 +38,11 @@ public class AuthenticationEvents {
 
     @EventListener
     public void onFailure(CustomAuthenticationFailureEvent failures) {
+        System.out.println("failures0 = " + failures.getException().getMessage());
+    }
+
+    @EventListener
+    public void onFailure(DefaultAuthenticationFailureEvent failures) {
         System.out.println("failures = " + failures.getException().getMessage());
     }
 }
