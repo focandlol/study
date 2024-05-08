@@ -425,6 +425,18 @@ public class SecurityConfig {
 //        return authenticationEventPublisher;
 //    }
 
+    /**
+     * AuthorizationEvents eventpublisher
+     *
+     */
+//    @Bean
+//    public AuthorizationEventPublisher authorizationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+//        return new SpringAuthorizationEventPublisher(applicationEventPublisher);
+//    }
+    /**
+     * AuthorizationEvents eventpublisher
+     * custom eventpublisher
+     */
     @Bean
     public AuthorizationEventPublisher myAuthorizationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
         return new MyAuthorizationEventPublisher(new SpringAuthorizationEventPublisher(applicationEventPublisher), applicationEventPublisher);
