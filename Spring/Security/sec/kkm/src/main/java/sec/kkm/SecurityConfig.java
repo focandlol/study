@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.authorization.AuthenticatedAuthorizationManager;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.authorization.AuthorizationManager;
@@ -36,6 +37,8 @@ import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcherEntry;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+import sec.kkm.event.CustomAuthenticationProvider;
+import sec.kkm.event.CustomAuthenticationProvider2;
 import sec.kkm.event.CustomAuthenticationSuccessEvent;
 
 import java.util.ArrayList;
@@ -280,7 +283,8 @@ public class SecurityConfig {
                 .formLogin(form -> form.successHandler(((request, response, authentication) -> {
                     eventPublisher.publishEvent(new CustomAuthenticationSuccessEvent(authentication));
                 })))
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable)
+                .authenticationProvider(customAuthenticationProvider2());
         return http.build();
     }
 
@@ -360,6 +364,19 @@ public class SecurityConfig {
 //        return new CustomRequestMatcherDelegatingAuthorizationManager(mappings);
 //    }
 
+    /**
+     * CustomAuthenticationProvider2
+     * use DefaultAuthenticationEventPublisher
+     * @return
+     */
+    @Bean
+    public CustomAuthenticationProvider2 customAuthenticationProvider2(){
+        return new CustomAuthenticationProvider2(authenticationEventPublisher(null));
+    }
+    @Bean
+    public DefaultAuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
+        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
+    }
     @Bean
     public UserDetailsService userDetailsService(){
 
