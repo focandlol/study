@@ -11,15 +11,15 @@ public class AuthorizationEvents {
 
     @EventListener
     public void onAuthorization(AuthorizationEvent event){
-        System.out.println("event = " + event.getAuthentication().get().getAuthorities());
+        System.out.println("event0 = " + event.getAuthentication().get().getAuthorities());
     }
     @EventListener
     public void onAuthorization(AuthorizationDeniedEvent failure){
-        System.out.println("event = " + failure.getAuthentication().get().getAuthorities());
+        System.out.println("event1 = " + failure.getAuthentication().get().getAuthorities());
     }
 
     @EventListener
     public void onAuthorization(AuthorizationGrantedEvent success){
-        System.out.println("event = " + success.getAuthentication().get().getAuthorities());
+        System.out.println("event2 = " + success.getAuthentication().get().getAuthorities());
     }
 }
