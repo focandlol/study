@@ -1,7 +1,9 @@
 package sec.kkm;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -41,7 +43,10 @@ import java.util.List;
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, ApplicationContext context) throws Exception {
@@ -259,10 +264,21 @@ public class SecurityConfig {
          * method authorization
          * PreAuthorizationManager
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        /**
+         * authentication events
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form.successHandler(((request, response, authentication) -> {
+                    eventPublisher.publishEvent(new CustomAuthenticationSuccessEvent(authentication));
+                })))
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
