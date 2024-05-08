@@ -13,9 +13,7 @@ import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
-import org.springframework.security.authorization.AuthenticatedAuthorizationManager;
-import org.springframework.security.authorization.AuthorityAuthorizationManager;
-import org.springframework.security.authorization.AuthorizationManager;
+import org.springframework.security.authorization.*;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -294,14 +292,23 @@ public class SecurityConfig {
          * authentication events utilize
          * custom authenticationFailure event
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated())
+//                .formLogin(form -> form.successHandler(((request, response, authentication) -> {
+//                    eventPublisher.publishEvent(new CustomAuthenticationSuccessEvent(authentication));
+//                })))
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authenticationProvider(customAuthenticationProvider3());
+
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/user").hasRole("USER")
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/db").hasRole("DB")
                         .anyRequest().authenticated())
-                .formLogin(form -> form.successHandler(((request, response, authentication) -> {
-                    eventPublisher.publishEvent(new CustomAuthenticationSuccessEvent(authentication));
-                })))
-                .csrf(AbstractHttpConfigurer::disable)
-                .authenticationProvider(customAuthenticationProvider3());
+                .formLogin(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
@@ -395,20 +402,32 @@ public class SecurityConfig {
 //        return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
 //    }
 
-    @Bean
-    public AuthenticationProvider customAuthenticationProvider3(){
-        return new CustomAuthenticationProvider3(customAuthenticationEventPublisher(null));
-    }
+//    /**
+//     * /**
+//     *          * authentication events utilize
+//     *          * custom authenticationFailure event
+//     *          */
+//     * @return
+//     */
+//    @Bean
+//    public AuthenticationProvider customAuthenticationProvider3(){
+//        return new CustomAuthenticationProvider3(customAuthenticationEventPublisher(null));
+//    }
+//
+//    @Bean
+//    public AuthenticationEventPublisher customAuthenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+//        Map<Class<? extends AuthenticationException>, Class<? extends AbstractAuthenticationFailureEvent>> mapping =
+//                Collections.singletonMap(CustomException.class, CustomAuthenticationFailureEvent.class);
+//
+//        DefaultAuthenticationEventPublisher authenticationEventPublisher = new DefaultAuthenticationEventPublisher(applicationEventPublisher);
+//        authenticationEventPublisher.setAdditionalExceptionMappings(mapping); // CustomException 을 던지면 CustomAuthenticationFailureEvent 를 발행하도록 추가 함
+//        authenticationEventPublisher.setDefaultAuthenticationFailureEvent(DefaultAuthenticationFailureEvent.class);
+//        return authenticationEventPublisher;
+//    }
 
     @Bean
-    public AuthenticationEventPublisher customAuthenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        Map<Class<? extends AuthenticationException>, Class<? extends AbstractAuthenticationFailureEvent>> mapping =
-                Collections.singletonMap(CustomException.class, CustomAuthenticationFailureEvent.class);
-
-        DefaultAuthenticationEventPublisher authenticationEventPublisher = new DefaultAuthenticationEventPublisher(applicationEventPublisher);
-        authenticationEventPublisher.setAdditionalExceptionMappings(mapping); // CustomException 을 던지면 CustomAuthenticationFailureEvent 를 발행하도록 추가 함
-        authenticationEventPublisher.setDefaultAuthenticationFailureEvent(DefaultAuthenticationFailureEvent.class);
-        return authenticationEventPublisher;
+    public AuthorizationEventPublisher myAuthorizationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
+        return new MyAuthorizationEventPublisher(new SpringAuthorizationEventPublisher(applicationEventPublisher), applicationEventPublisher);
     }
 
     @Bean
