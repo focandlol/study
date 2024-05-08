@@ -78,4 +78,5 @@ public class MethodSecurityConfig {
     public Advisor serviceAdvisor() {
         return new DefaultPointcutAdvisor(pointcut(), customMethodInterceptor());
     }
+
 }
