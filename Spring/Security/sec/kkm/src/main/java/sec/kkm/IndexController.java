@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,18 @@ public class IndexController {
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
         return trustResolver.isAnonymous(authentication) ? "anonymous" : "authenticated";
     }
+
+    @GetMapping("/springUser")
+    public User springUser(@AuthenticationPrincipal User user){
+        return user;
+    }
+
+    @GetMapping("/springUser2")
+    public String springUser2(@AuthenticationPrincipal(expression = "username") String user){
+        return user;
+    }
+
+
 
 
     //    @GetMapping("/")
