@@ -38,6 +38,8 @@ public class IndexController {
     public String ss(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         SecurityContext context = SecurityContextHolder.getContextHolderStrategy().getContext();
         Authentication authentication = context.getAuthentication();
+        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+        principal.getAccountDto();
         System.out.println("authentication = " + authentication);
         System.out.println("customUserDetails.getAccountDto() = " + customUserDetails.getAccountDto());
         //securityContextService.getContext();
