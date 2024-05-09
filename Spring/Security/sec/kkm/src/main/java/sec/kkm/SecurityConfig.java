@@ -313,6 +313,19 @@ public class SecurityConfig {
         /**
          * servlet
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/user").hasRole("USER")
+//                        .requestMatchers("/admin").hasRole("ADMIN")
+//                        .requestMatchers("/db").hasRole("DB")
+//                        .anyRequest().permitAll())
+//                //.formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        /**
+         * spring mvc
+         * @AuthenticationPrincipal
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user").hasRole("USER")
