@@ -301,13 +301,25 @@ public class SecurityConfig {
 //                .csrf(AbstractHttpConfigurer::disable)
 //                .authenticationProvider(customAuthenticationProvider3());
 
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/user").hasRole("USER")
+//                        .requestMatchers("/admin").hasRole("ADMIN")
+//                        .requestMatchers("/db").hasRole("DB")
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        /**
+         * servlet
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user").hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/db").hasRole("DB")
-                        .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                        .anyRequest().permitAll())
+                //.formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
@@ -437,10 +449,10 @@ public class SecurityConfig {
      * AuthorizationEvents eventpublisher
      * custom eventpublisher
      */
-    @Bean
-    public AuthorizationEventPublisher myAuthorizationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
-        return new MyAuthorizationEventPublisher(new SpringAuthorizationEventPublisher(applicationEventPublisher), applicationEventPublisher);
-    }
+//    @Bean
+//    public AuthorizationEventPublisher myAuthorizationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
+//        return new MyAuthorizationEventPublisher(new SpringAuthorizationEventPublisher(applicationEventPublisher), applicationEventPublisher);
+//    }
 
     @Bean
     public UserDetailsService userDetailsService(){

@@ -1,6 +1,8 @@
 package sec.kkm;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,6 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -165,6 +171,24 @@ public class IndexController {
     @GetMapping("/owner2")
     public Account owner2(String name){
         return dataService.getOwner(name);
+    }
+
+    @GetMapping("/login2")
+    public String login2(HttpServletRequest request,MemberDto memberDto) throws ServletException {
+        request.login(memberDto.getUsername(),memberDto.getPassword());
+        System.out.println("login is successful");
+        return "login";
+    }
+
+    @GetMapping("/users2")
+    public List<MemberDto> users2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        boolean authenticate = request.authenticate(response);
+        if(authenticate){
+            return List.of(new MemberDto("user","1111"));
+        }
+        return Collections.emptyList();
+
+
     }
 
 
