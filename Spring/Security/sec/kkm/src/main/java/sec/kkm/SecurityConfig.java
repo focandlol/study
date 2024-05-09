@@ -332,7 +332,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/db").hasRole("DB")
                         .anyRequest().permitAll())
-                //.formLogin(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }

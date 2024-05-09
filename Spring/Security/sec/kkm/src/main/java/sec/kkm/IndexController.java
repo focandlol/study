@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
@@ -22,7 +24,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IndexController {
 
+    /**
+     * 익명 사용자인지 아닌지 구분
+     */
+    AuthenticationTrustResolverImpl trustResolver = new AuthenticationTrustResolverImpl();
+
     private final DateService dataService;
+
+    @GetMapping("/trust")
+    public String trust(){
+        Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
+        return trustResolver.isAnonymous(authentication) ? "anonymous" : "authenticated";
+    }
 
 
     //    @GetMapping("/")
