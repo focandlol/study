@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,6 +47,20 @@ public class IndexController {
     @GetMapping("/springUser2")
     public String springUser2(@AuthenticationPrincipal(expression = "username") String user){
         return user;
+    }
+
+    @GetMapping("/callable")
+    public Callable<Authentication> callable(){
+        SecurityContext context = SecurityContextHolder.getContextHolderStrategy().getContext();
+        System.out.println("context = " + context);
+        System.out.println("Parent thread = " + Thread.currentThread().getName());
+
+        return () -> {
+            SecurityContext context1 = SecurityContextHolder.getContextHolderStrategy().getContext();
+            System.out.println("context = " + context1);
+            System.out.println("child thread = " + Thread.currentThread().getName());
+            return context1.getAuthentication();
+        };
     }
 
 
