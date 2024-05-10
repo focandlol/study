@@ -326,14 +326,23 @@ public class SecurityConfig {
          * spring mvc
          * @AuthenticationPrincipal
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/user").hasRole("USER")
+//                        .requestMatchers("/admin").hasRole("ADMIN")
+//                        .requestMatchers("/db").hasRole("DB")
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable);
+
+        /**
+         * Advanced config
+         * Config multi Security
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user").hasRole("USER")
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/db").hasRole("DB")
-                        .anyRequest().permitAll())
-                .formLogin(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable);
+                        .anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults());
         return http.build();
     }
 
@@ -467,6 +476,21 @@ public class SecurityConfig {
 //        return new MyAuthorizationEventPublisher(new SpringAuthorizationEventPublisher(applicationEventPublisher), applicationEventPublisher);
 //    }
 
+    /**
+     * Advanced config
+     * Config multi Security
+     */
+    @Bean
+    @Order(1)
+    public SecurityFilterChain securityFilterChain2(HttpSecurity http) throws Exception {
+        http
+                .securityMatchers((matchers) -> matchers.requestMatchers("/api/**"))
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults());
+
+        return http.build();
+    }
     @Bean
     public UserDetailsService userDetailsService(){
 
