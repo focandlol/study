@@ -344,13 +344,20 @@ public class SecurityConfig {
 //                        .anyRequest().authenticated())
 //                .formLogin(Customizer.withDefaults());
 
+        /**
+         * Custom dsl
+         * HttpSecurity.with(AbstractHttpConfigurer)
+         */
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user").hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/db").hasRole("DB")
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
+                .formLogin(Customizer.withDefaults())
+
+                .with(MyCustomDsl.customDsl(), myCustomDsl -> myCustomDsl.flag(true))
+        ;
         return http.build();
     }
 
