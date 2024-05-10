@@ -339,8 +339,16 @@ public class SecurityConfig {
          * Advanced config
          * Config multi Security
          */
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults());
+
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/user").hasRole("USER")
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/db").hasRole("DB")
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
         return http.build();
@@ -480,17 +488,17 @@ public class SecurityConfig {
      * Advanced config
      * Config multi Security
      */
-    @Bean
-    @Order(1)
-    public SecurityFilterChain securityFilterChain2(HttpSecurity http) throws Exception {
-        http
-                .securityMatchers((matchers) -> matchers.requestMatchers("/api/**"))
-                .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
-
-        return http.build();
-    }
+//    @Bean
+//    @Order(1)
+//    public SecurityFilterChain securityFilterChain2(HttpSecurity http) throws Exception {
+//        http
+//                .securityMatchers((matchers) -> matchers.requestMatchers("/api/**"))
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated())
+//                .formLogin(Customizer.withDefaults());
+//
+//        return http.build();
+//    }
     @Bean
     public UserDetailsService userDetailsService(){
 
