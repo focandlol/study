@@ -2,6 +2,7 @@ package kkm.securityProject.security.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kkm.securityProject.security.details.FormWebAuthenticationDetailsSource;
+import kkm.securityProject.security.handler.FormAccessDeniedHandler;
 import kkm.securityProject.security.provider.FormAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -46,6 +47,8 @@ public class SecurityConfig {
                         .failureHandler(failureHandler)
                 )
                 .authenticationProvider(authenticationProvider)
+                .exceptionHandling(exception
+                        -> exception.accessDeniedHandler(new FormAccessDeniedHandler("/denied")))
         ;
         return http.build();
     }
