@@ -1,6 +1,8 @@
 package kkm.securityProject.security.provider;
 
 import kkm.securityProject.domain.dto.AccountContext;
+import kkm.securityProject.security.details.FormAuthenticationDetails;
+import kkm.securityProject.security.exception.SecretException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,6 +30,11 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
 
         if (!passwordEncoder.matches(password, accountContext.getPassword())) {
             throw new BadCredentialsException("Invalid password");
+        }
+
+        String secretKey = ((FormAuthenticationDetails) authentication.getDetails()).getSecretKey();
+        if(secretKey == null || !secretKey.equals("secret")) {
+            throw new SecretException("Invalid secret key");
         }
 
         return new UsernamePasswordAuthenticationToken(accountContext.getAccountDto(), null, accountContext.getAuthorities());
