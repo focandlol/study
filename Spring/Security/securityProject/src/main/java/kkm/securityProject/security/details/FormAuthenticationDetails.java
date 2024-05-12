@@ -11,6 +11,6 @@ public class FormAuthenticationDetails extends WebAuthenticationDetails {
 
     public FormAuthenticationDetails(HttpServletRequest request) {
         super(request);
-        this.secretKey = request.getParameter("secretKey");
+        this.secretKey = request.getParameter("secret_key");
     }
 }
