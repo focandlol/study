@@ -7,7 +7,5 @@
 0429 authorization process
 0430 authorizeHttpRequest()
 0503 authorization, authorizationManager, CustomAuthorizationManager
-
-
-
 0511~ project
+0514 spring security for rest
