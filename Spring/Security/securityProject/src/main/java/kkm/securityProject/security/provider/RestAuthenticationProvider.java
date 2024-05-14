@@ -5,6 +5,7 @@ import kkm.securityProject.security.token.RestAuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,7 +30,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Invalid password");
         }
 
-        return new RestAuthenticationToken(accountContext.getAuthorities(), accountContext.getAccountDto(), null);
+        return new RestAuthenticationToken(accountContext.getAccountDto(), null, accountContext.getAuthorities());
     }
 
     @Override
