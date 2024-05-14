@@ -3,7 +3,7 @@ package kkm.securityProject.security.config;
 import jakarta.servlet.http.HttpServletRequest;
 import kkm.securityProject.security.details.FormWebAuthenticationDetailsSource;
 import kkm.securityProject.security.filters.RestAuthenticationFilter;
-import kkm.securityProject.security.handler.FormAccessDeniedHandler;
+import kkm.securityProject.security.handler.*;
 import kkm.securityProject.security.provider.FormAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -37,15 +37,17 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final AuthenticationProvider restAuthenticationProvider;
     private final AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
-    private final AuthenticationSuccessHandler successHandler;
-    private final AuthenticationFailureHandler failureHandler;
+    private final FormAuthenticationSuccessHandler successHandler;
+    private final FormAuthenticationFailureHandler failureHandler;
+    private final RestAuthenticationSuccessHandler restAuthenticationSuccessHandler;
+    private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/*/icon-*").permitAll()
-                        .requestMatchers("/","/signup","/login*").permitAll()
+                        .requestMatchers("/signup","/login*").permitAll()
                         .requestMatchers("/user").hasAuthority("ROLE_USER")
                         .requestMatchers("/manager").hasAuthority("ROLE_MANAGER")
                         .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
@@ -78,15 +80,17 @@ public class SecurityConfig {
                         .anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
 
-                .addFilterBefore(restAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(restAuthenticationFilter(http,authenticationManager), UsernamePasswordAuthenticationFilter.class)
                 .authenticationManager(authenticationManager)
         ;
         return http.build();
     }
 
-    private RestAuthenticationFilter restAuthenticationFilter(AuthenticationManager authenticationManager) {
-        RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter();
+    private RestAuthenticationFilter restAuthenticationFilter(HttpSecurity http,AuthenticationManager authenticationManager) {
+        RestAuthenticationFilter restAuthenticationFilter = new RestAuthenticationFilter(http);
         restAuthenticationFilter.setAuthenticationManager(authenticationManager);
+        restAuthenticationFilter.setAuthenticationSuccessHandler(restAuthenticationSuccessHandler);
+        restAuthenticationFilter.setAuthenticationFailureHandler(restAuthenticationFailureHandler);
         return restAuthenticationFilter;
     }
 
