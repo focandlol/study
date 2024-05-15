@@ -2,6 +2,7 @@ package kkm.securityProject.security.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kkm.securityProject.security.details.FormWebAuthenticationDetailsSource;
+import kkm.securityProject.security.entrypoint.RestAuthenticationEntryPoint;
 import kkm.securityProject.security.filters.RestAuthenticationFilter;
 import kkm.securityProject.security.handler.*;
 import kkm.securityProject.security.provider.FormAuthenticationProvider;
