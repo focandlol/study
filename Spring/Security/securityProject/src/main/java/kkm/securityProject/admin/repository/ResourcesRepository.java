@@ -1,6 +1,10 @@
 package kkm.securityProject.admin.repository;
 
+import kkm.securityProject.domain.entity.Resources;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface ResourcesRepository extends JpaRepository<Resources, Long> {
     Resources findByResourceNameAndHttpMethod(String resourceName, String httpMethod);

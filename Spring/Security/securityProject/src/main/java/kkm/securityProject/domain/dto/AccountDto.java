@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @RequiredArgsConstructor
@@ -15,5 +17,5 @@ public class AccountDto {
     private String username;
     private String password;
     private int age;
-    private String roles;
+    private List<String> roles;
 }

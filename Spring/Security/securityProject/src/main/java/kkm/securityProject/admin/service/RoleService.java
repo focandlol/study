@@ -1,5 +1,9 @@
 package kkm.securityProject.admin.service;
 
+import kkm.securityProject.domain.entity.Role;
+
+import java.util.List;
+
 public interface RoleService {
 
     Role getRole(long id);
