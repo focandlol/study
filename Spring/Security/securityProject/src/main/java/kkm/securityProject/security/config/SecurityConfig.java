@@ -49,20 +49,22 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/*/icon-*").permitAll()
-                        .requestMatchers("/signup","/login*").permitAll()
+                        .requestMatchers("/","/signup","/login*").permitAll()
                         .requestMatchers("/user").hasAuthority("ROLE_USER")
                         .requestMatchers("/manager").hasAuthority("ROLE_MANAGER")
-                        .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form.loginPage("/login").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .anyRequest().permitAll())
+
+                .formLogin(form -> form
+                        .loginPage("/login")
                         .authenticationDetailsSource(authenticationDetailsSource)
                         .successHandler(successHandler)
                         .failureHandler(failureHandler)
-                )
+                        .permitAll())
                 .authenticationProvider(authenticationProvider)
-                .exceptionHandling(exception
-                        -> exception.accessDeniedHandler(new FormAccessDeniedHandler("/denied")))
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(new FormAccessDeniedHandler("/denied"))
+                )
         ;
         return http.build();
     }
