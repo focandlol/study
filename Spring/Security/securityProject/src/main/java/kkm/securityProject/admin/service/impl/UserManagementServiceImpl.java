@@ -5,6 +5,7 @@ import kkm.securityProject.admin.repository.UserManagementRepository;
 import kkm.securityProject.admin.service.UserManagementService;
 import kkm.securityProject.domain.dto.AccountDto;
 import kkm.securityProject.domain.entity.Account;
+import kkm.securityProject.domain.entity.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
