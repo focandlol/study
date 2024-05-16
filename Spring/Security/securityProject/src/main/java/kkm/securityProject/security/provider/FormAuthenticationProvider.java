@@ -33,8 +33,8 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
         }
 
         String secretKey = ((FormAuthenticationDetails) authentication.getDetails()).getSecretKey();
-        if(secretKey == null || !secretKey.equals("secret")) {
-            throw new SecretException("Invalid secret key");
+        if (secretKey == null || !secretKey.equals("secret")) {
+            throw new SecretException("Invalid Secret");
         }
 
         return new UsernamePasswordAuthenticationToken(accountContext.getAccountDto(), null, accountContext.getAuthorities());

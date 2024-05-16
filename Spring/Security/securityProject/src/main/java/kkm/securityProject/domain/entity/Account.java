@@ -16,7 +16,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class Account implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
