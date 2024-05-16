@@ -73,7 +73,7 @@ public class SecurityConfig {
 
         AuthenticationManagerBuilder managerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         managerBuilder.authenticationProvider(restAuthenticationProvider);
-        AuthenticationManager authenticationManager = managerBuilder.build();
+       // AuthenticationManager authenticationManager = managerBuilder.build();
         http
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth
@@ -86,7 +86,7 @@ public class SecurityConfig {
                // .csrf(AbstractHttpConfigurer::disable)
 
                 //.addFilterBefore(restAuthenticationFilter(http,authenticationManager), UsernamePasswordAuthenticationFilter.class)
-                .authenticationManager(authenticationManager)
+               // .authenticationManager(authenticationManager)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                         .accessDeniedHandler(new RestAccessDeniedHandler())
