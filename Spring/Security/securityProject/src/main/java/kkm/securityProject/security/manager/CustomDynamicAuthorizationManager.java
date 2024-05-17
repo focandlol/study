@@ -1,7 +1,9 @@
 package kkm.securityProject.security.manager;
 
 import jakarta.annotation.PostConstruct;
+import kkm.securityProject.admin.repository.ResourcesRepository;
 import kkm.securityProject.security.mapper.MapBasedUrlRoleMapper;
+import kkm.securityProject.security.mapper.PersistentUrlRoleMapper;
 import kkm.securityProject.security.service.DynamicAuthorizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
@@ -24,12 +26,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomDynamicAuthorizationManager implements AuthorizationManager<RequestAuthorizationContext> {
     List<RequestMatcherEntry<AuthorizationManager<RequestAuthorizationContext>>> mappings;
-    private static final AuthorizationDecision DENY = new AuthorizationDecision(false);
+    private static final AuthorizationDecision ACCESS = new AuthorizationDecision(true);
     private final HandlerMappingIntrospector handlerMappingIntrospector;
+    private final ResourcesRepository resourcesRepository;
 
     @PostConstruct
     public void mapping() {
-        DynamicAuthorizationService dynamicAuthorizationService = new DynamicAuthorizationService(new MapBasedUrlRoleMapper());
+        DynamicAuthorizationService dynamicAuthorizationService = new DynamicAuthorizationService(new PersistentUrlRoleMapper(resourcesRepository));
         mappings = dynamicAuthorizationService.getUrlRoleMappings()
                 .entrySet().stream()
                 .map(entry -> new RequestMatcherEntry<>(
@@ -51,7 +54,7 @@ public class CustomDynamicAuthorizationManager implements AuthorizationManager<R
                         new RequestAuthorizationContext(request.getRequest(), matchResult.getVariables()));
             }
         }
-        return DENY;
+        return ACCESS;
     }
 
     @Override
