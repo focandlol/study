@@ -6,6 +6,7 @@ import kkm.securityProject.admin.service.UserManagementService;
 import kkm.securityProject.domain.dto.AccountDto;
 import kkm.securityProject.domain.entity.Account;
 import kkm.securityProject.domain.entity.Role;
+import kkm.securityProject.security.manager.CustomDynamicAuthorizationManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     private final UserManagementRepository userManagementRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CustomDynamicAuthorizationManager authorizationManager;
 
     @Transactional
     @Override
@@ -43,6 +45,7 @@ public class UserManagementServiceImpl implements UserManagementService {
         }
         account.setPassword(passwordEncoder.encode(accountDto.getPassword()));
         userManagementRepository.save(account);
+        authorizationManager.reload();
     }
 
     @Transactional
