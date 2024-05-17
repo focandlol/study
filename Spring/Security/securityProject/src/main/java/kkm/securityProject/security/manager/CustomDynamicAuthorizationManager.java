@@ -29,10 +29,11 @@ public class CustomDynamicAuthorizationManager implements AuthorizationManager<R
     private static final AuthorizationDecision ACCESS = new AuthorizationDecision(true);
     private final HandlerMappingIntrospector handlerMappingIntrospector;
     private final ResourcesRepository resourcesRepository;
+    DynamicAuthorizationService dynamicAuthorizationService;
 
     @PostConstruct
     public void mapping() {
-        DynamicAuthorizationService dynamicAuthorizationService = new DynamicAuthorizationService(new PersistentUrlRoleMapper(resourcesRepository));
+        dynamicAuthorizationService = new DynamicAuthorizationService(new PersistentUrlRoleMapper(resourcesRepository));
         mappings = dynamicAuthorizationService.getUrlRoleMappings()
                 .entrySet().stream()
                 .map(entry -> new RequestMatcherEntry<>(
@@ -68,5 +69,15 @@ public class CustomDynamicAuthorizationManager implements AuthorizationManager<R
         }else{
             return new WebExpressionAuthorizationManager(role);
         }
+    }
+
+    public synchronized void reload(){
+        mappings.clear();
+        mappings = dynamicAuthorizationService.getUrlRoleMappings()
+                .entrySet().stream()
+                .map(entry -> new RequestMatcherEntry<>(
+                        new MvcRequestMatcher(handlerMappingIntrospector, entry.getKey()),
+                        customAuthorizationManager(entry.getValue())))
+                .collect(Collectors.toList());
     }
 }
