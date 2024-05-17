@@ -19,7 +19,7 @@ import java.util.List;
 public class ResourcesServiceImpl implements ResourcesService {
 
     private final ResourcesRepository resourcesRepository;
-    private CustomDynamicAuthorizationManager authorizationManager;
+    private final CustomDynamicAuthorizationManager authorizationManager;
 
     @Transactional
     public Resources getResources(long id) {
