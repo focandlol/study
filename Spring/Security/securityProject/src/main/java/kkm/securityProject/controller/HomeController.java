@@ -32,6 +32,6 @@ public class HomeController {
 
     @GetMapping(value="/db")
     public String db() {
-        return "/db";
+        return "db";
     }
 }
