@@ -6,10 +6,12 @@ import kkm.securityProject.security.mapper.MapBasedUrlRoleMapper;
 import kkm.securityProject.security.mapper.PersistentUrlRoleMapper;
 import kkm.securityProject.security.service.DynamicAuthorizationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.access.expression.DefaultHttpSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
@@ -29,6 +31,7 @@ public class CustomDynamicAuthorizationManager implements AuthorizationManager<R
     private static final AuthorizationDecision ACCESS = new AuthorizationDecision(true);
     private final HandlerMappingIntrospector handlerMappingIntrospector;
     private final ResourcesRepository resourcesRepository;
+    private final RoleHierarchy roleHierarchy;
     DynamicAuthorizationService dynamicAuthorizationService;
 
     @PostConstruct
@@ -65,9 +68,18 @@ public class CustomDynamicAuthorizationManager implements AuthorizationManager<R
 
     private AuthorizationManager<RequestAuthorizationContext> customAuthorizationManager(String role) {
         if (role.startsWith("ROLE")) {
-            return AuthorityAuthorizationManager.hasAuthority(role);
+            AuthorityAuthorizationManager<RequestAuthorizationContext> authorizationManager
+                    = AuthorityAuthorizationManager.hasAuthority(role);
+            authorizationManager.setRoleHierarchy(roleHierarchy);
+            return authorizationManager;
         }else{
-            return new WebExpressionAuthorizationManager(role);
+            DefaultHttpSecurityExpressionHandler handler = new DefaultHttpSecurityExpressionHandler();
+            handler.setRoleHierarchy(roleHierarchy);
+            WebExpressionAuthorizationManager authorizationManager
+                    = new WebExpressionAuthorizationManager(role);
+            authorizationManager.setExpressionHandler(handler);
+
+            return authorizationManager;
         }
     }
 
