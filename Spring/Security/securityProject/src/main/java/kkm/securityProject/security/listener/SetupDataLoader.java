@@ -30,6 +30,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             return;
         }
         disableAuthorizationFilter();
+
         setupData();
         alreadySetup = true;
     }
