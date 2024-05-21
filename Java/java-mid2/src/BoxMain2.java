@@ -1,5 +1,3 @@
-package ganeric.ex1;
-
 public class BoxMain2 {
 
     public static void main(String[] args) {
