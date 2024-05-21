@@ -1,5 +1,3 @@
-package ganeric.ex1;
-
 public class ObjectBox {
 
     private Object value;
