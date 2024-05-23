@@ -2,18 +2,18 @@ package collection.array;
 
 import java.util.Arrays;
 
-public class MyArrayListV3 {
+public class MyArrayListV4<E> {
 
     private static final int DEFAULT_CAPACITY = 20;
 
     private Object[] elementData;
     private int size;
 
-    public MyArrayListV3() {
+    public MyArrayListV4() {
         this.elementData = new Object[DEFAULT_CAPACITY];
     }
 
-    public MyArrayListV3(int initialCapacity) {
+    public MyArrayListV4(int initialCapacity) {
         elementData = new Object[initialCapacity];
     }
 
@@ -21,7 +21,7 @@ public class MyArrayListV3 {
         return size;
     }
 
-    public void add(Object e){
+    public void add(E e){
         //코드 추가
         if(size == elementData.length){
             grow();
@@ -29,8 +29,8 @@ public class MyArrayListV3 {
         elementData[size++] = e;
     }
 
-    public Object add(int index, Object e){
-        Object oldValue = elementData[index];
+    public E add(int index, E e){
+        E oldValue = get(index);
         if(size == elementData.length){
             grow();
         }
@@ -46,8 +46,8 @@ public class MyArrayListV3 {
         }
     }
 
-    public Object remove(int index){
-        Object oldValue = elementData[index];
+    public E remove(int index){
+        E oldValue = get(index);
         shiftLeft(index);
         size--;
         return oldValue;
@@ -69,17 +69,17 @@ public class MyArrayListV3 {
         elementData = newArr;
     }
 
-    public Object get(int index){
-        return elementData[index];
+    public E get(int index){
+        return (E)elementData[index];
     }
 
-    public Object set(int index,Object element){
-        Object oldValue = get(index);
+    public E set(int index,E element){
+        E oldValue = get(index);
         elementData[index] = element;
         return oldValue;
     }
 
-    public int indexOf(Object o){
+    public int indexOf(E o){
         for(int i=0; i<size; i++){
             if(o.equals(elementData[i])){
                 return i;
