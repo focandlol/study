@@ -19,11 +19,11 @@ public class MyArrayListV3Main {
         list.add(5, "kkm"); //O(n)
         System.out.println(list);
         //삭제
-        list.remove(4);//remove Last O(1)
-       // System.out.println("remove(4)="+ removed1);
+        Object removed1 = list.remove(4);//remove Last O(1)
+        System.out.println("remove(4)="+ removed1);
         System.out.println(list);
-        list.remove(0);//remove First O(n)
-        //System.out.println("remove(0)=" + removed2);
+        Object removed2 = list.remove(0);//remove First O(n)
+        System.out.println("remove(0)=" + removed2);
         System.out.println(list);
     }
 }
