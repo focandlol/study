@@ -55,7 +55,7 @@ public class MyLinkedList<E> implements MyList<E>{
         return removedItem;
     }
 
-    @Override
+
     private Node<E> getLastNode() {
         Node<E> x = first;
         while (x.next != null) {
