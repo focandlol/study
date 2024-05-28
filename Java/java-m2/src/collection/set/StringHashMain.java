@@ -10,5 +10,26 @@ public class StringHashMain {
         char charB = 'B';
         System.out.println("charA = " + (int)charA);
         System.out.println("charB = " + (int)charB);
+
+        System.out.println();
+        System.out.println("hashCode(\"A\") = " + hashCode("A"));
+        System.out.println("hashCode(\"B\") = " + hashCode("B"));
+        System.out.println("hashCode(\"AB\") = " + hashCode("AB"));
+
+        int hashIndex = hashIndex(hashCode("A"));
+        System.out.println("hashIndex = " + hashIndex);
+    }
+
+    static int hashCode(String str){
+        char[] charArray = str.toCharArray();
+        int sum = 0;
+        for (char c : charArray) {
+            sum += (int)c;
+        }
+        return sum;
+    }
+
+    static int hashIndex(int value){
+        return value % CAPACITY;
     }
 }
