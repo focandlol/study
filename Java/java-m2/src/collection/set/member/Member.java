@@ -26,4 +26,11 @@ public class Member {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }
