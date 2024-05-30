@@ -16,7 +16,7 @@ public class DequeQueueMain {
 
         System.out.println("deque.peek(): " + deque.peek());
 
-        System.out.println("deque.pop(): " + deque.pop());
+        System.out.println("deque.pop(): " + deque.poll());
         System.out.println("deque = " + deque);
     }
 }
