@@ -13,5 +13,12 @@ public class MyArrayMain {
             System.out.println(iterator.next());
         }
 
+        //향상된 for문 사용하기 위해서는
+        //iterator, iterable 구현 필요
+        System.out.println("for-each 사용");
+        for (Integer i : myArray) {
+            System.out.println("i = " + i);
+        }
+
     }
 }
