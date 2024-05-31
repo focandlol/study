@@ -15,6 +15,7 @@ public class JavaIterableMain {
         list.add(3);
 
         JavaIterableMain.<Integer>printAll(list.iterator());
+        foreach(list);
 
         Set<Integer> set = new HashSet<>();
         set.add(1);
@@ -22,7 +23,7 @@ public class JavaIterableMain {
         set.add(3);
 
         printAll(set.iterator());
-
+        foreach(set);
 
     }
 
@@ -31,6 +32,12 @@ public class JavaIterableMain {
         while(iterator.hasNext()){
             E next = iterator.next();
             System.out.println("next = " + next);
+        }
+    }
+
+    private static <E> void foreach(Iterable<E> iterable){
+        for (E e : iterable) {
+            System.out.println("e = " + e);
         }
     }
 }
