@@ -2,17 +2,17 @@ package collection.iterable;
 
 import java.util.Iterator;
 
-public class MyArray implements Iterable<Integer>{
+public class MyArray<E> implements Iterable<E>{
 
-    private int[] numbers;
+    private Object[] numbers;
 
-    public MyArray(int[] numbers) {
+    public MyArray(Object[] numbers) {
         this.numbers = numbers;
     }
 
     @Override
-    public Iterator<Integer> iterator() {
-        return new MyArrayIterator(numbers);
+    public Iterator<E> iterator() {
+        return new MyArrayIterator<E>(numbers);
     }
 
 }

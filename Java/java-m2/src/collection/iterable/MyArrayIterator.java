@@ -2,12 +2,12 @@ package collection.iterable;
 
 import java.util.Iterator;
 
-public class MyArrayIterator implements Iterator<Integer> {
+public class MyArrayIterator<E> implements Iterator<E> {
 
     private int currentIndex = -1;
-    private int[] targetArr;
+    private Object[] targetArr;
 
-    public MyArrayIterator(int[] targetArr) {
+    public MyArrayIterator(Object[] targetArr) {
         this.targetArr = targetArr;
     }
 
@@ -17,7 +17,7 @@ public class MyArrayIterator implements Iterator<Integer> {
     }
 
     @Override
-    public Integer next() {
-        return targetArr[++currentIndex];
+    public E next() {
+        return (E)targetArr[++currentIndex];
     }
 }
