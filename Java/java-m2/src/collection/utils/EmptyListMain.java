@@ -9,6 +9,7 @@ public class EmptyListMain {
 
     public static void main(String[] args) {
 
+
         //빈 가변 리스트 생성
         List<Integer> list1 = new ArrayList<Integer>();
         List<Integer> list2 = new LinkedList<Integer>();
