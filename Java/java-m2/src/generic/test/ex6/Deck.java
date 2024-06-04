@@ -11,6 +11,8 @@ public class Deck {
     public Deck() {
         for(int i=1; i<=13; i++) {
             for(Suit suit : Suit.values()) {
+               // System.out.println("suit = " + suit);
+               // System.out.println("suit = " + suit.getName());
                 deck.add(new Card(i,suit));
             }
         }
