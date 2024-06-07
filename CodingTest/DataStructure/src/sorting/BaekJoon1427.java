@@ -23,9 +23,11 @@ public class BaekJoon1427 {
                 break;
             }
 
-            temp = a[i];
-            a[i] = a[max];
-            a[max] = temp;
+            if(Integer.parseInt(a[i]) < Integer.parseInt(a[max]) && i != max) {
+                temp = a[i];
+                a[i] = a[max];
+                a[max] = temp;
+            }
         }
 
         for(int i=0; i<a.length; i++){
