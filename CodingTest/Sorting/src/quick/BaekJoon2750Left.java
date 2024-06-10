@@ -1,15 +1,19 @@
 package quick;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class BaekJoon2750Left {
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int num = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        //Scanner sc = new Scanner(System.in);
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        int num = Integer.parseInt(bf.readLine());
         int[] arr = new int[num];
         for(int i=0; i<num; i++){
-            arr[i] = sc.nextInt();
+            arr[i] = Integer.parseInt(bf.readLine());
         }
 
         quick(arr,0,num-1);
