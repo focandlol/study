@@ -13,7 +13,7 @@ public class HashStart5 {
 
         System.out.println("buckets = " + Arrays.toString(buckets));
         for (int i = 0; i < CAPACITY; i++) {
-            buckets[i] = new LinkedList<>();
+                buckets[i] = new LinkedList<>();
         }
 
         System.out.println("buckets = " + Arrays.toString(buckets));
