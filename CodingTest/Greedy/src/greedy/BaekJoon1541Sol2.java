@@ -2,12 +2,12 @@ package greedy;
 
 import java.util.Scanner;
 
-public class BaekJoon1541 {
+public class BaekJoon1541Sol2 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String next = sc.next();
         String[] split = next.split("-");
-        int total = 0;
+        int[] sumArr = new int[split.length];
 
         for(int i=0; i<split.length; i++){
             int sum = 0;
@@ -15,12 +15,13 @@ public class BaekJoon1541 {
             for(int j=0; j<plus.length; j++){
                 sum += Integer.parseInt(plus[j]);
             }
-            if(i==0){
-                total += sum;
-            }else{
-                total -= sum;
-            }
+            sumArr[i] = sum;
         }
-        System.out.println(total);
+
+        for(int i=1; i<sumArr.length; i++){
+            sumArr[0] -= sumArr[i];
+        }
+        System.out.println(sumArr[0]);
     }
 }
+
