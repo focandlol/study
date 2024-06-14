@@ -4,6 +4,7 @@ package quick;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 
 public class BaekJoon2750Quick {
@@ -29,9 +30,11 @@ public class BaekJoon2750Quick {
             return;
         }
         int pivot = partition(arr, i, j);
-
+        System.out.println(Arrays.toString(arr));
         quick(arr,i,pivot-1);
+
         quick(arr,pivot,j);
+
 
     }
 
