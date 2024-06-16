@@ -1,7 +1,6 @@
 package decimal;
 
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class BaekJoon1929 {
