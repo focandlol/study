@@ -50,6 +50,8 @@ public class BaekJoon1920 {
                 System.out.println("0");
             }
         }
+
+        System.out.println("0/2 = " + 0/2);
     }
 
 //    private static void binary(int f,int left, int right) {
