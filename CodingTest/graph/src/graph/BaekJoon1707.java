@@ -61,6 +61,7 @@ public class BaekJoon1707 {
             }else{
                 if(check[a] == check[i]){
                     IsEven = false;
+                    return;
                 }
             }
         }
