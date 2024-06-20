@@ -16,6 +16,7 @@ public class BaekJoon2750BottomUp {
             arr[i] = Integer.parseInt(bf.readLine());
         }
         sorted = new int[arr.length];
+        System.out.println("sorted = " + Arrays.toString(sorted));
         System.out.println("arr = " + Arrays.toString(arr));
         merge_sort(arr,0,arr.length-1);
 
