@@ -48,6 +48,7 @@ public class BaekJoon1753Visited {
             for(Node node : arr[cur]) {
                 if(da[cur] + node.getGa() < da[node.getNo()]){
                     da[node.getNo()] = da[cur] + node.getGa();
+
                 }
                 pq.add(node.getNo());
             }
