@@ -45,8 +45,8 @@ public class BaekJoon1753 {
                     da[node.getNo()] = da[cur] + node.getGa();
                     pq.add(node.getNo());
                 }
-
             }
+            System.out.println(pq);
         }
         for(int i=1; i<=v; i++){
             if(da[i] != Integer.MAX_VALUE){
