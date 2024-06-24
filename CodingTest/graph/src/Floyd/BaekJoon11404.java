@@ -35,6 +35,7 @@ public class BaekJoon11404 {
             }
         }
 
+        //모든 노드 의 최단거리 탐색
         for(int k=1; k<=n; k++) {
             for(int start=1; start<=n; start++) {
                 for(int end=1; end<=n; end++) {
@@ -44,6 +45,7 @@ public class BaekJoon11404 {
         }
 
 
+        //갈 수 없는 노선이면 0출력
         for(int i=1; i<=n; i++) {
             for(int j=1; j<=n; j++) {
                 if(arr[i][j] == Integer.MAX_VALUE) {
