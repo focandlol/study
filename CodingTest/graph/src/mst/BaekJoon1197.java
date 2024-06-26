@@ -33,21 +33,27 @@ public class BaekJoon1197 {
             edge[i] = new Edge(start, end, weight);
         }
 
+        //가중치가 작은 것부터 정렬
         Arrays.sort(edge, Comparator.comparingLong(Edge::getWeight));
 
+        //kruskal
         for(int i=0; i<e; i++) {
+            //대표노드 찾기
             int start = find(edge[i].getStart());
             int end = find(edge[i].getEnd());
+            //대표노드가 다를 경우 union (사이클 만들어지는지 확인)
             if(start != end){
                 union(edge[i].getStart(),edge[i].getEnd());
                 weightSum += edge[i].getWeight();
             }
+            //에지가 전체 노드 수 -1 만큼 만들어졌을 시 종료
             if(count == v-1){
                 System.out.println(weightSum);
                 break;
             }
         }
     }
+    //union 함수
     private static void union(int a, int b){
         int s = find(a);
         int e = find(b);
@@ -55,6 +61,8 @@ public class BaekJoon1197 {
         count++;
     }
 
+    //find 함수
+    //대표노드를 찾고 대표노드 이전 거쳐간 노드들의 union배열의 값들을 대표노드로 변경
     private static int find(int a) {
         if(a == union[a]){
             return a;
@@ -65,9 +73,13 @@ public class BaekJoon1197 {
         }
     }
 
+    //에지 리스트를 만들기 위한 edge 클래스
     static class Edge{
+        //출발 노드
         int start;
+        //종료 노드
         int end;
+        //가중치
         long weight;
 
         public Edge(int start, int end, long weight) {
