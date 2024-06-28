@@ -33,6 +33,7 @@ public class BaekJoon1991 {
 //        System.out.println(i);
 //        System.out.print(a);
     }
+    //전위 순회
     static void pre(Node node){
         if(node == null){
             return;
@@ -42,6 +43,7 @@ public class BaekJoon1991 {
         pre(node.right);
     }
 
+    //중위 순회
     static void in(Node node){
         if(node == null){
             return;
@@ -51,6 +53,7 @@ public class BaekJoon1991 {
         in(node.right);
     }
 
+    //후위 순회
     static void post(Node node){
         if(node == null){
             return;
@@ -60,7 +63,9 @@ public class BaekJoon1991 {
         System.out.print(node.node);
     }
 
+    //노드 생성
     static void createNode(String parent, String left, String right){
+        //'A'가 입력되면 루트 노드 생성
         if(parent.equals("A")) {
             root = new Node(parent);
             if (!left.equals(".")) {
@@ -74,10 +79,12 @@ public class BaekJoon1991 {
         }
     }
 
+    //루트 노드 아닐시 노드 생성
     static void searchNode(Node node, String parent, String left, String right){
         if(node == null){
             return;
         }
+        //현재 노드와 입력된 노드가 같다면 left right 삽입
         if(node.node.equals(parent)){
             if(!left.equals(".")){
                 node.left = new Node(left);
