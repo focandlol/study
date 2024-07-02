@@ -55,6 +55,8 @@ public class BaekJoon11438v1 {
         queue.add(1);
         bfs(1);
 
+        //maxDepth = 현재 트리의 최대 깊이
+        //while문으로 maxDepth보다 작은 2의 지수 승 구함
         int depth = 0;
         while(Math.pow(2,depth) < maxDepth){
             depth++;
