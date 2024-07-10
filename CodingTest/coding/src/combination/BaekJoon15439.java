@@ -1,3 +1,5 @@
+package combination;
+
 import java.util.Scanner;
 
 public class BaekJoon15439 {

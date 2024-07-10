@@ -1,27 +1,30 @@
+package simhwa2;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class BaekJoon1037v1 {
+public class BaekJoon1037v2 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int n = Integer.parseInt(st.nextToken());
+        int[] arr = new int[n];
         st = new StringTokenizer(br.readLine());
-        int max = 0;
-        int min = 1000001;
         for(int i=0; i<n; i++) {
-            int a = Integer.parseInt(st.nextToken());
-            if(a > max){
-                max = a;
-            }
-            if(a < min){
-                min = a;
-            }
-
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-        System.out.println(max*min);
+
+        Arrays.sort(arr);
+
+        if(n == 1){
+            System.out.println((int)Math.pow(arr[0],2));
+        }else{
+            System.out.println(arr[0]*arr[n-1]);
+        }
+
     }
 }
