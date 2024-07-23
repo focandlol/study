@@ -39,7 +39,7 @@ public class BaekJoon1753 {
         pq.add(k);
         while(!pq.isEmpty()){
             int cur = pq.poll();
-
+            //visited 추가
             for(Node node : arr[cur]) {
                 if(da[cur] + node.getGa() < da[node.getNo()]){
                     da[node.getNo()] = da[cur] + node.getGa();
