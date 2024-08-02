@@ -1,3 +1,5 @@
+package divide;
+
 import java.util.Scanner;
 
 public class BaekJoon11444_kkm {
