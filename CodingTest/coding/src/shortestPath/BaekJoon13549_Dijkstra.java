@@ -21,6 +21,7 @@ public class BaekJoon13549_Dijkstra {
 
         while (!pq.isEmpty()) {
             int poll = pq.poll();
+            System.out.println(poll);
 
             if(poll + 1 <= 100000){
                 if(arr[poll + 1] > arr[poll] + 1) {
