@@ -24,6 +24,7 @@ public class BaekJoon1956_v2 {
             }
         }
 
+
         for(int i=0; i<e; i++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
