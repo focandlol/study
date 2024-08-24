@@ -30,6 +30,7 @@ public class BaekJoon2263 {
         }
 
         preOrder(0,n-1,0,n-1);
+
         System.out.println(sb);
 
     }
