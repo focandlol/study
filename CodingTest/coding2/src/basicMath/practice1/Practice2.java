@@ -1,4 +1,4 @@
-package practice1;
+package basicMath.practice1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
