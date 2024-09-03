@@ -10,7 +10,7 @@ public class AnimalMethod {
         t.sound();
     }
 
-    public static <T extends Animal> T bigger(T t1,T t2){
+    public static <t extends Animal> t bigger(t t1, t t2){
         return t1.getSize() > t2.getSize() ? t1 : t2;
     }
 }
