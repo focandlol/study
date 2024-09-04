@@ -2,6 +2,7 @@ package test;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class test5 {
@@ -21,6 +22,7 @@ public class test5 {
 
         for(int i=-1; i<=1; i++) {
             arr[i+1] = create(year,month+i);
+           // System.out.println("hi" + arr[i+1][1]);
         }
 
         for(int i=-1; i<=1; i++){
@@ -87,6 +89,7 @@ public class test5 {
                 sf = new StringBuffer();
                 index++;
             }
+
         }
         while (index < 6) {
             sf = new StringBuffer();
