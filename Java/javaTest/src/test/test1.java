@@ -1,5 +1,8 @@
 package test;
 
+/**
+ * 고경민
+ */
 public class test1 {
     public static void main(String[] args) {
         System.out.println("[구구단 출력]");

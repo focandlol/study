@@ -2,6 +2,9 @@ package test;
 
 import java.util.Scanner;
 
+/**
+ * 고경민
+ */
 public class test2 {
     public static void main(String[] args) {
         System.out.println("캐시백 계산");
