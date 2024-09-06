@@ -38,7 +38,7 @@ public class test6 {
     static void print(int i, int r, int total, HashMap<Integer, Pe> map) {
         System.out.printf("[투표진행률]: %.2f%%, %d명 투표 => %s\n", (double) i * 100 / total, i, map.get(r).name);
         for (int j = 1; j <= map.size(); j++) {
-            System.out.printf("[기호:%d] %s:\t%.2f%%\t(투표수: %d)\n", j, map.get(j).name,
+            System.out.printf("[기호:%d] %-5s \t %8.2f%% \t (투표수: %d)\n", j, map.get(j).name+":",
                     (double) map.get(j).count * 100.0 / total, map.get(j).count);
         }
         System.out.println();
