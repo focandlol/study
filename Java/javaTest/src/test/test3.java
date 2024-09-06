@@ -2,6 +2,9 @@ package test;
 
 import java.util.Scanner;
 
+/**
+ * 고경민
+ */
 public class test3 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);

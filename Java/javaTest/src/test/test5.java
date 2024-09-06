@@ -2,9 +2,11 @@ package test;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * 고경민
+ */
 public class test5 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -22,7 +24,6 @@ public class test5 {
 
         for(int i=-1; i<=1; i++) {
             arr[i+1] = create(year,month+i);
-           // System.out.println("hi" + arr[i+1][1]);
         }
 
         for(int i=-1; i<=1; i++){

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * 고경민
+ */
 public class test7 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
