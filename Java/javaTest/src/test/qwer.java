@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 고경민
  */
-public class test6 {
+public class qwer {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("총 진행할 투표수를 입력해 주세요.");

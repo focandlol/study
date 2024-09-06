@@ -15,7 +15,7 @@ public class test5 {
         int year = sc.nextInt();
         System.out.print("달력의 월을 입력해 주세요.(mm):");
         int month = sc.nextInt();
-
+        sc.close();
         print(year,month);
     }
 

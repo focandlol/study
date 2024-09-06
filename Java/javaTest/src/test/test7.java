@@ -11,11 +11,14 @@ import java.util.Scanner;
 public class test7 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("로또 당첨 프로그램");
+        System.out.println("[로또 당첨 프로그램]");
+        System.out.println();
 
         System.out.print("로또 개수를 입력해 주세요.(숫자 1~10):");
         int num = sc.nextInt();
         HashMap<Character, int[]> map = new HashMap<>();
+
+        sc.close();
 
         char start = 'A';
         Random r = new Random();
