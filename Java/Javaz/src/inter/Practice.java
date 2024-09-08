@@ -89,6 +89,13 @@ public class Practice {
     public static void main(String[] args) {
         // Test code
         // No test code
+        NPCSystem orkNpc1 = new OrkNpc1();
+        orkNpc1.conversationSystem();
+        orkNpc1.questionSystem();
+
+        UserSystem ork = new OrkUser1();
+        ork.partySystem();
+        ork.tradeSystem();
     }
     
 }
