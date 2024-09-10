@@ -82,8 +82,9 @@ public class test5 {
             if((value + i) % 7 == 0 || i == dayCount){
                 if(i == dayCount) {
                     int a = LocalDate.of(year,month,i).getDayOfWeek().getValue();
+                    a = (a == 7) ? 0 : a;
                     for(int k=0; k<6-a; k++){
-                        sf.append("\t");
+                        sf.append("1\t");
                     }
                 }
                 arr[index] = sf.toString();
@@ -95,7 +96,7 @@ public class test5 {
         while (index < 6) {
             sf = new StringBuffer();
             for(int i = 0; i<7; i++){
-                sf.append("\t");
+                sf.append("1\t");
             }
             arr[index] = sf.toString();
             index++;
