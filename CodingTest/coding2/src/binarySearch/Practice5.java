@@ -32,6 +32,7 @@ public class Practice5 {
 
             if(count > a){
                 left = mid + 1;
+
             }else{
                 right = mid;
             }
