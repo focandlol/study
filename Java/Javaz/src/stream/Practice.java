@@ -22,6 +22,7 @@ public class Practice {
         sum = Arrays.stream(arr).filter(n -> n % 2 == 0).reduce((x, y) -> x+y).getAsInt();
         System.out.println("sum = " + sum);
 
+
     }
 
 }
