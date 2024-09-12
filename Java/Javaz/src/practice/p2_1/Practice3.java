@@ -10,6 +10,7 @@ public class Practice3 {
         System.out.println(solution("abcd","P x L P y"));
         System.out.println(solution("abc","L L L P x L B P y"));
         System.out.println(solution("a","B B L L D D P a P b P c"));
+
     }
 
     private static String solution(String s, String cmd) {
