@@ -31,6 +31,7 @@ public class Practice4 {
                 }else{
                     start++;
                 }
+
             }
         }
         ArrayList<ArrayList<Integer>> res = new ArrayList<>();
