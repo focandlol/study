@@ -1,5 +1,7 @@
 package linkedList;
 
+import java.util.Objects;
+
 class Node{
     int data;
     Node next;
@@ -8,6 +10,7 @@ class Node{
         this.data = data;
         this.next = next;
     }
+
 }
 
 class LinkedList{
