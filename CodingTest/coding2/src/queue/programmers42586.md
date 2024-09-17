@@ -25,3 +25,4 @@ class Solution {
     }
 }
 ```
+![image](https://github.com/user-attachments/assets/35f43eb3-73e2-44bc-a5f8-93924844df26)
