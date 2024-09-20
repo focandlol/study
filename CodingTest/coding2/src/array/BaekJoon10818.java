@@ -11,14 +11,16 @@ public class BaekJoon10818 {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int n = Integer.parseInt(st.nextToken());
-
+        int[] arr = new int[n];
         st = new StringTokenizer(br.readLine());
+        for(int i=0; i<n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
 
         int max = -1000000;
         int min = 1000000;
 
-        while(st.hasMoreTokens()) {
-            int a = Integer.parseInt(st.nextToken());
+        for (int a : arr) {
             if(max < a) max = a;
             if(min > a) min = a;
         }
