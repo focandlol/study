@@ -10,9 +10,8 @@ class Solution {
         int dap = 0;
         int time = 0;
         int idx = 0;
-        int count = 0;
         
-        while(count < jobs.length){
+        while(true){
             while(idx < jobs.length && jobs[idx][0] <= time){
                 pq.add(jobs[idx]);
                 idx++;
@@ -24,7 +23,9 @@ class Solution {
                 int[] a = pq.poll();
                 dap += a[1] + time - a[0];
                 time += a[1];
-                count++;
+            }
+            if(idx >= jobs.length && pq.isEmpty()){
+                break;
             }
         }
         return dap / jobs.length;
