@@ -32,4 +32,4 @@ class Solution {
     }
 }
 ```
-![image](https://github.com/user-attachments/assets/f4b57175-a75b-4edc-b8be-e68f0b282d94)
+![image](https://github.com/user-attachments/assets/bef1684b-e2bd-4988-9acf-763d27d7c42b)
