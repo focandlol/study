@@ -1,4 +1,4 @@
-package queue.p2_1;
+package sunh.p2_1;
 
 import java.util.*;
 
