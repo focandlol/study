@@ -11,6 +11,13 @@ public class Practice2 {
         int dest = 2;
         visited = new int[n];
         solution(n,edges,source,dest);
+
+        n = 6;
+        edges = new int[][]{{0,1},{0,2},{3,5},{5,4},{4,3}};
+        source = 0;
+        dest = 5;
+        visited = new int[n];
+        solution(n,edges,source,dest);
     }
 
     private static void solution(int n, int[][] edges, int source, int dest) {
