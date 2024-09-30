@@ -17,5 +17,6 @@ public class Programmers120896 {
     public static void main(String[] args) {
        String a = "asdas";
        System.out.println(Solution.solution(a));
+
     }
 }
