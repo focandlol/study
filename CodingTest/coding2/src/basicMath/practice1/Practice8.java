@@ -1,5 +1,7 @@
 package basicMath.practice1;
 
+import java.util.Arrays;
+
 public class Practice8 {
     public static void main(String[] args) {
        System.out.println(find("x+5-3+x=6+x-2"));
@@ -23,6 +25,7 @@ public class Practice8 {
 
     private static int[] eval(String s) {
         String[] split = s.split("(?=[+-])");
+        System.out.println(Arrays.toString(split));
         int[] result = new int[2];
         for(int i=0; i<split.length; i++) {
             if(split[i].equals("+x") || split[i].equals("x")) {
