@@ -10,7 +10,7 @@ public class Boj10820 {
         int[] arr = new int[4];
         StringBuilder sb = new StringBuilder();
 
-        String s = null;
+        String s = "";
         while((s = br.readLine()) != null){
             for(int i=0; i<s.length(); i++){
                 if(s.charAt(i)==' '){
