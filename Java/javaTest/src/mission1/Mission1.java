@@ -7,37 +7,41 @@ import java.io.IOException;
 
 public class Mission1 {
     public static void main(String[] args){
-        try{
-            File file = new File("C:\\Users\\1\\Desktop\\property.html");
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            writer.write("<html>");
-            writer.write("<head>");
-            writer.write("<title>자바 환경정보</title>");
-            writer.write("<style>");
-            writer.write("table { border-collapse: collapse; width: 0%;}");
-            writer.write("th, td { border: solid 1px #000;}");
-            writer.write("</style>");
-            writer.write("</head>");
-            writer.write("<body>");
-            writer.write("<table>");
-            writer.write("<tr>");
-            writer.write("<th>키</th>");
-            writer.write("<th></th>");
-            writer.write("</tr>");
+        StringBuilder sb = new StringBuilder();
 
-            for (Object key : System.getProperties().keySet()) {
-                writer.write("<tr>");
-                writer.write("<td>" + key + "</td>");
-                writer.write("<td>" + System.getProperty((String) key) + "</td>");
-                writer.write("</tr>");
+        sb.append("<html>");
+        sb.append("<head>");
+        sb.append("<title>자바 환경정보</title>");
+        sb.append("<style>");
+        sb.append("table { border-collapse: collapse; width: 100%; }");
+        sb.append("th, td { border: solid 1px #000;}");
+        sb.append("</style>");
+        sb.append("</head>");
+        sb.append("<body>");
+        sb.append("<table>");
+        sb.append("<tr>");
+        sb.append("<th>키</th>");
+        sb.append("<th>값</th>");
+        sb.append("</tr>");
+
+        for (Object key : System.getProperties().keySet()) {
+            sb.append("<tr>");
+            sb.append("<td>").append(key).append("</td>");
+            sb.append("<td>").append(System.getProperty((String) key)).append("</td>");
+            sb.append("</tr>");
+        }
+
+        sb.append("</table>");
+        sb.append("</body>");
+        sb.append("</html>");
+
+        try {
+            File file = new File("C:\\Users\\1\\Desktop\\property.html");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                writer.write(sb.toString());
             }
-            writer.write("</table>");
-            writer.write("</body>");
-            writer.write("</html>");
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
