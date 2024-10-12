@@ -5,41 +5,41 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * 고경민
+ */
 public class Mission1 {
     public static void main(String[] args){
         StringBuilder sb = new StringBuilder();
-
-        sb.append("<html>");
-        sb.append("<head>");
-        sb.append("<title>자바 환경정보</title>");
-        sb.append("<style>");
-        sb.append("table { border-collapse: collapse; width: 100%; }");
-        sb.append("th, td { border: solid 1px #000;}");
-        sb.append("</style>");
-        sb.append("</head>");
-        sb.append("<body>");
-        sb.append("<table>");
-        sb.append("<tr>");
-        sb.append("<th>키</th>");
-        sb.append("<th>값</th>");
-        sb.append("</tr>");
-
+        sb.append("<html>")
+                .append("<head>")
+                .append("<style>")
+                .append("table { border-collapse: collapse; width: 100%; }")
+                .append("th, td { border: solid 1px #000; }")
+                .append("</style>")
+                .append("</head>")
+                .append("<body>")
+                .append("<h1>자바 환경정보</h1>")
+                .append("<table>")
+                .append("<tr>")
+                .append("<th>키</th>")
+                .append("<th>값</th>")
+                .append("</tr>");
         for (Object key : System.getProperties().keySet()) {
-            sb.append("<tr>");
-            sb.append("<td>").append(key).append("</td>");
-            sb.append("<td>").append(System.getProperty((String) key)).append("</td>");
-            sb.append("</tr>");
+            sb.append("<tr>")
+                    .append("<td>").append(key).append("</td>")
+                    .append("<td>").append(System.getProperty((String) key)).append("</td>")
+                    .append("</tr>");
         }
-
-        sb.append("</table>");
-        sb.append("</body>");
-        sb.append("</html>");
+        sb.append("</table>")
+                .append("</body>")
+                .append("</html>");
 
         try {
             File file = new File("C:\\Users\\1\\Desktop\\property.html");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                writer.write(sb.toString());
-            }
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(sb.toString());
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

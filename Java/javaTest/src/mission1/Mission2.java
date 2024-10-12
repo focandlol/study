@@ -2,6 +2,9 @@ package mission1;
 
 import java.util.*;
 
+/**
+ * 고경민
+ */
 public class Mission2 {
     static class Dis{
         int x;
@@ -44,12 +47,13 @@ public class Mission2 {
             int y = sc.nextInt();
 
             distance = Math.sqrt(Math.pow(mx-x,2) + Math.pow(my-y,2));
-            if(list.contains(new Dis(x,y,distance))) {
+            Dis dis = new Dis(x, y, distance);
+            if(list.contains(dis)) {
                 System.out.println("동일한 좌표값이 이미 존재합니다. 다시 압혁해 주세요.");
                 i--;
                 continue;
             }
-            list.add(new Dis(x,y,distance));
+            list.add(dis);
         }
 
         int min = 0;
@@ -59,7 +63,7 @@ public class Mission2 {
             System.out.printf("(%d, %d) => %.6f\n", dis.x, dis.y, dis.distance);
         }
         System.out.println("제일 가까운 좌표:");
-        System.out.printf("(%d, %d) => %.6f", (int)list.get(min).x, (int)list.get(min).y,list.get(min).distance);
+        System.out.printf("(%d, %d) => %.6f", list.get(min).x, list.get(min).y,list.get(min).distance);
 
     }
 }
