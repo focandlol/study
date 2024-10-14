@@ -3,6 +3,7 @@ package basic.dynamic;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Boj11053 {
@@ -31,9 +32,28 @@ public class Boj11053 {
         }
 
         int max = len[0];
+        int maxIndex = 0;
         for(int i=1; i<n; i++) {
-            max = Math.max(max, len[i]);
+            if(len[i] > max) {
+                max = len[i];
+                maxIndex = i;
+            }
         }
         System.out.println(max);
+
+        int[] aa = new int[arr[maxIndex] + 1];
+        StringBuilder sb = new StringBuilder();
+        Stack<Integer> stack = new Stack<>();
+        for(int i=maxIndex; i>=0; i--){
+            if(len[i] == max){
+                stack.push(arr[i]);
+                max--;
+            }
+        }
+
+        while(!stack.isEmpty()){
+            sb.append(stack.pop()).append(" ");
+        }
+        System.out.println(sb);
     }
 }
