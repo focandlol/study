@@ -6,8 +6,8 @@ package mission1;
 public class Mission3 {
     static class Pager{
         long totalCount;
-        long blockGasu = 10;
-        long gasu = 10;
+        long blockGasu = 5;
+        long gasu = 20;
 
         public Pager(long totalCount) {
             this.totalCount = totalCount;
@@ -18,7 +18,7 @@ public class Mission3 {
             sb.append("<a href='#'>[처음]</a>\n")
                     .append("<a href='#'>[이전]</a>\n\n");
 
-            long start = pageIndex/blockGasu * blockGasu + 1;
+            long start = (pageIndex - 1) /blockGasu * blockGasu + 1;
             for(long i=start; i<Math.min(start + blockGasu,totalCount/gasu+2); i++){
                 sb.append("<a href='#'");
                 if(i == pageIndex) sb.append(" class='on'");
@@ -32,7 +32,7 @@ public class Mission3 {
     }
     public static void main(String[] args) {
         long totalCount = 127;
-        long pageIndex = 12;
+        long pageIndex = 5;
 
         Pager pager = new Pager(totalCount);
         System.out.println(pager.html(pageIndex));
