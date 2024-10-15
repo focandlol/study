@@ -36,7 +36,7 @@ public class Mission1 {
                 .append("</html>");
 
         try {
-            File file = new File("C:\\Users\\1\\Desktop\\property.html");
+            File file = new File("C:\\Users\\1\\Desktop\\pr.html");
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(sb.toString());
             writer.close();
