@@ -1,5 +1,7 @@
 package basic.bru;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class aa {
@@ -14,26 +16,33 @@ public class aa {
     }
 
     public static int solution(int delay, int capacity, int[] times) {
-        int size = 0;
         int time = 0;
-        int cnt = 0;
-        for (int k : times) {
-            time += k;
-            while (time >= delay) {
-                if (size == 0) {
-                    break;
-                }
-                size -= 1;
+        int count = 0;
+        int size = 0;
+
+        for(int i=0; i<times.length; i++){
+            time += times[i];
+            if(time >= delay){
+                //size = size -1<0 ? 0 : size -1;
+
+                size--;
+
+                // while(time >= delay){
+                //     size--;
+                //     time -= delay;
+                // }
                 time -= delay;
+                if(size < 0 && times[i] > delay){
+                    time = 0;
+                }
             }
-            if (size == capacity) {
-                cnt++;
-            } else {
+            if(size >= capacity){
+                count++;
+            }else{
                 size++;
             }
         }
-
-        return cnt;
+        return count;
     }
 
 
