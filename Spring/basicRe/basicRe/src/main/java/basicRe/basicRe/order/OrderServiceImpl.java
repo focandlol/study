@@ -5,6 +5,7 @@ import basicRe.basicRe.discount.FixDiscountPolicy;
 import basicRe.basicRe.discount.RateDiscountPolicy;
 import basicRe.basicRe.member.Member;
 import basicRe.basicRe.member.MemberRepository;
+import basicRe.basicRe.member.MemberService;
 import basicRe.basicRe.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService {
@@ -24,5 +25,9 @@ public class OrderServiceImpl implements OrderService {
         int discount = discountPolicy.discount(member, itemPrice);
 
         return new Order(memberId,itemName,itemPrice,discount);
+    }
+
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
     }
 }
