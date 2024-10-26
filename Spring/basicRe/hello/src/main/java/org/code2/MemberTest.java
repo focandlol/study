@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class MemberTest {
 
     public static void dbSelect(){
+        String driver = "org.mariadb.jdbc.Driver";
         String url = "jdbc:mariadb://3.37.220.254:3306/testdb3";
         String dbUserId = "root";
         String dbPassword = "123";
@@ -16,8 +17,9 @@ public class MemberTest {
         ResultSet rs = null;
         int id = 1;
         try{
+            Class.forName(driver);
             connection = DriverManager.getConnection(url,dbUserId,dbPassword);
-
+            System.out.println("Connected to database");
             String sql = " select userId, name, password from member where userId = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1,id);
@@ -31,7 +33,9 @@ public class MemberTest {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally{
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally{
             try {
                 if(rs != null && !rs.isClosed()){
                     rs.close();
@@ -186,14 +190,14 @@ public class MemberTest {
     }
     public static void main(String[] args) {
         dbSelect();
-        Scanner sc = new Scanner(System.in);
-        System.out.print("이름 입력");
-        String name = sc.next();
-        System.out.print("이메일 입력");
-        String email = sc.next();
-        System.out.print("패스워드 입력");
-        String password = sc.next();
-        dbInsert(name,email,password);
+//        Scanner sc = new Scanner(System.in);
+//        System.out.print("이름 입력");
+//        String name = sc.next();
+//        System.out.print("이메일 입력");
+//        String email = sc.next();
+//        System.out.print("패스워드 입력");
+//        String password = sc.next();
+//        dbInsert(name,email,password);
         //dbUpdate();
         //dbDelete();
     }
