@@ -66,6 +66,7 @@ public class Boj16946 {
                         }
                     }
                 }
+
                 sb.append(count % 10);
             }
 
