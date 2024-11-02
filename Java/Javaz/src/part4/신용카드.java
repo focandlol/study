@@ -8,4 +8,7 @@ public class 신용카드{
     public void 카드사용(long 카드사용금액){
         카드사용누적금액 += 카드사용금액;
     }
+    public void abc(){
+        System.out.println("adfasf");
+    }
 }
