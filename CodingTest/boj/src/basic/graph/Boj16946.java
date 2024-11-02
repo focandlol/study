@@ -68,6 +68,7 @@ public class Boj16946 {
                 }
                 sb.append(count % 10);
             }
+
             sb.append("\n");
         }
         System.out.println(sb);
