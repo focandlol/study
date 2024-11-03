@@ -1,5 +1,6 @@
 package basicRe.basicRe.order;
 
+import basicRe.basicRe.annotation.MainDiscountPolicy;
 import basicRe.basicRe.discount.DiscountPolicy;
 import basicRe.basicRe.discount.FixDiscountPolicy;
 import basicRe.basicRe.discount.RateDiscountPolicy;
@@ -18,7 +19,7 @@ public class OrderServiceImpl implements OrderService {
     private final DiscountPolicy discountPolicy;
 
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository,@MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
