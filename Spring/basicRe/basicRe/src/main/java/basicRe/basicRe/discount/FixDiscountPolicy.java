@@ -2,7 +2,9 @@ package basicRe.basicRe.discount;
 
 import basicRe.basicRe.member.Grade;
 import basicRe.basicRe.member.Member;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FixDiscountPolicy implements DiscountPolicy {
 
     @Override
