@@ -32,7 +32,6 @@ public class Boj1783 {
                 dap = 4;
             }
         }
-
         System.out.println(dap);
     }
 }
