@@ -6,20 +6,21 @@ import com.gnirps.convpay.type.*;
 public class ConveniencePayService {
     private final MoneyAdapter moneyAdapter = new MoneyAdapter();
     private final CardAdapter cardAdapter = new CardAdapter();
+    private final DiscountInterface discountInterface = new DiscountByPayMethod();
 
     public PayResponse pay(PayRequest payRequest){
-        CardUseResult cardUseResult;
-        MoneyUseResult moneyUseResult;
+        PaymentInterface paymentInterface;
 
         if(payRequest.getPayMethodType() == PayMethodType.CARD){
-            cardAdapter.authorization();
-            cardAdapter.approval();
-            cardUseResult = cardAdapter.capture(payRequest.getPayAmount());
+            paymentInterface = cardAdapter;
         }else {
-            moneyUseResult = moneyAdapter.use(payRequest.getPayAmount());
+            paymentInterface = moneyAdapter;
         }
 
-        if(cardUseResult == CardUseResult.USE_FAIL || moneyUseResult == MoneyUseResult.USE_FAIL){
+        Integer discountedAmount = discountInterface.getDiscountedAmount(payRequest);
+        PaymentResult payment = paymentInterface.payment(discountedAmount);
+
+        if(payment == PaymentResult.PAYMENT_FAIL){
             return new PayResponse(PayResult.FAIL,0);
         }
 
@@ -28,9 +29,17 @@ public class ConveniencePayService {
     }
 
     public PayCancelResponse payCancel(PayCancelRequest payCancelRequest){
-        MoneyUseCancelResult moneyUseCancelResult = moneyAdapter.useCancel(payCancelRequest.getPayCancelAmount());
+        PaymentInterface paymentInterface;
 
-        if(moneyUseCancelResult == MoneyUseCancelResult.MONEY_USE_CANCEL_FAILED){
+        if(payCancelRequest.getPayMethodType() == PayMethodType.CARD){
+            paymentInterface = cardAdapter;
+        }else {
+            paymentInterface = moneyAdapter;
+        }
+
+        CancelPaymentResult cancelPaymentResult = paymentInterface.cancelPayment(payCancelRequest.getPayCancelAmount());
+
+        if(cancelPaymentResult == CancelPaymentResult.CANCEL_PAYMENT_FAIL){
             return new PayCancelResponse(PayCancelResult.PAY_CANCEL_FAILED,0);
         }
 
