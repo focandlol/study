@@ -1,9 +1,6 @@
 package com.gnirps.convpay.service;
 
-import com.gnirps.convpay.type.CancelPaymentResult;
-import com.gnirps.convpay.type.MoneyUseCancelResult;
-import com.gnirps.convpay.type.MoneyUseResult;
-import com.gnirps.convpay.type.PaymentResult;
+import com.gnirps.convpay.type.*;
 
 public class MoneyAdapter implements PaymentInterface{
 
@@ -23,6 +20,11 @@ public class MoneyAdapter implements PaymentInterface{
             return MoneyUseCancelResult.MONEY_USE_CANCEL_FAILED;
         }
         return MoneyUseCancelResult.MONEY_USE_CANCEL_SUCCESS;
+    }
+
+    @Override
+    public PayMethodType getPayMethodType() {
+        return PayMethodType.MONEY;
     }
 
     @Override
