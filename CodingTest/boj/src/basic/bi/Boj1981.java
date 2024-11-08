@@ -50,7 +50,6 @@ public class Boj1981 {
         }
         System.out.println(dap);
     }
-
     private static boolean bfs(int min, int max) {
         Queue<int[]> q = new LinkedList<int[]>();
         q.add(new int[]{0, 0});

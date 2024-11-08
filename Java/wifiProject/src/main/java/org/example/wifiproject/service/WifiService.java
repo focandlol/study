@@ -1,6 +1,7 @@
-package org.example.service;
+package org.example.wifiproject.service;
 
-import org.example.dto.WifiDto;
+import org.example.wifiproject.dto.PositionDto;
+import org.example.wifiproject.dto.WifiDto;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -8,13 +9,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.db.Db.close;
-import static org.example.db.Db.getConnection;
-import static org.example.service.HistoryService.addHistory;
+import static org.example.wifiproject.db.Db.close;
+import static org.example.wifiproject.db.Db.getConnection;
+import static org.example.wifiproject.service.HistoryService.addHistory;
 
 public class WifiService {
     public static int dbInsert(JSONArray jsonArray){
-        ResultSet rs = null;
         Connection connection = null;
         PreparedStatement pstmt = null;
         int count = 0;
@@ -30,9 +30,7 @@ public class WifiService {
 
             for (int i = 0; i < jsonArray.size(); i++) {
 
-               // System.out.println("memberService1");
                 JSONObject data = (JSONObject) jsonArray.get(i);
-               // System.out.println("memberService2");
                 System.out.println(data.get("LAT"));
                 pstmt.setString(1, (String) data.get("X_SWIFI_MGR_NO"));
                 pstmt.setString(2, (String) data.get("X_SWIFI_WRDOFC"));
@@ -50,32 +48,30 @@ public class WifiService {
                 pstmt.setString(14, (String) data.get("LAT"));
                 pstmt.setString(15, (String) data.get("LNT"));
                 pstmt.setString(16, (String) data.get("WORK_DTTM"));
-                System.out.println("memberService3");
                 pstmt.addBatch();
                 pstmt.clearParameters();
 
                 if ((i + 1) % 1000 == 0) {
                     int[] result = pstmt.executeBatch();
-                    count += result.length;    //배치한 완료 개수
+                    count += result.length;
                     connection.commit();
                 }
             }
-
             int[] result = pstmt.executeBatch();
-            count += result.length;    //배치한 완료 개수
+            count += result.length;
             connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } finally{
-            close(rs,pstmt,connection);
+            close(null,pstmt,connection);
         }
         System.out.println("memberService4");
         return count;
     }
 
-    public List<WifiDto> getNearestWifiList(String lat, String lnt) {
+    public List<WifiDto> getNearestWifiList(PositionDto positionDto) {
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -85,16 +81,16 @@ public class WifiService {
             connection = getConnection();
 
             String sql = "SELECT *, " +
-                    "ROUND(6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(lnt) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(lat))), 4) AS distance " +
+                    "ROUND(6371 * ACOS(COS(RADIANS(?)) * COS(RADIANS(lat)) * COS(RADIANS(lnt) - RADIANS(?)) + SIN(RADIANS(?)) * SIN(RADIANS(lat))),4) AS distance " +
                     "FROM " +
                     "    wifi " +
                     "ORDER BY " +
                     "    distance " +
                     "LIMIT 20;";
             pstmt = connection.prepareStatement(sql);
-            pstmt.setDouble(1, Double.parseDouble(lat));
-            pstmt.setDouble(2, Double.parseDouble(lnt));
-            pstmt.setDouble(3, Double.parseDouble(lat));
+            pstmt.setDouble(1, positionDto.getLat());
+            pstmt.setDouble(2, positionDto.getLnt());
+            pstmt.setDouble(3, positionDto.getLat());
 
             rs = pstmt.executeQuery();
 
@@ -128,7 +124,7 @@ public class WifiService {
         } finally{
             close(rs,pstmt,connection);
         }
-        addHistory(lat,lnt);
+        addHistory(positionDto);
         return wifiDtoList;
     }
     public WifiDto getDetailWifi(String id, String distance) {
