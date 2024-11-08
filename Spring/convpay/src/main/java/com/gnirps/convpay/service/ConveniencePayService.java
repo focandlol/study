@@ -2,11 +2,13 @@ package com.gnirps.convpay.service;
 
 import com.gnirps.convpay.dto.*;
 import com.gnirps.convpay.type.*;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
+@Component
 public class ConveniencePayService {
     private final Map<PayMethodType,PaymentInterface> paymentInterfaceMap = new HashMap<>();
     private final DiscountInterface discountInterface;

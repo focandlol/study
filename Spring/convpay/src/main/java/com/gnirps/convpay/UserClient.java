@@ -16,7 +16,7 @@ public class UserClient {
         ApplicationContext ac = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         ConveniencePayService conveniencePayService = ac.getBean(ConveniencePayService.class);
 
-        PayRequest payRequest = new PayRequest(ConvenienceType.SEVEN, 1000,PayMethodType.MONEY);
+        PayRequest payRequest = new PayRequest(ConvenienceType.G25, 1000,PayMethodType.MONEY);
         PayResponse payResponse = conveniencePayService.pay(payRequest);
 
         System.out.println(payResponse);

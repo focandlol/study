@@ -1,7 +1,9 @@
 package com.gnirps.convpay.service;
 
 import com.gnirps.convpay.type.*;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MoneyAdapter implements PaymentInterface{
 
     public MoneyUseResult use(Integer payAmount){
