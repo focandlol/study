@@ -2,6 +2,7 @@ package org.example.account.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.account.type.AccountStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,7 +21,7 @@ public class Account {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private AccountUser accountUser;
 
     private String accountNumber;
