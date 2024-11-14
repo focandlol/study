@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,8 +18,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
@@ -38,11 +42,28 @@ class AccountServiceTest {
                         .accountNumber("123412")
                         .build()));
 
+        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+
+
         Account account = accountService.getAccount(4555L);
 
+        verify(accountRepository,times(1)).findById(captor.capture());
+        verify(accountRepository,times(0)).save(any());
+        assertEquals(4555L,captor.getValue());
+        assertNotEquals(4535L,captor.getValue());
+        assertTrue(4555L == captor.getValue());
         assertEquals("123412",account.getAccountNumber());
         assertEquals(AccountStatus.UNREGISTERED,account.getAccountStatus());
 
+    }
+
+    @Test
+    @DisplayName("계좌 조회 실패 - 음수로 조회")
+    void testFailedToSearchAccount(){
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> accountService.getAccount(-10L));
+
+        assertEquals("Minus",exception.getMessage());
     }
     @Test
     void accountServiceTest() {
