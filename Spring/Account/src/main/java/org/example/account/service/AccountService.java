@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.example.account.type.AccountStatus.*;
+import static org.example.account.type.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +34,9 @@ public class AccountService {
      */
     public AccountDto createAccount(Long userId, Long initialBalance){
         AccountUser accountUser = accountUserRepository.findById(userId)
-                .orElseThrow(() -> new AccountException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+
+        validateCreateAccount(accountUser);
 
         String newAccount = accountRepository.findFirstByOrderByIdDesc()
                 .map(account -> (Integer.parseInt(account.getAccountNumber())) + 1 + "")
@@ -50,10 +55,60 @@ public class AccountService {
         return AccountDto.fromEntity(saveAccount);
     }
 
+    private void validateCreateAccount(AccountUser accountUser) {
+        if(accountRepository.countByAccountUser(accountUser) >= 10){
+            throw new AccountException(MAX_ACCOUNT_PER_USER_10);
+        }
+    }
+
     public Account getAccount(Long id){
         if(id < 0){
             throw new RuntimeException("Minus");
         }
         return accountRepository.findById(id).get();
+    }
+
+    public AccountDto deleteAccount(Long userId, String accountNumber) {
+        AccountUser accountUser = accountUserRepository.findById(userId)
+                .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
+
+        validateDeleteAccount(accountUser,account);
+
+        account.setAccountStatus(UNREGISTERED);
+        account.setUnregisteredAt(LocalDateTime.now());
+
+        //테스트를 위해
+        accountRepository.save(account);
+
+        return AccountDto.fromEntity(account);
+    }
+
+    private void validateDeleteAccount(AccountUser accountUser, Account account) {
+        if(accountUser.getId() != account.getAccountUser().getId()){
+            throw new AccountException(USER_ACCOUNT_UN_MATCH);
+        }
+
+        if(account.getAccountStatus() == UNREGISTERED){
+            throw new AccountException(ACCOUNT_ALREADY_UNREGISTERED);
+        }
+
+        if(account.getBalance() > 0){
+            throw new AccountException(BALANCE_NOT_EMPTY);
+        }
+    }
+
+    public List<AccountDto> getAccountsByUserId(Long userId) {
+        AccountUser accountUser = accountUserRepository.findById(userId)
+                .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+
+        List<Account> accounts = accountRepository.findByAccountUser(accountUser);
+
+        return accounts.stream()
+                .map(account -> AccountDto.fromEntity(account))
+                .collect(Collectors.toList());
+
     }
 }
