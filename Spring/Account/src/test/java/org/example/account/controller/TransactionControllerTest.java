@@ -2,6 +2,7 @@ package org.example.account.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.account.dto.AccountDto;
 import org.example.account.dto.CancelBalance;
 import org.example.account.dto.TransactionDto;
 import org.example.account.dto.UseBalance;
@@ -17,12 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.sound.sampled.AudioFileFormat;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.example.account.type.TransactionResultType.S;
+import static org.example.account.type.TransactionType.USE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,7 +47,7 @@ class TransactionControllerTest {
 
     @Test
     void successUseBalance() throws Exception {
-        given(transactionService.useBalance(anyLong(),anyString(),anyLong()))
+        given(transactionService.useBalance(anyLong(), anyString(), anyLong()))
                 .willReturn(TransactionDto.builder()
                         .accountNumber("1234567890")
                         .transactedAt(LocalDateTime.now())
@@ -52,10 +57,10 @@ class TransactionControllerTest {
                         .build());
 
         mockMvc.perform(post("/transaction/use")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(
-                        new UseBalance.Request(1L,"1234567890",3000L)
-                )))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new UseBalance.Request(1L, "1234567890", 3000L)
+                        )))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accountNumber").value("1234567890"))
@@ -66,7 +71,7 @@ class TransactionControllerTest {
 
     @Test
     void successCancelBalance() throws Exception {
-        given(transactionService.cancelBalance(anyString(),anyString(),anyLong()))
+        given(transactionService.cancelBalance(anyString(), anyString(), anyLong()))
                 .willReturn(TransactionDto.builder()
                         .accountNumber("1234567890")
                         .transactedAt(LocalDateTime.now())
@@ -78,7 +83,7 @@ class TransactionControllerTest {
         mockMvc.perform(post("/transaction/cancel")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
-                                new CancelBalance.Request("transactionId","1234567890",3000L)
+                                new CancelBalance.Request("transactionId", "1234567890", 3000L)
                         )))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -88,4 +93,25 @@ class TransactionControllerTest {
                 .andExpect(jsonPath("$.transactionResultType").value("S"));
     }
 
+    @Test
+    void successQueryTransaction() throws Exception {
+        given(transactionService.queryTransaction(anyString()))
+                .willReturn(TransactionDto.builder()
+                        .accountNumber("1234567890")
+                        .transactedAt(LocalDateTime.now())
+                        .amount(12345L)
+                        .transactionId("transactionId")
+                        .transactionResultType(S)
+                        .transactionType(USE)
+                        .build());
+
+        mockMvc.perform(get("/transaction/12345"))
+                .andDo(print())
+                .andExpect(jsonPath("$.accountNumber").value("1234567890"))
+                .andExpect(jsonPath("$.amount").value(12345L))
+                .andExpect(jsonPath("$.transactionId").value("transactionId"))
+                .andExpect(jsonPath("$.transactionType").value("USE"))
+                .andExpect(jsonPath("$.transactionResultType").value("S"));
+
+    }
 }

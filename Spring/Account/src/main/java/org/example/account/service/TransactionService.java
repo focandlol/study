@@ -115,4 +115,10 @@ public class TransactionService {
 
         saveAndGetTransaction(F, account, amount,CANCEL);
     }
+
+    public TransactionDto queryTransaction(String transactionId) {
+        return TransactionDto.fromEntity(transactionRepository.findByTransactionId(transactionId)
+                .orElseThrow(() -> new AccountException(TRANSACTION_NOT_FOUND)));
+
+    }
 }
