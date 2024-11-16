@@ -240,4 +240,216 @@ class TransactionServiceTest {
         verify(transactionRepository,times(0)).save(any());
     }
 
+    @Test
+    void successCancelBalance(){
+        AccountUser user = AccountUser.builder()
+                .id(12L)
+                .name("pobi").build();
+
+        Account account = Account.builder()
+                .accountUser(user)
+                .balance(9000L)
+                .accountStatus(IN_USE)
+                .accountNumber("1000000012").build();
+
+        Transaction transaction = Transaction.builder()
+                .account(account)
+                .transactionType(USE)
+                .transactionResultType(S)
+                .amount(1000L)
+                .balanceSnapshot(9000L)
+                .transactionId("transactionId")
+                .transactedAt(LocalDateTime.now())
+                .build();
+
+        given(transactionRepository.findByTransactionId(anyString()))
+                .willReturn(Optional.of(transaction));
+
+        given(accountRepository.findByAccountNumber(anyString()))
+                .willReturn(Optional.of(account));
+
+        given(transactionRepository.save(any()))
+                .willReturn(Transaction.builder()
+                        .account(account)
+                        .transactionType(CANCEL)
+                        .transactionResultType(S)
+                        .amount(1000L)
+                        .balanceSnapshot(10000L)
+                        .transactionId("transactionIdCancel")
+                        .transactedAt(LocalDateTime.now())
+                        .build());
+
+        ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
+
+        TransactionDto transactionDto = transactionService.cancelBalance("transactionId", "10000000000", 1000L);
+
+        verify(transactionRepository,times(1)).save(captor.capture());
+        assertEquals(10000L,transactionDto.getBalanceSnapshot());
+        assertEquals(S,transactionDto.getTransactionResultType());
+        assertEquals("transactionIdCancel",transactionDto.getTransactionId());
+        assertEquals(1000L,transactionDto.getAmount());
+        assertEquals(10000L,captor.getValue().getBalanceSnapshot());
+        assertEquals("1000000012",captor.getValue().getAccount().getAccountNumber());
+        assertEquals(1000L,captor.getValue().getAmount());
+
+    }
+
+    @Test
+    @DisplayName("해당 계좌 없음 - 잔액 사용 cancel 실패")
+    void cancelBalance_AccountNotFound(){
+        AccountUser user = AccountUser.builder()
+                .id(12L)
+                .name("pobi").build();
+
+        Transaction transaction = Transaction.builder()
+                .transactionType(USE)
+                .transactionResultType(S)
+                .amount(1000L)
+                .balanceSnapshot(9000L)
+                .transactionId("transactionId")
+                .transactedAt(LocalDateTime.now())
+                .build();
+
+        given(transactionRepository.findByTransactionId(anyString()))
+                .willReturn(Optional.of(transaction));
+        given(accountRepository.findByAccountNumber(anyString()))
+                .willReturn(Optional.empty());
+
+        AccountException accountException = assertThrows(AccountException.class,
+                () -> transactionService.cancelBalance("dsf", "1234567890",100L));
+
+        assertEquals(ACCOUNT_NOT_FOUND,accountException.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("해당 거래 없음 - 잔액 사용 cancel 실패")
+    void cancelBalance_TransactionNotFound(){
+
+        given(transactionRepository.findByTransactionId(anyString()))
+                .willReturn(Optional.empty());
+
+        AccountException accountException = assertThrows(AccountException.class,
+                () -> transactionService.cancelBalance("dsf", "1234567890",100L));
+
+        assertEquals(TRANSACTION_NOT_FOUND,accountException.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("해당 거래 없음 - 잔액 사용 cancel 실패")
+    void cancelBalance_TransactionAccountUnMatch(){
+        AccountUser user = AccountUser.builder()
+                .id(12L)
+                .name("pobi").build();
+
+        Account account = Account.builder()
+                .id(1L)
+                .accountUser(user)
+                .balance(9000L)
+                .accountStatus(IN_USE)
+                .accountNumber("1000000012").build();
+
+        Account notAccount = Account.builder()
+                .id(2L)
+                .accountUser(user)
+                .balance(9000L)
+                .accountStatus(IN_USE)
+                .accountNumber("1000000012").build();
+
+        Transaction transaction = Transaction.builder()
+                .account(account)
+                .transactionType(USE)
+                .transactionResultType(S)
+                .amount(1000L)
+                .balanceSnapshot(9000L)
+                .transactionId("transactionId")
+                .transactedAt(LocalDateTime.now())
+                .build();
+
+        given(transactionRepository.findByTransactionId(anyString()))
+                .willReturn(Optional.of(transaction));
+
+        given(accountRepository.findByAccountNumber(anyString()))
+                .willReturn(Optional.of(notAccount));
+
+        AccountException accountException = assertThrows(AccountException.class,
+                () -> transactionService.cancelBalance("dsf", "1234567890",1000L));
+
+        assertEquals(TRANSACTION_ACCOUNT_UN_MATCH,accountException.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("거래 금액과 취소금액 다름 - 잔액 사용 cancel 실패")
+    void cancelBalance_gullyCancel(){
+        AccountUser user = AccountUser.builder()
+                .id(12L)
+                .name("pobi").build();
+
+        Account account = Account.builder()
+                .id(1L)
+                .accountUser(user)
+                .balance(9000L)
+                .accountStatus(IN_USE)
+                .accountNumber("1000000012").build();
+
+
+        Transaction transaction = Transaction.builder()
+                .account(account)
+                .transactionType(USE)
+                .transactionResultType(S)
+                .amount(1000L)
+                .balanceSnapshot(9000L)
+                .transactionId("transactionId")
+                .transactedAt(LocalDateTime.now())
+                .build();
+
+        given(transactionRepository.findByTransactionId(anyString()))
+                .willReturn(Optional.of(transaction));
+
+        given(accountRepository.findByAccountNumber(anyString()))
+                .willReturn(Optional.of(account));
+
+        AccountException accountException = assertThrows(AccountException.class,
+                () -> transactionService.cancelBalance("dsf", "1234567890",100L));
+
+        assertEquals(CANCEL_MUST_FULLY,accountException.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("너무 오래된 거래 - 잔액 사용 cancel 실패")
+    void cancelBalance_before1year(){
+        AccountUser user = AccountUser.builder()
+                .id(12L)
+                .name("pobi").build();
+
+        Account account = Account.builder()
+                .id(1L)
+                .accountUser(user)
+                .balance(9000L)
+                .accountStatus(IN_USE)
+                .accountNumber("1000000012").build();
+
+
+        Transaction transaction = Transaction.builder()
+                .account(account)
+                .transactionType(USE)
+                .transactionResultType(S)
+                .amount(1000L)
+                .balanceSnapshot(9000L)
+                .transactionId("transactionId")
+                .transactedAt(LocalDateTime.now().minusYears(1).minusDays(1))
+                .build();
+
+        given(transactionRepository.findByTransactionId(anyString()))
+                .willReturn(Optional.of(transaction));
+
+        given(accountRepository.findByAccountNumber(anyString()))
+                .willReturn(Optional.of(account));
+
+        AccountException accountException = assertThrows(AccountException.class,
+                () -> transactionService.cancelBalance("dsf", "1234567890",1000L));
+
+        assertEquals(TOO_OLD_ORDER_TO_CANCEL,accountException.getErrorCode());
+    }
+
+
 }
