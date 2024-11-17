@@ -1,6 +1,5 @@
 package org.example.account.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.account.domain.Account;
 import org.example.account.dto.AccountDto;
@@ -8,7 +7,6 @@ import org.example.account.dto.CreateAccount;
 import org.example.account.dto.DeleteAccount;
 import org.example.account.type.AccountStatus;
 import org.example.account.service.AccountService;
-import org.example.account.service.RedisTestService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,9 +31,6 @@ class AccountControllerTest {
 
     @MockBean
     private AccountService accountService;
-
-    @MockBean
-    private RedisTestService redisTestService;
 
     @Autowired
     private MockMvc mockMvc;
