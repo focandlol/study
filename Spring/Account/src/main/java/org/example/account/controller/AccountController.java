@@ -7,7 +7,6 @@ import org.example.account.dto.AccountInfo;
 import org.example.account.dto.CreateAccount;
 import org.example.account.dto.DeleteAccount;
 import org.example.account.service.AccountService;
-import org.example.account.service.RedisTestService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
-    private final RedisTestService redisTestService;
 
-    @GetMapping("/get-lock")
-    public String getLock() {
-        return redisTestService.getLock();
-    }
 
     @PostMapping("/account")
     public CreateAccount.Response createAccount(

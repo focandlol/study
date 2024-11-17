@@ -2,6 +2,7 @@ package org.example.account.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.example.account.aop.AccountLockIdInterface;
 import org.example.account.type.TransactionResultType;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ public class CancelBalance {
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Request{
+    public static class Request implements AccountLockIdInterface {
         @NotBlank
         private String transactionId;
 
