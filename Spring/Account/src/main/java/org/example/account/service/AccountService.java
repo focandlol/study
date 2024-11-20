@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static org.example.account.type.AccountStatus.*;
@@ -38,9 +39,12 @@ public class AccountService {
 
         validateCreateAccount(accountUser);
 
-        String newAccount = accountRepository.findFirstByOrderByIdDesc()
-                .map(account -> (Integer.parseInt(account.getAccountNumber())) + 1 + "")
-                .orElse("1000000000");
+        String newAccount = getAccountNumber();
+
+//        String newAccount = accountRepository.findFirstByOrderByIdDesc()
+//                .map(account -> (Integer.parseInt(account.getAccountNumber())) + 1 + "")
+//                .orElse("1000000000");
+
 
         Account saveAccount = accountRepository.save(
                 Account.builder()
@@ -53,6 +57,13 @@ public class AccountService {
         );
 
         return AccountDto.fromEntity(saveAccount);
+    }
+    private String getAccountNumber() {
+        String accountNumber;
+        do {
+            accountNumber = String.format("%010d", (new Random()).nextInt(1_000_000_000));
+        } while (!accountRepository.findByAccountNumber(accountNumber).isEmpty()); // 중복 체크
+        return accountNumber;
     }
 
     private void validateCreateAccount(AccountUser accountUser) {
