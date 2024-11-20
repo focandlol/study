@@ -1,5 +1,9 @@
 package focandlol.weather.service;
 
+import focandlol.weather.domain.Diary;
+import focandlol.weather.repository.DiaryRepository;
+import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -16,7 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class DiaryService {
+
+    private final DiaryRepository diaryRepository;
 
     @Value("${openweathermap.key}")
     private String apiKey;
@@ -27,7 +34,16 @@ public class DiaryService {
 
         //받아온 날씨 json 파싱하기
         Map<String, Object> parsedWeather = parseWeather(weatherData);
+
         //파싱된 데이터 + 일기 값 db에 넣기
+        Diary diary = new Diary();
+        diary.setWeather(parsedWeather.get("main").toString());
+        diary.setIcon(parsedWeather.get("icon").toString());
+        diary.setTemperature((Double) parsedWeather.get("temp"));
+        diary.setDate(date);
+        diary.setText(text);
+
+        diaryRepository.save(diary);
     }
 
     private String getWeatherString(){
@@ -70,7 +86,8 @@ public class DiaryService {
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
-        JSONObject weatherData = (JSONObject) jsonObject.get("weather");
+        JSONArray weatherArray = (JSONArray) jsonObject.get("weather");
+        JSONObject weatherData = (JSONObject) weatherArray.get(0);
         resultMap.put("main", weatherData.get("main"));
         resultMap.put("icon", weatherData.get("icon"));
 
