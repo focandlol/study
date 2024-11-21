@@ -1,6 +1,8 @@
 package focandlol.weather.service;
 
+import focandlol.weather.domain.DateWeather;
 import focandlol.weather.domain.Diary;
+import focandlol.weather.repository.DateWeatherRepository;
 import focandlol.weather.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -8,6 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,30 +26,53 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final DateWeatherRepository dailyWeatherRepository;
+    private final DateWeatherRepository dateWeatherRepository;
 
     @Value("${openweathermap.key}")
     private String apiKey;
 
+    @Transactional
+    @Scheduled(cron = "0 0 1 * * *")
+    public void saveWeatherDate(){
+        dateWeatherRepository.save(getWeatherFromApi());
+    }
+
+    @Transactional
     public void createDiary(LocalDate date, String text) {
         //날씨 데이터 가져오기
-        String weatherData = getWeatherString();
+        DateWeather dateWeather = getDateWeather(date);
 
-        //받아온 날씨 json 파싱하기
-        Map<String, Object> parsedWeather = parseWeather(weatherData);
 
         //파싱된 데이터 + 일기 값 db에 넣기
         Diary diary = new Diary();
-        diary.setWeather(parsedWeather.get("main").toString());
-        diary.setIcon(parsedWeather.get("icon").toString());
-        diary.setTemperature((Double) parsedWeather.get("temp"));
-        diary.setDate(date);
+        diary.setDateWeather(dateWeather);
         diary.setText(text);
 
         diaryRepository.save(diary);
+    }
+
+    public List<Diary> readDiary(LocalDate date) {
+        return diaryRepository.findAllByDate(date);
+    }
+
+    public List<Diary> readDiaries(LocalDate startDate, LocalDate endDate) {
+        return diaryRepository.findAllByDateBetween(startDate, endDate);
+    }
+
+    @Transactional
+    public void updateDiary(LocalDate date, String text) {
+        Diary getDiary = diaryRepository.getFirstByDate(date);
+        getDiary.setText(text);
+    }
+
+    @Transactional
+    public void deleteDiary(LocalDate date) {
+        diaryRepository.deleteAllByDate(date);
     }
 
     private String getWeatherString(){
@@ -100,20 +126,28 @@ public class DiaryService {
         return resultMap;
     }
 
-    public List<Diary> readDiary(LocalDate date) {
-        return diaryRepository.findAllByDate(date);
+    private DateWeather getWeatherFromApi(){
+        //날씨 데이터 가져오기
+        String weatherData = getWeatherString();
+
+        //받아온 날씨 json 파싱하기
+        Map<String, Object> parsedWeather = parseWeather(weatherData);
+
+        DateWeather dateWeather = new DateWeather();
+        dateWeather.setDate(LocalDate.now());
+        dateWeather.setWeather(parsedWeather.get("main").toString());
+        dateWeather.setTemperature((Double) parsedWeather.get("temp"));
+        dateWeather.setIcon(parsedWeather.get("icon").toString());
+        return dateWeather;
     }
 
-    public List<Diary> readDiaries(LocalDate startDate, LocalDate endDate) {
-        return diaryRepository.findAllByDateBetween(startDate, endDate);
+    private DateWeather getDateWeather(LocalDate date){
+        List<DateWeather> dateWeatherListFromDb = dateWeatherRepository.findAllByDate(date);
+        if(dateWeatherListFromDb.size() == 0){
+            return getWeatherFromApi();
+        }
+        return dateWeatherListFromDb.get(0);
     }
 
-    public void updateDiary(LocalDate date, String text) {
-        Diary getDiary = diaryRepository.getFirstByDate(date);
-        getDiary.setText(text);
-    }
 
-    public void deleteDiary(LocalDate date) {
-        diaryRepository.deleteAllByDate(date);
-    }
 }
