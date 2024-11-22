@@ -18,13 +18,13 @@ public class DiaryController {
 
     @PostMapping("/create/diary")
     void createDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date,
-                     @RequestBody String text){
-
+                     @RequestBody String text) throws IllegalAccessException {
+        //throw new IllegalAccessException("sa");
         diaryService.createDiary(date,text);
     }
 
     @GetMapping("/read/diary")
-    List<Diary> readDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date){
+    List<Diary> readDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date) throws IllegalAccessException {
         return diaryService.readDiary(date);
     }
 
@@ -45,5 +45,6 @@ public class DiaryController {
     void deleteDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date){
         diaryService.deleteDiary(date);
     }
+
 
 }
