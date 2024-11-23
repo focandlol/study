@@ -1,6 +1,6 @@
 package org.example.account.dto;
 
-import jakarta.validation.constraints.*;
+import javax.validation.constraints.*;
 import lombok.*;
 import org.example.account.aop.AccountLockIdInterface;
 import org.example.account.type.TransactionResultType;
@@ -22,8 +22,8 @@ public class UseBalance {
         private String accountNumber;
 
         @NotNull
-        @Min(10)
-        @Max(1000_000_000)
+        @Min(value = 10, message = "금액은 10 이상이어야 합니다.")
+        @Max(value = 1000_000_000, message = "금액은 1000_000_000 이하여야 합니다.")
         private Long amount;
     }
 

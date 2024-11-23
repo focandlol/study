@@ -19,6 +19,7 @@ public enum ErrorCode {
     INVALID_REQUEST("잘못된 요청입니다"),
     INTERNAL_SERVER_ERROR("내부 서버 오류입니다"),
     ACCOUNT_TRANSACTION_LOCK("해당 계좌는 사용중입니다"),
+    BAD_REQUEST("잘못된 요청입니다"),
     AMOUNT_EXCEED_BALANCE("거래 금액이 계좌 잔액보다 큽니다");
 
     private final String description;

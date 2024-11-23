@@ -1,6 +1,6 @@
 package org.example.account.controller;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.account.aop.AccountLock;
@@ -27,7 +27,7 @@ public class TransactionController {
             @Valid @RequestBody UseBalance.Request request
     ) throws InterruptedException {
         try {
-            Thread.sleep(5000L);
+            Thread.sleep(5000L); //redis test 용도
             return UseBalance.Response.from(transactionService.useBalance(request.getUserId(),
                     request.getAccountNumber(), request.getAmount()));
         } catch(AccountException e) {
