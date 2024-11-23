@@ -27,7 +27,7 @@ public class Transaction {
     private TransactionType transactionType;
 
     @Enumerated(EnumType.STRING)
-    private TransactionResultType transactionResultType;
+    private TransactionResultType transactionResult;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Account account;

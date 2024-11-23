@@ -71,7 +71,7 @@ class TransactionServiceTest {
                 .willReturn(Transaction.builder()
                         .account(account)
                         .transactionType(USE)
-                        .transactionResultType(S)
+                        .transactionResult(S)
                         .amount(1000L)
                         .balanceSnapshot(9000L)
                         .transactionId("transactionId")
@@ -84,7 +84,7 @@ class TransactionServiceTest {
 
         verify(transactionRepository,times(1)).save(captor.capture());
         assertEquals(9000L,transactionDto.getBalanceSnapshot());
-        assertEquals(S,transactionDto.getTransactionResultType());
+        assertEquals(S,transactionDto.getTransactionResult());
         assertEquals("transactionId",transactionDto.getTransactionId());
         assertEquals(1000L,transactionDto.getAmount());
         assertEquals(9800L,captor.getValue().getBalanceSnapshot());
@@ -113,7 +113,7 @@ class TransactionServiceTest {
                 .willReturn(Transaction.builder()
                         .account(account)
                         .transactionType(USE)
-                        .transactionResultType(S)
+                        .transactionResult(S)
                         .amount(1000L)
                         .balanceSnapshot(9000L)
                         .transactionId("transactionId")
@@ -126,7 +126,7 @@ class TransactionServiceTest {
 
         verify(transactionRepository,times(1)).save(captor.capture());
         assertEquals(10000L,captor.getValue().getBalanceSnapshot());
-        assertEquals(F,captor.getValue().getTransactionResultType());
+        assertEquals(F,captor.getValue().getTransactionResult());
         assertEquals("1000000012",captor.getValue().getAccount().getAccountNumber());
         assertEquals(200L,captor.getValue().getAmount());
 
@@ -247,6 +247,7 @@ class TransactionServiceTest {
                 .name("pobi").build();
 
         Account account = Account.builder()
+                .id(1L)
                 .accountUser(user)
                 .balance(9000L)
                 .accountStatus(IN_USE)
@@ -255,12 +256,14 @@ class TransactionServiceTest {
         Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
-                .transactionResultType(S)
+                .transactionResult(S)
                 .amount(1000L)
                 .balanceSnapshot(9000L)
                 .transactionId("transactionId")
                 .transactedAt(LocalDateTime.now())
                 .build();
+
+        System.out.println(account.getAccountUser().getId());
 
         given(transactionRepository.findByTransactionId(anyString()))
                 .willReturn(Optional.of(transaction));
@@ -272,7 +275,7 @@ class TransactionServiceTest {
                 .willReturn(Transaction.builder()
                         .account(account)
                         .transactionType(CANCEL)
-                        .transactionResultType(S)
+                        .transactionResult(S)
                         .amount(1000L)
                         .balanceSnapshot(10000L)
                         .transactionId("transactionIdCancel")
@@ -285,7 +288,7 @@ class TransactionServiceTest {
 
         verify(transactionRepository,times(1)).save(captor.capture());
         assertEquals(10000L,transactionDto.getBalanceSnapshot());
-        assertEquals(S,transactionDto.getTransactionResultType());
+        assertEquals(S,transactionDto.getTransactionResult());
         assertEquals("transactionIdCancel",transactionDto.getTransactionId());
         assertEquals(1000L,transactionDto.getAmount());
         assertEquals(10000L,captor.getValue().getBalanceSnapshot());
@@ -303,7 +306,7 @@ class TransactionServiceTest {
 
         Transaction transaction = Transaction.builder()
                 .transactionType(USE)
-                .transactionResultType(S)
+                .transactionResult(S)
                 .amount(1000L)
                 .balanceSnapshot(9000L)
                 .transactionId("transactionId")
@@ -358,7 +361,7 @@ class TransactionServiceTest {
         Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
-                .transactionResultType(S)
+                .transactionResult(S)
                 .amount(1000L)
                 .balanceSnapshot(9000L)
                 .transactionId("transactionId")
@@ -395,7 +398,7 @@ class TransactionServiceTest {
         Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
-                .transactionResultType(S)
+                .transactionResult(S)
                 .amount(1000L)
                 .balanceSnapshot(9000L)
                 .transactionId("transactionId")
@@ -432,7 +435,7 @@ class TransactionServiceTest {
         Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
-                .transactionResultType(S)
+                .transactionResult(S)
                 .amount(1000L)
                 .balanceSnapshot(9000L)
                 .transactionId("transactionId")
@@ -462,7 +465,7 @@ class TransactionServiceTest {
         Transaction transaction = Transaction.builder()
                 .account(account)
                 .transactionType(USE)
-                .transactionResultType(S)
+                .transactionResult(S)
                 .amount(1000L)
                 .balanceSnapshot(9000L)
                 .transactionId("transactionId")
@@ -475,7 +478,7 @@ class TransactionServiceTest {
         TransactionDto transactionDto = transactionService.queryTransaction("asdasd");
 
         assertEquals(USE,transactionDto.getTransactionType());
-        assertEquals(S,transactionDto.getTransactionResultType());
+        assertEquals(S,transactionDto.getTransactionResult());
         assertEquals(1000L,transactionDto.getAmount());
         assertEquals("transactionId",transactionDto.getTransactionId());
     }

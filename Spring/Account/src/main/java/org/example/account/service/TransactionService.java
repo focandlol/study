@@ -95,7 +95,7 @@ public class TransactionService {
                                               Account account, Long amount,TransactionType transactionType) {
         return transactionRepository.save(Transaction.builder()
                 .transactionType(transactionType)
-                .transactionResultType(transactionResultType)
+                .transactionResult(transactionResultType)
                 .account(account)
                 .amount(amount)
                 .balanceSnapshot(account.getBalance())
@@ -126,6 +126,7 @@ public class TransactionService {
     }
 
     private void validateCancelBalance(Transaction transaction, Account account, Long amount) {
+        System.out.println(account.getAccountUser().getId());
         /**
          * 트랜잭션이 해당 계좌의 거래가 아닌 경우 실패
          */
