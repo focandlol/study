@@ -1,6 +1,6 @@
 package org.example.account.dto;
 
-import jakarta.validation.constraints.*;
+import javax.validation.constraints.*;
 import lombok.*;
 import org.example.account.aop.AccountLockIdInterface;
 import org.example.account.type.TransactionResultType;

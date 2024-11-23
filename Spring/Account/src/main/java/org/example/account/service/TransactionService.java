@@ -1,6 +1,6 @@
 package org.example.account.service;
 
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.account.domain.Account;
@@ -35,9 +35,15 @@ public class TransactionService {
     private final AccountRepository accountRepository;
 
     public TransactionDto useBalance(Long userId, String accountNumber, Long amount){
+        /**
+         * 유저가 없을 경우 실패
+         */
         AccountUser user = accountUserRepository.findById(userId)
                 .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
 
+        /**
+         * 계좌가 없을 경우 실패
+         */
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
 
@@ -49,15 +55,31 @@ public class TransactionService {
     }
 
     private void validateUserBalance(AccountUser user, Account account, Long amount) {
-        if(user.getId() != account.getAccountUser().getId()){
+        /**
+         * 사용자 아이디와 계좌 소유주가 다른 경우 실패
+         */
+        if(!user.getId().equals(account.getAccountUser().getId())){
             throw new AccountException(USER_ACCOUNT_UN_MATCH);
         }
+
+        /**
+         * 계좌가 이미 해지 상태인 경우 실패
+         */
         if(account.getAccountStatus() == AccountStatus.UNREGISTERED){
             throw new AccountException(ACCOUNT_ALREADY_UNREGISTERED);
         }
+
+        /**
+         * 거래금액이 잔액보다 큰 경우 실패
+         */
         if(account.getBalance() < amount){
             throw new AccountException(AMOUNT_EXCEED_BALANCE);
         }
+
+        /**
+         * 거래금액이 너무 작거나 큰 경우 실패 응담
+         * @valid로 잡아서 GlobalExceptionHandler 에서 처리
+         */
 
     }
 
@@ -84,9 +106,15 @@ public class TransactionService {
     }
 
     public TransactionDto cancelBalance(String transactionId, String accountNumber, Long amount) {
+        /**
+         * 거래가 없을 경우 실패
+         */
         Transaction transaction = transactionRepository.findByTransactionId(transactionId)
                 .orElseThrow(() -> new AccountException(TRANSACTION_NOT_FOUND));
 
+        /**
+         * 계좌가 없을 경우 실패
+         */
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
 
@@ -98,12 +126,23 @@ public class TransactionService {
     }
 
     private void validateCancelBalance(Transaction transaction, Account account, Long amount) {
-        if(transaction.getAccount().getId() != account.getId()){
+        /**
+         * 트랜잭션이 해당 계좌의 거래가 아닌 경우 실패
+         */
+        if(!transaction.getAccount().getId().equals(account.getId())){
             throw new AccountException(TRANSACTION_ACCOUNT_UN_MATCH);
         }
+
+        /**
+         * 원거래 금액과 취소 금액이 다른 경우 실패
+         */
         if(!transaction.getAmount().equals(amount)){
             throw new AccountException(CANCEL_MUST_FULLY);
         }
+
+        /**
+         * 트랜잭션이 1년이이상 경과했을 경우 실패
+         */
         if(transaction.getTransactedAt().isBefore(LocalDateTime.now().minusYears(1))){
             throw new AccountException(TOO_OLD_ORDER_TO_CANCEL);
         }
@@ -117,6 +156,9 @@ public class TransactionService {
     }
 
     public TransactionDto queryTransaction(String transactionId) {
+        /**
+         * 거래가 없는 경우 실패
+         */
         return TransactionDto.fromEntity(transactionRepository.findByTransactionId(transactionId)
                 .orElseThrow(() -> new AccountException(TRANSACTION_NOT_FOUND)));
 

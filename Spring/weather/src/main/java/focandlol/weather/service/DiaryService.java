@@ -56,7 +56,7 @@ public class DiaryService {
 
         //파싱된 데이터 + 일기 값 db에 넣기
         Diary diary = new Diary();
-        diary.setDateWeather(dateWeather);
+        diary.dateWeather(dateWeather);
         diary.setText(text);
 
         diaryRepository.save(diary);

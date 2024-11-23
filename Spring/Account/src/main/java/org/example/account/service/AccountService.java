@@ -34,6 +34,9 @@ public class AccountService {
      *
      */
     public AccountDto createAccount(Long userId, Long initialBalance){
+        /**
+         * 사용자가 없는 경우 실패
+         */
         AccountUser accountUser = accountUserRepository.findById(userId)
                 .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
 
@@ -62,11 +65,14 @@ public class AccountService {
         String accountNumber;
         do {
             accountNumber = String.format("%010d", (new Random()).nextInt(1_000_000_000));
-        } while (!accountRepository.findByAccountNumber(accountNumber).isEmpty()); // 중복 체크
+        } while (!accountRepository.findByAccountNumber(accountNumber).isEmpty());
         return accountNumber;
     }
 
     private void validateCreateAccount(AccountUser accountUser) {
+        /**
+         * 계좌가 10개 인 경우 실패
+         */
         if(accountRepository.countByAccountUser(accountUser) >= 10){
             throw new AccountException(MAX_ACCOUNT_PER_USER_10);
         }
@@ -80,9 +86,15 @@ public class AccountService {
     }
 
     public AccountDto deleteAccount(Long userId, String accountNumber) {
+        /**
+         * 사용자가 없는 경우 실패
+         */
         AccountUser accountUser = accountUserRepository.findById(userId)
                 .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
 
+        /**
+         * 계좌가 없는 경우 실패
+         */
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
 
@@ -98,20 +110,32 @@ public class AccountService {
     }
 
     private void validateDeleteAccount(AccountUser accountUser, Account account) {
-        if(accountUser.getId() != account.getAccountUser().getId()){
+        /**
+         * 사용자 아이디와 계좌 소유주가 다른 경우 실패
+         */
+        if(!accountUser.getId().equals(account.getAccountUser().getId())){
             throw new AccountException(USER_ACCOUNT_UN_MATCH);
         }
 
+        /**
+         * 계좌가 이미 해지 상태인 경우 실패
+         */
         if(account.getAccountStatus() == UNREGISTERED){
             throw new AccountException(ACCOUNT_ALREADY_UNREGISTERED);
         }
 
+        /**
+         * 잔액이 있는 경우 실패
+         */
         if(account.getBalance() > 0){
             throw new AccountException(BALANCE_NOT_EMPTY);
         }
     }
 
     public List<AccountDto> getAccountsByUserId(Long userId) {
+        /**
+         * 사용자가 없는 경우 실패
+         */
         AccountUser accountUser = accountUserRepository.findById(userId)
                 .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
 

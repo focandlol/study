@@ -1,6 +1,6 @@
 package org.example.account.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 import org.example.account.exception.AccountException;
 import org.example.account.type.AccountStatus;
