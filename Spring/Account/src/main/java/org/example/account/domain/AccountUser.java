@@ -17,17 +17,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 public class AccountUser {
     @Id
     @GeneratedValue
     private Long id;
-
-    private String name;
 
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    private String name;
 }

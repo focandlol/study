@@ -34,11 +34,7 @@ public class AccountService {
      *
      */
     public AccountDto createAccount(Long userId, Long initialBalance){
-        /**
-         * 사용자가 없는 경우 실패
-         */
-        AccountUser accountUser = accountUserRepository.findById(userId)
-                .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+        AccountUser accountUser = getAccountUser(userId);
 
         validateCreateAccount(accountUser);
 
@@ -61,12 +57,22 @@ public class AccountService {
 
         return AccountDto.fromEntity(saveAccount);
     }
+
     private String getAccountNumber() {
         String accountNumber;
+        Random random = new Random();
         do {
-            accountNumber = String.format("%010d", (new Random()).nextInt(1_000_000_000));
+            long number = (long) (random.nextDouble() * 10_000_000_000L);
+            accountNumber = String.format("%010d", number);
         } while (!accountRepository.findByAccountNumber(accountNumber).isEmpty());
         return accountNumber;
+    }
+
+    /**
+     * 테스트용 메서드
+     */
+    public String getAccountNumberTest(){
+        return getAccountNumber();
     }
 
     private void validateCreateAccount(AccountUser accountUser) {
@@ -86,17 +92,8 @@ public class AccountService {
     }
 
     public AccountDto deleteAccount(Long userId, String accountNumber) {
-        /**
-         * 사용자가 없는 경우 실패
-         */
-        AccountUser accountUser = accountUserRepository.findById(userId)
-                .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
-
-        /**
-         * 계좌가 없는 경우 실패
-         */
-        Account account = accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
+        AccountUser accountUser = getAccountUser(userId);
+        Account account = getAccount(accountNumber);
 
         validateDeleteAccount(accountUser,account);
 
@@ -133,11 +130,7 @@ public class AccountService {
     }
 
     public List<AccountDto> getAccountsByUserId(Long userId) {
-        /**
-         * 사용자가 없는 경우 실패
-         */
-        AccountUser accountUser = accountUserRepository.findById(userId)
-                .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+        AccountUser accountUser = getAccountUser(userId);
 
         List<Account> accounts = accountRepository.findByAccountUser(accountUser);
 
@@ -145,5 +138,23 @@ public class AccountService {
                 .map(account -> AccountDto.fromEntity(account))
                 .collect(Collectors.toList());
 
+    }
+
+    /**
+     * 사용자가 없는 경우 실패
+     */
+    private AccountUser getAccountUser(Long userId) {
+        AccountUser accountUser = accountUserRepository.findById(userId)
+                .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+        return accountUser;
+    }
+
+    /**
+     * 계좌가 없는 경우 실패
+     */
+    private Account getAccount(String accountNumber) {
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
+        return account;
     }
 }

@@ -126,7 +126,6 @@ public class TransactionService {
     }
 
     private void validateCancelBalance(Transaction transaction, Account account, Long amount) {
-        System.out.println(account.getAccountUser().getId());
         /**
          * 트랜잭션이 해당 계좌의 거래가 아닌 경우 실패
          */
