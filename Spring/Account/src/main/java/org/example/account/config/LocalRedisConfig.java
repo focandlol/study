@@ -8,7 +8,7 @@ import redis.embedded.RedisServer;
 
 @Configuration
 public class LocalRedisConfig {
-    @Value("${spring.data.redis.port}")
+    @Value("${spring.redis.port}")
     private int redisPort;
 
     private RedisServer redisServer;
@@ -21,7 +21,7 @@ public class LocalRedisConfig {
 
     @PreDestroy
     public void stopRedis() {
-        if(redisServer != null) {
+        if (redisServer != null) {
             redisServer.stop();
         }
     }

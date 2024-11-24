@@ -263,8 +263,6 @@ class TransactionServiceTest {
                 .transactedAt(LocalDateTime.now())
                 .build();
 
-        System.out.println(account.getAccountUser().getId());
-
         given(transactionRepository.findByTransactionId(anyString()))
                 .willReturn(Optional.of(transaction));
 
