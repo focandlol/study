@@ -7,8 +7,6 @@ import org.example.account.dto.AccountDto;
 import org.example.account.exception.AccountException;
 import org.example.account.repository.AccountRepository;
 import org.example.account.repository.AccountUserRepository;
-import org.example.account.type.AccountStatus;
-import org.example.account.type.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,11 +38,6 @@ public class AccountService {
 
         String newAccount = getAccountNumber();
 
-//        String newAccount = accountRepository.findFirstByOrderByIdDesc()
-//                .map(account -> (Integer.parseInt(account.getAccountNumber())) + 1 + "")
-//                .orElse("1000000000");
-
-
         Account saveAccount = accountRepository.save(
                 Account.builder()
                         .accountUser(accountUser)
@@ -58,6 +51,9 @@ public class AccountService {
         return AccountDto.fromEntity(saveAccount);
     }
 
+    /**
+     * 랜덤 10자리 계좌 번호 반환
+     */
     private String getAccountNumber() {
         String accountNumber;
         Random random = new Random();
@@ -84,12 +80,6 @@ public class AccountService {
         }
     }
 
-    public Account getAccount(Long id){
-        if(id < 0){
-            throw new RuntimeException("Minus");
-        }
-        return accountRepository.findById(id).get();
-    }
 
     public AccountDto deleteAccount(Long userId, String accountNumber) {
         AccountUser accountUser = getAccountUser(userId);

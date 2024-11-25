@@ -50,29 +50,6 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("계좌 조회 성공")
-    void testXXX(){
-        given(accountRepository.findById(anyLong()))
-                .willReturn(Optional.of(Account.builder()
-                        .accountStatus(AccountStatus.UNREGISTERED)
-                        .accountNumber("123412")
-                        .build()));
-
-        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-
-
-        Account account = accountService.getAccount(4555L);
-
-        verify(accountRepository,times(1)).findById(captor.capture());
-        verify(accountRepository,times(0)).save(any());
-        assertEquals(4555L,captor.getValue());
-        assertNotEquals(4535L,captor.getValue());
-        assertTrue(4555L == captor.getValue());
-        assertEquals("123412",account.getAccountNumber());
-        assertEquals(AccountStatus.UNREGISTERED,account.getAccountStatus());
-    }
-
-    @Test
     @DisplayName("계좌 번호 랜덤 생성")
     void createRandomAccountNumber(){
         given(accountRepository.findByAccountNumber(anyString()))
@@ -89,10 +66,6 @@ class AccountServiceTest {
     void createAccountSuccess(){
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(user));
-
-//        given(accountRepository.findFirstByOrderByIdDesc())
-//                .willReturn(Optional.of(Account.builder()
-//                        .accountNumber("1000000012").build()));
 
         given(accountRepository.findByAccountNumber(anyString()))
                 .willReturn(Optional.empty());
@@ -171,33 +144,6 @@ class AccountServiceTest {
         assertEquals(0L,captor.getValue().getBalance());
         assertNotNull(captor.getValue().getUnregisteredAt());
     }
-
-//    @Test
-//    void createFirstAccount(){
-//        AccountUser user = AccountUser.builder()
-//                .id(12L)
-//                .name("pobi").build();
-//
-//        given(accountUserRepository.findById(anyLong()))
-//                .willReturn(Optional.of(user));
-//
-//        given(accountRepository.findFirstByOrderByIdDesc())
-//                .willReturn(Optional.empty());
-//
-//        given(accountRepository.save(any()))
-//                .willReturn(Account.builder()
-//                        .accountUser(user)
-//                        .accountNumber("1000000013").build());
-//
-//        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
-//
-//        AccountDto account = accountService.createAccount(1L, 1000L);
-//
-//        verify(accountRepository,times(1)).save(captor.capture());
-//        assertEquals(12L,account.getUserId());
-//        assertEquals("1000000000",captor.getValue().getAccountNumber());
-//    }
-
 
 
     @Test

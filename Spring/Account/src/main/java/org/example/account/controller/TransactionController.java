@@ -6,13 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.account.aop.AccountLock;
 import org.example.account.dto.CancelBalance;
 import org.example.account.dto.QueryTransactionResponse;
-import org.example.account.dto.TransactionDto;
 import org.example.account.dto.UseBalance;
 import org.example.account.exception.AccountException;
 import org.example.account.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
-
-import javax.security.auth.login.AccountNotFoundException;
 
 @RestController
 @Slf4j
@@ -50,7 +47,7 @@ public class TransactionController {
             return CancelBalance.Response.from(transactionService.cancelBalance(request.getTransactionId(),
                     request.getAccountNumber(), request.getAmount()));
         } catch(AccountException e) {
-            log.error("Failed to use balance");
+            log.error("Failed to cancel balance");
 
             transactionService.saveFailedCancelTransaction(
                     request.getAccountNumber(),

@@ -3,8 +3,6 @@ package org.example.account.service;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.example.account.dto.UseBalance;
 import org.example.account.exception.AccountException;
-import org.example.account.type.ErrorCode;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -56,8 +54,6 @@ class LockAopAspectTest {
 
         assertThrows(AccountException.class,
                 () -> lockAopAspect.aroundMethod(proceedingJoinPoint,request));
-
-        //lockAopAspect.aroundMethod(proceedingJoinPoint,request);
 
         verify(lockService,times(1)).lock(lockCaptor.capture());
         verify(lockService,times(1)).unlock(unlockCaptor.capture());

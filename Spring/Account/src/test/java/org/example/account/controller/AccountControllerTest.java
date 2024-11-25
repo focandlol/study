@@ -5,9 +5,9 @@ import org.example.account.domain.Account;
 import org.example.account.dto.AccountDto;
 import org.example.account.dto.CreateAccount;
 import org.example.account.dto.DeleteAccount;
-import org.example.account.dto.GetAccount;
 import org.example.account.type.AccountStatus;
 import org.example.account.service.AccountService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -40,6 +39,7 @@ class AccountControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("계좌 생성 성공")
     void successCreateAccount() throws Exception {
         given(accountService.createAccount(anyLong(), anyLong()))
                 .willReturn(mockAccountDto(1L, "1234567890", null, null));
@@ -56,6 +56,7 @@ class AccountControllerTest {
     }
 
     @Test
+    @DisplayName("계좌 해지 성공")
     void successDeleteAccount() throws Exception {
         given(accountService.deleteAccount(anyLong(), anyString()))
                 .willReturn(mockAccountDto(1L, "1234567890", null, null));
@@ -72,18 +73,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void successGetAccount() throws Exception {
-        given(accountService.getAccount(anyLong()))
-                .willReturn(mockAccount("3456", AccountStatus.IN_USE));
-
-        mockMvc.perform(get("/account/876")) // PathVariable 사용
-                .andDo(print())
-                .andExpect(jsonPath("$.accountNumber").value("3456"))
-                .andExpect(jsonPath("$.accountStatus").value("IN_USE"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
+    @DisplayName("계좌 확인 성공")
     void successGetAccountByUserId() throws Exception {
         given(accountService.getAccountsByUserId(anyLong()))
                 .willReturn(Arrays.asList(

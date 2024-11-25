@@ -2,11 +2,9 @@ package org.example.account.controller;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.account.domain.Account;
 import org.example.account.dto.AccountInfo;
 import org.example.account.dto.CreateAccount;
 import org.example.account.dto.DeleteAccount;
-import org.example.account.dto.GetAccount;
 import org.example.account.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +36,6 @@ public class AccountController {
     @GetMapping("/account")
     public List<AccountInfo> getAccountsByUserId(
             @RequestParam("user_id") Long userId
-            //@RequestBody @Valid GetAccount request
             ){
         return accountService.getAccountsByUserId(userId).stream()
                 .map((accountDto -> AccountInfo.builder()
@@ -46,10 +43,5 @@ public class AccountController {
                         .balance(accountDto.getBalance())
                         .build()))
                 .collect(Collectors.toList());
-    }
-
-    @GetMapping("/account/{id}")
-    public Account getAccount(@PathVariable Long id) {
-        return accountService.getAccount(id);
     }
 }
