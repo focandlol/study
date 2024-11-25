@@ -1,7 +1,6 @@
 package org.example.account.dto;
 
 import lombok.*;
-import org.example.account.domain.Account;
 import org.example.account.domain.Transaction;
 import org.example.account.type.TransactionResultType;
 import org.example.account.type.TransactionType;

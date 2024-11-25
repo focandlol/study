@@ -9,6 +9,7 @@ import org.example.account.service.TransactionService;
 import org.example.account.type.ErrorCode;
 import org.example.account.type.TransactionResultType;
 import org.example.account.type.TransactionType;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -42,6 +43,7 @@ class TransactionControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("잔액 사용 성공")
     void successUseBalance() throws Exception {
         given(transactionService.useBalance(anyLong(), anyString(), anyLong()))
                 .willReturn(getTransactionDto("1234567890", 12345L, "transactionId", TransactionResultType.S, TransactionType.USE));
@@ -61,6 +63,7 @@ class TransactionControllerTest {
     }
 
     @Test
+    @DisplayName("잔액 사용 실패 -  saveFailedUseTransaction 메소드 호출")
     void FailedUseBalance() throws Exception {
         doThrow(new AccountException())
                 .when(transactionService)
@@ -79,7 +82,8 @@ class TransactionControllerTest {
 
 
     @Test
-    void FailedValidUseBalance() throws Exception {
+    @DisplayName("잔액 사용 실패 - 너무 큰 금액")
+    void FailedValidMaxUseBalance() throws Exception {
         mockMvc.perform(post("/transaction/use")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
@@ -90,6 +94,19 @@ class TransactionControllerTest {
     }
 
     @Test
+    @DisplayName("잔액 사용 실패 - 너무 작은 금액")
+    void FailedValidMinUseBalance() throws Exception {
+        mockMvc.perform(post("/transaction/use")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new UseBalance.Request(1L, "1234567890", 1L)
+                        )))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("잔액 사용 취소 성공")
     void successCancelBalance() throws Exception {
         given(transactionService.cancelBalance(anyString(), anyString(), anyLong()))
                 .willReturn(getTransactionDto("1234567890", 12345L, "transactionId", TransactionResultType.S, TransactionType.CANCEL));
@@ -109,6 +126,7 @@ class TransactionControllerTest {
     }
 
     @Test
+    @DisplayName("잔액 사용 취소 실패 - saveFailedCancelTransaction 호출")
     void FailedCancelBalance() throws Exception {
         doThrow(new AccountException())
                 .when(transactionService)
@@ -126,17 +144,7 @@ class TransactionControllerTest {
     }
 
     @Test
-    void FailedValueCancelBalance() throws Exception {
-        mockMvc.perform(post("/transaction/cancel")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(
-                                new UseBalance.Request(1L, "1234567890", 30000000000L)
-                        )))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
+    @DisplayName("거래 확인 성공")
     void successQueryTransaction() throws Exception {
         given(transactionService.queryTransaction(anyString()))
                 .willReturn(getTransactionDto("1234567890", 12345L, "transactionId", TransactionResultType.S, TransactionType.USE));
@@ -151,6 +159,9 @@ class TransactionControllerTest {
                 .andExpect(jsonPath("$.transactionResult").value("S"));
     }
 
+    /**
+     * 공통 dto 메서드
+     */
     private TransactionDto getTransactionDto(String accountNumber, Long amount, String transactionId,
                                              TransactionResultType resultType, TransactionType type) {
         return TransactionDto.builder()

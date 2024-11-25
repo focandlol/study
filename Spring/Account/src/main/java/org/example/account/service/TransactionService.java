@@ -12,7 +12,6 @@ import org.example.account.repository.AccountRepository;
 import org.example.account.repository.AccountUserRepository;
 import org.example.account.repository.TransactionRepository;
 import org.example.account.type.AccountStatus;
-import org.example.account.type.ErrorCode;
 import org.example.account.type.TransactionResultType;
 import org.example.account.type.TransactionType;
 import org.springframework.stereotype.Service;
@@ -41,11 +40,7 @@ public class TransactionService {
         AccountUser user = accountUserRepository.findById(userId)
                 .orElseThrow(() -> new AccountException(USER_NOT_FOUND));
 
-        /**
-         * 계좌가 없을 경우 실패
-         */
-        Account account = accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
+        Account account = getAccount(accountNumber);
 
         validateUserBalance(user,account,amount);
 
@@ -83,14 +78,19 @@ public class TransactionService {
 
     }
 
+    /**
+     * 잔액 사용 실패 시 호출
+     */
     public void saveFailedUseTransaction(String accountNumber, Long amount) {
-        Account account = accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
+        Account account = getAccount(accountNumber);
 
         saveAndGetTransaction(F, account, amount,USE);
 
     }
 
+    /**
+     * 거래 저장 메서드
+     */
     private Transaction saveAndGetTransaction(TransactionResultType transactionResultType,
                                               Account account, Long amount,TransactionType transactionType) {
         return transactionRepository.save(Transaction.builder()
@@ -106,17 +106,9 @@ public class TransactionService {
     }
 
     public TransactionDto cancelBalance(String transactionId, String accountNumber, Long amount) {
-        /**
-         * 거래가 없을 경우 실패
-         */
-        Transaction transaction = transactionRepository.findByTransactionId(transactionId)
-                .orElseThrow(() -> new AccountException(TRANSACTION_NOT_FOUND));
+        Transaction transaction = getTransaction(transactionId);
 
-        /**
-         * 계좌가 없을 경우 실패
-         */
-        Account account = accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
+        Account account = getAccount(accountNumber);
 
         validateCancelBalance(transaction,account,amount);
 
@@ -124,6 +116,7 @@ public class TransactionService {
 
         return TransactionDto.fromEntity(saveAndGetTransaction(S, account, amount,CANCEL));
     }
+
 
     private void validateCancelBalance(Transaction transaction, Account account, Long amount) {
         /**
@@ -139,28 +132,34 @@ public class TransactionService {
         if(!transaction.getAmount().equals(amount)){
             throw new AccountException(CANCEL_MUST_FULLY);
         }
-
-        /**
-         * 트랜잭션이 1년이이상 경과했을 경우 실패
-         */
-        if(transaction.getTransactedAt().isBefore(LocalDateTime.now().minusYears(1))){
-            throw new AccountException(TOO_OLD_ORDER_TO_CANCEL);
-        }
     }
 
+    /**
+     * 잔액 사용 취소 실패 시 호출
+     */
     public void saveFailedCancelTransaction(String accountNumber, Long amount) {
-        Account account = accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
+        Account account = getAccount(accountNumber);
 
         saveAndGetTransaction(F, account, amount,CANCEL);
     }
 
     public TransactionDto queryTransaction(String transactionId) {
-        /**
-         * 거래가 없는 경우 실패
-         */
-        return TransactionDto.fromEntity(transactionRepository.findByTransactionId(transactionId)
-                .orElseThrow(() -> new AccountException(TRANSACTION_NOT_FOUND)));
+        return TransactionDto.fromEntity(getTransaction(transactionId));
+    }
 
+    /**
+     * 계좌가 없을 경우 실패
+     */
+    private Account getAccount(String accountNumber) {
+        return accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
+    }
+
+    /**
+     * 거래가 없을 경우 실패
+     */
+    private Transaction getTransaction(String transactionId) {
+        return transactionRepository.findByTransactionId(transactionId)
+                .orElseThrow(() -> new AccountException(TRANSACTION_NOT_FOUND));
     }
 }
