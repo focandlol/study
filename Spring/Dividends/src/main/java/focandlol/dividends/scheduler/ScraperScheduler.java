@@ -3,6 +3,7 @@ package focandlol.dividends.scheduler;
 import focandlol.dividends.model.Company;
 import focandlol.dividends.model.Dividend;
 import focandlol.dividends.model.ScrapedResult;
+import focandlol.dividends.model.constants.CacheKey;
 import focandlol.dividends.persist.CompanyRepository;
 import focandlol.dividends.persist.DividendRepository;
 import focandlol.dividends.persist.entity.CompanyEntity;
@@ -10,6 +11,9 @@ import focandlol.dividends.persist.entity.DividendEntity;
 import focandlol.dividends.scraper.YahooFinanceScraper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +22,14 @@ import java.util.List;
 @Slf4j
 @Component
 @AllArgsConstructor
+@EnableCaching
 public class ScraperScheduler {
 
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;
     private final YahooFinanceScraper yahooFinanceScraper;
 
+    @CacheEvict(value = CacheKey.KEY_FINANCE, allEntries = true)
     @Scheduled(cron = "${scheduler.scrap.yahoo}")
     public void yahooFinanceScheduling(){
         log.info("scraping scheduler is started");
