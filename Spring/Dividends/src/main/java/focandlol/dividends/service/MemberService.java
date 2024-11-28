@@ -1,5 +1,6 @@
 package focandlol.dividends.service;
 
+import focandlol.dividends.exception.impl.AlreadyExistUserException;
 import focandlol.dividends.model.Auth;
 import focandlol.dividends.persist.entity.MemberEntity;
 import focandlol.dividends.persist.MemberRepository;
@@ -30,7 +31,7 @@ public class MemberService implements UserDetailsService {
     public MemberEntity register(Auth.SignUp member) {
         boolean exists = memberRepository.existsByUsername(member.getUsername());
         if(exists){
-            throw new RuntimeException("이미 사용 중인 아이디 입니다");
+            throw new AlreadyExistUserException();
         }
 
         member.setPassword(passwordEncoder.encode(member.getPassword()));
