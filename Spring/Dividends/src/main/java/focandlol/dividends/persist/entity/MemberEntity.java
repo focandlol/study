@@ -1,4 +1,4 @@
-package focandlol.dividends.model;
+package focandlol.dividends.persist.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
