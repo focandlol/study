@@ -1,5 +1,6 @@
 package focandlol.dividends.model;
 
+import focandlol.dividends.persist.entity.MemberEntity;
 import lombok.Data;
 
 import java.util.List;
