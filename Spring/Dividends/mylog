@@ -1,0 +1,162 @@
+[2024-11-28 13:46:00:409][main] INFO  f.dividends.DividendsApplication - Starting DividendsApplication using Java 11.0.21 on DESKTOP-MTGRSSD with PID 16740 (C:\Users\1\Desktop\ggit\study\Spring\Dividends\build\classes\java\main started by 1 in C:\Users\1\Desktop\ggit\study\Spring\Dividends)
+[2024-11-28 13:46:00:411][main] DEBUG f.dividends.DividendsApplication - Running with Spring Boot v2.5.6, Spring v5.3.12
+[2024-11-28 13:46:00:411][main] INFO  f.dividends.DividendsApplication - No active profile set, falling back to default profiles: default
+[2024-11-28 13:46:01:847][main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+[2024-11-28 13:46:01:847][main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2024-11-28 13:46:01:902][main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 49 ms. Found 3 JPA repository interfaces.
+[2024-11-28 13:46:01:910][main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+[2024-11-28 13:46:01:911][main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2024-11-28 13:46:01:925][main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface focandlol.dividends.persist.CompanyRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+[2024-11-28 13:46:01:926][main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface focandlol.dividends.persist.DividendRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+[2024-11-28 13:46:01:926][main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface focandlol.dividends.persist.MemberRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+[2024-11-28 13:46:01:926][main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+[2024-11-28 13:46:01:1102][main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@1084f78c' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2024-11-28 13:46:01:1105][main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[2024-11-28 13:46:01:1259][main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+[2024-11-28 13:46:01:1265][main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+[2024-11-28 13:46:01:1266][main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+[2024-11-28 13:46:01:1266][main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.54]
+[2024-11-28 13:46:01:1328][main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+[2024-11-28 13:46:01:1329][main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 892 ms
+[2024-11-28 13:46:01:1341][main] DEBUG com.zaxxer.hikari.HikariConfig - Driver class org.h2.Driver found in Thread context class loader TomcatEmbeddedWebappClassLoader
+  context: ROOT
+  delegate: true
+----------> Parent Classloader:
+jdk.internal.loader.ClassLoaders$AppClassLoader@512ddf17
+
+[2024-11-28 13:46:01:1350][main] DEBUG com.zaxxer.hikari.HikariConfig - HikariPool-1 - configuration:
+[2024-11-28 13:46:01:1351][main] DEBUG com.zaxxer.hikari.HikariConfig - allowPoolSuspension................................false
+[2024-11-28 13:46:01:1351][main] DEBUG com.zaxxer.hikari.HikariConfig - autoCommit................................true
+[2024-11-28 13:46:01:1351][main] DEBUG com.zaxxer.hikari.HikariConfig - catalog................................none
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - connectionInitSql................................none
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTestQuery................................none
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - connectionTimeout................................30000
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - dataSource................................none
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceClassName................................none
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceJNDI................................none
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - dataSourceProperties................................{password=<masked>}
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - driverClassName................................"org.h2.Driver"
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - exceptionOverrideClassName................................none
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckProperties................................{}
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - healthCheckRegistry................................none
+[2024-11-28 13:46:01:1352][main] DEBUG com.zaxxer.hikari.HikariConfig - idleTimeout................................600000
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - initializationFailTimeout................................1
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - isolateInternalQueries................................false
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - jdbcUrl................................jdbc:h2:mem:dayone;DB_CLOSE_DELAY=-1
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - keepaliveTime................................0
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - leakDetectionThreshold................................0
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - maxLifetime................................1800000
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - maximumPoolSize................................10
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - metricRegistry................................none
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - metricsTrackerFactory................................none
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - minimumIdle................................10
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - password................................<masked>
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - poolName................................"HikariPool-1"
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - readOnly................................false
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - registerMbeans................................false
+[2024-11-28 13:46:01:1353][main] DEBUG com.zaxxer.hikari.HikariConfig - scheduledExecutor................................none
+[2024-11-28 13:46:01:1354][main] DEBUG com.zaxxer.hikari.HikariConfig - schema................................none
+[2024-11-28 13:46:01:1354][main] DEBUG com.zaxxer.hikari.HikariConfig - threadFactory................................internal
+[2024-11-28 13:46:01:1354][main] DEBUG com.zaxxer.hikari.HikariConfig - transactionIsolation................................default
+[2024-11-28 13:46:01:1354][main] DEBUG com.zaxxer.hikari.HikariConfig - username................................"sa"
+[2024-11-28 13:46:01:1354][main] DEBUG com.zaxxer.hikari.HikariConfig - validationTimeout................................5000
+[2024-11-28 13:46:01:1354][main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+[2024-11-28 13:46:01:1413][main] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1414][main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+[2024-11-28 13:46:01:1417][main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:dayone'
+[2024-11-28 13:46:01:1490][main] DEBUG org.jboss.logging - Logging Provider: org.jboss.logging.Log4j2LoggerProvider
+[2024-11-28 13:46:01:1516][main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+[2024-11-28 13:46:01:1525][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Pool stats (total=1, active=0, idle=1, waiting=0)
+[2024-11-28 13:46:01:1527][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn1: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1527][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn2: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1527][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn3: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1527][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn4: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1528][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn5: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1528][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn6: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1528][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn7: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1528][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn8: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1529][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn9: url=jdbc:h2:mem:dayone user=SA
+[2024-11-28 13:46:01:1529][HikariPool-1 connection adder] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - After adding stats (total=10, active=0, idle=10, waiting=0)
+[2024-11-28 13:46:01:1545][main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+[2024-11-28 13:46:01:1624][main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+[2024-11-28 13:46:01:1693][main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+[2024-11-28 13:46:02:2060][main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[2024-11-28 13:46:02:2066][main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2024-11-28 13:46:02:2277][main] DEBUG f.d.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+[2024-11-28 13:46:02:2399][main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2024-11-28 13:46:02:2452][main] DEBUG i.n.u.i.l.InternalLoggerFactory - Using SLF4J as the default logging framework
+[2024-11-28 13:46:02:2457][main] DEBUG i.l.c.r.AddressResolverGroupProvider - Starting without optional netty's non-blocking DNS resolver library
+[2024-11-28 13:46:02:2458][main] DEBUG i.l.c.r.DefaultClientResources - -Dio.netty.eventLoopThreads: 12
+[2024-11-28 13:46:02:2463][main] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Creating executor io.netty.util.concurrent.DefaultEventExecutorGroup
+[2024-11-28 13:46:02:2472][main] DEBUG i.n.u.i.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+[2024-11-28 13:46:02:2473][main] DEBUG i.n.u.i.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+[2024-11-28 13:46:02:2475][main] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.level: simple
+[2024-11-28 13:46:02:2476][main] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.targetRecords: 4
+[2024-11-28 13:46:02:2477][main] DEBUG i.n.u.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@43312512
+[2024-11-28 13:46:02:2480][main] DEBUG i.n.u.internal.PlatformDependent0 - -Dio.netty.noUnsafe: false
+[2024-11-28 13:46:02:2480][main] DEBUG i.n.u.internal.PlatformDependent0 - Java version: 11
+[2024-11-28 13:46:02:2481][main] DEBUG i.n.u.internal.PlatformDependent0 - sun.misc.Unsafe.theUnsafe: available
+[2024-11-28 13:46:02:2481][main] DEBUG i.n.u.internal.PlatformDependent0 - sun.misc.Unsafe.copyMemory: available
+[2024-11-28 13:46:02:2482][main] DEBUG i.n.u.internal.PlatformDependent0 - java.nio.Buffer.address: available
+[2024-11-28 13:46:02:2482][main] DEBUG i.n.u.internal.PlatformDependent0 - direct buffer constructor: unavailable: Reflective setAccessible(true) disabled
+[2024-11-28 13:46:02:2482][main] DEBUG i.n.u.internal.PlatformDependent0 - java.nio.Bits.unaligned: available, true
+[2024-11-28 13:46:02:2483][main] DEBUG i.n.u.internal.PlatformDependent0 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable: class io.netty.util.internal.PlatformDependent0$6 cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to unnamed module @5a936e64
+[2024-11-28 13:46:02:2483][main] DEBUG i.n.u.internal.PlatformDependent0 - java.nio.DirectByteBuffer.<init>(long, int): unavailable
+[2024-11-28 13:46:02:2483][main] DEBUG i.n.util.internal.PlatformDependent - sun.misc.Unsafe: available
+[2024-11-28 13:46:02:2484][main] DEBUG i.n.util.internal.PlatformDependent - maxDirectMemory: 4265607168 bytes (maybe)
+[2024-11-28 13:46:02:2484][main] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.tmpdir: C:\Users\1\AppData\Local\Temp (java.io.tmpdir)
+[2024-11-28 13:46:02:2484][main] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+[2024-11-28 13:46:02:2484][main] DEBUG i.n.util.internal.PlatformDependent - Platform: Windows
+[2024-11-28 13:46:02:2485][main] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.maxDirectMemory: -1 bytes
+[2024-11-28 13:46:02:2485][main] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+[2024-11-28 13:46:02:2485][main] DEBUG io.netty.util.internal.CleanerJava9 - java.nio.ByteBuffer.cleaner(): available
+[2024-11-28 13:46:02:2485][main] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.noPreferDirect: false
+[2024-11-28 13:46:02:2486][main] DEBUG i.n.util.internal.PlatformDependent - org.jctools-core.MpscChunkedArrayQueue: available
+[2024-11-28 13:46:02:2493][main] DEBUG reactor.util.Loggers - Using Slf4j logging framework
+[2024-11-28 13:46:02:2495][main] DEBUG i.l.c.event.jfr.EventRecorderHolder - Starting with JFR support
+[2024-11-28 13:46:02:2506][main] DEBUG i.l.c.r.DefaultClientResources - LatencyUtils/HdrUtils are not available, metrics are disabled
+[2024-11-28 13:46:02:2609][main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure Ant [pattern='/h2-console/**'] with []
+[2024-11-28 13:46:02:2631][main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@59cb10e0, org.springframework.security.web.context.SecurityContextPersistenceFilter@22561412, org.springframework.security.web.header.HeaderWriterFilter@66f223fa, org.springframework.security.web.authentication.logout.LogoutFilter@37c762aa, focandlol.dividends.security.JwtAuthenticationFilter@5c459194, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4806fbf7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@70dd79f7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3d763ae5, org.springframework.security.web.session.SessionManagementFilter@5a941fb4, org.springframework.security.web.access.ExceptionTranslationFilter@ea40c9f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@30a5a58d]
+[2024-11-28 13:46:02:2752][main] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	f.d.w.AuthController:
+	{POST [/auth/signup]}: signUp(SignUp)
+	{POST [/auth/signin]}: signIn(SignIn)
+[2024-11-28 13:46:02:2755][main] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	f.d.w.CompanyController:
+	{DELETE [/company/{ticker}]}: deleteCompany(String)
+	{GET [/company/autocomplete]}: autocomplete(String)
+	{POST [/company]}: addCompany(Company)
+	{GET [/company]}: searchCompany(Pageable)
+[2024-11-28 13:46:02:2755][main] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	f.d.w.FinanceController:
+	{GET [/finance/dividend/{companyName}]}: searchFinance(String)
+[2024-11-28 13:46:02:2756][main] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	o.s.b.a.w.s.e.BasicErrorController:
+	{ [/error]}: error(HttpServletRequest)
+	{ [/error], produces [text/html]}: errorHtml(HttpServletRequest,HttpServletResponse)
+[2024-11-28 13:46:02:2774][main] DEBUG _.s.w.s.HandlerMapping.Mappings - 'beanNameHandlerMapping' {}
+[2024-11-28 13:46:02:2791][main] DEBUG _.s.w.s.HandlerMapping.Mappings - 'resourceHandlerMapping' {/webjars/**=ResourceHttpRequestHandler [], /**=ResourceHttpRequestHandler [ServletContext [/]]}
+[2024-11-28 13:46:03:2834][main] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Creating executor io.netty.util.concurrent.DefaultEventExecutorGroup
+[2024-11-28 13:46:03:2834][main] DEBUG i.l.c.r.DefaultClientResources - LatencyUtils/HdrUtils are not available, metrics are disabled
+[2024-11-28 13:46:03:2929][main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+[2024-11-28 13:46:03:2939][main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+[2024-11-28 13:46:03:2947][main] INFO  f.dividends.DividendsApplication - Started DividendsApplication in 2.854 seconds (JVM running for 3.412)
+[2024-11-28 13:46:31:31534][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+[2024-11-28 13:46:31:31534][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+[2024-11-28 13:47:01:61542][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+[2024-11-28 13:47:01:61542][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+[2024-11-28 13:47:10:70734][http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2024-11-28 13:47:10:70734][http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+[2024-11-28 13:47:10:70734][http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+[2024-11-28 13:47:20:80240][http-nio-8080-exec-3] INFO  f.dividends.web.AuthController - user login -> kkm
+[2024-11-28 13:47:31:91546][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+[2024-11-28 13:47:31:91546][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+[2024-11-28 13:47:36:96521][http-nio-8080-exec-4] INFO  f.d.s.JwtAuthenticationFilter - [kkm] -> /company
+[2024-11-28 13:48:01:121563][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+[2024-11-28 13:48:01:121563][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+[2024-11-28 13:48:31:151570][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+[2024-11-28 13:48:31:151570][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+[2024-11-28 13:49:01:181582][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+[2024-11-28 13:49:01:181582][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
+[2024-11-28 13:49:31:211593][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+[2024-11-28 13:49:31:211593][HikariPool-1 housekeeper] DEBUG com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Fill pool skipped, pool is at sufficient level.
