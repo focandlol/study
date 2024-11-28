@@ -1,5 +1,6 @@
 package focandlol.dividends.service;
 
+import focandlol.dividends.exception.impl.NoCompanyException;
 import focandlol.dividends.model.Company;
 import focandlol.dividends.model.ScrapedResult;
 import focandlol.dividends.persist.CompanyRepository;
@@ -84,7 +85,7 @@ public class CompanyService {
 
     public String deleteCompany(String ticker){
         CompanyEntity company = companyRepository.findByTicker(ticker)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회사입니다"));
+                .orElseThrow(() -> new NoCompanyException());
 
         dividendRepository.deleteAllByCompanyId(company.getId());
         companyRepository.delete(company);
