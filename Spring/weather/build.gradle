@@ -1,18 +1,12 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.5'
+	id 'org.springframework.boot' version '2.6.6'
 	id 'io.spring.dependency-management' version '1.1.6'
 }
 
 group = 'focandlol'
 version = '0.0.1-SNAPSHOT'
-
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
-}
+sourceCompatibility = "1.8"
 
 configurations {
 	compileOnly {
@@ -35,7 +29,8 @@ dependencies {
 	implementation 'mysql:mysql-connector-java:8.0.28'
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 }
 
 tasks.named('test') {

@@ -64,19 +64,23 @@ public class DiaryService {
     }
 
     public List<Diary> readDiary(LocalDate date) {
-//        if(date.isAfter(LocalDate.ofYearDay(3050,1))){
-//            throw new InvalidDate();
-//        }
+        logger.info("started to read diary");
+        if(date.isAfter(LocalDate.ofYearDay(3050,1))){
+            throw new InvalidDate();
+        }
         return diaryRepository.findAllByDate(date);
     }
 
     public List<Diary> readDiaries(LocalDate startDate, LocalDate endDate) {
+        logger.info("started to read diaries");
         return diaryRepository.findAllByDateBetween(startDate, endDate);
     }
 
     @Transactional
     public void updateDiary(LocalDate date, String text) {
-        Diary getDiary = diaryRepository.getFirstByDate(date);
+        logger.info("started to update diary");
+        Diary getDiary = diaryRepository.getFirstByDate(date)
+                        .orElseThrow(() -> new RuntimeException("해당 날짜에 일기가 없습니다"));
         getDiary.setText(text);
     }
 
@@ -89,14 +93,16 @@ public class DiaryService {
         String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=" + apiKey;
 
         try {
-            URL url = new URL(apiUrl);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            //URL url = createURL(apiUrl);
+            //HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            HttpURLConnection con = openHttpConnection(apiUrl);
             con.setRequestMethod("GET");
             int responseCode = con.getResponseCode();
             BufferedReader br;
             if (responseCode == 200) {
                 br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             }else{
+                System.out.println("dddddd");
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
             }
 
@@ -112,8 +118,21 @@ public class DiaryService {
             return "failed to get response";
         }
     }
+    protected HttpURLConnection openHttpConnection(String apiUrl) throws Exception {
+        URL url = new URL(apiUrl);
+        return (HttpURLConnection) url.openConnection();
+    }
+
+    protected URL createURL(String apiUrl) throws Exception {
+        return new URL(apiUrl);
+    }
+
+    public String getWeatherStringForTest(){
+        return getWeatherString();
+    }
 
     private Map<String,Object> parseWeather(String jsonString){
+        System.out.println("jsonString = " + jsonString);
         JSONParser parser = new JSONParser();
         JSONObject jsonObject;
 
@@ -136,6 +155,10 @@ public class DiaryService {
         return resultMap;
     }
 
+    public Map<String,Object> parseWeatherForTest(String jsonString){
+        return parseWeather(jsonString);
+    }
+
     private DateWeather getWeatherFromApi(){
         //날씨 데이터 가져오기
         String weatherData = getWeatherString();
@@ -151,9 +174,16 @@ public class DiaryService {
         return dateWeather;
     }
 
+    public DateWeather getWeatherFromApiForTest(){
+        return getWeatherFromApi();
+    }
+
     private DateWeather getDateWeather(LocalDate date){
         List<DateWeather> dateWeatherListFromDb = dateWeatherRepository.findAllByDate(date);
         if(dateWeatherListFromDb.size() == 0){
+            /**
+             * 만약 입력받은 날짜 날씨가 없을 시 현재 날짜의 날씨를 리턴
+             */
             return getWeatherFromApi();
         }
         return dateWeatherListFromDb.get(0);
