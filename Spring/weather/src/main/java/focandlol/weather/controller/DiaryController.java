@@ -1,55 +1,69 @@
 package focandlol.weather.controller;
 
+import focandlol.weather.WeatherApplication;
 import focandlol.weather.domain.Diary;
+import focandlol.weather.dto.DiaryDto;
 import focandlol.weather.service.DiaryService;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class DiaryController {
 
     private final DiaryService diaryService;
+    private final Logger logger = LoggerFactory.getLogger(DiaryController.class);
 
-    @Operation(summary = "일기 텍스트와 날씨를 이용해서 db에 일기 저장", description = "This API fetches example data.")
+    @ApiOperation(value = "일기 텍스트와 날씨를 이용해서 db에 일기 저장", notes = "This API fetches example data.")
     @PostMapping("/create/diary")
     void createDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date,
                      @RequestBody String text) throws IllegalAccessException {
-        //throw new IllegalAccessException("sa");
+        logger.info("create/diary 호출");
         diaryService.createDiary(date,text);
     }
 
-    @Operation(summary = "선택한 날짜의 모든 일기 데이터 가져옵니다")
+    @ApiOperation(value = "선택한 날짜의 모든 일기 데이터 가져옵니다")
     @GetMapping("/read/diary")
-    List<Diary> readDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date) throws IllegalAccessException {
-        return diaryService.readDiary(date);
+    List<DiaryDto> readDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date) throws IllegalAccessException {
+        logger.info("read/diary 호출");
+        return diaryService.readDiary(date).stream()
+                .map(diary -> DiaryDto.from(diary))
+                .collect(Collectors.toList());
     }
 
-    @Operation(summary = "선택한 기간중의 모든 일기 데이터 가져옵니다")
+    @ApiOperation(value = "선택한 기간중의 모든 일기 데이터 가져옵니다")
     @GetMapping("/read/diaries")
-    List<Diary> readDiaries(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
+    List<DiaryDto> readDiaries(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
                             @Parameter(description = "조회할 기간의 첫번째날", example = "2024-11-15")LocalDate startDate
     ,@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
                             @Parameter(description = "조회할 기간의 마지막날", example = "2024-11-21") LocalDate endDate){
-
-        return diaryService.readDiaries(startDate,endDate);
+        logger.info("read/diaries 호출");
+        return diaryService.readDiaries(startDate,endDate).stream()
+                .map(diary -> DiaryDto.from(diary))
+                .collect(Collectors.toList());
     }
 
+    @ApiOperation(value = "해날 날짜의 첫번째 일기를 업데이트합니다")
     @PutMapping("/update/diary")
     void updateDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date,
                      @RequestBody String text){
+        logger.info("update/diary 호출");
         diaryService.updateDiary(date,text);
     }
 
+    @ApiOperation(value = "선택한 기간중의 모든 일기 데이터 삭제합니다")
     @DeleteMapping("/delete/diary")
     void deleteDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date){
+        logger.info("delete/diary 호출");
         diaryService.deleteDiary(date);
     }
 

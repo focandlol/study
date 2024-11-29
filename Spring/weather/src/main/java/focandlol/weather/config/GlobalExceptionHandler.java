@@ -1,6 +1,7 @@
 package focandlol.weather.config;
 
 import focandlol.weather.WeatherApplication;
+import focandlol.weather.dto.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,8 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public Exception handleAllException(Exception e){
+    public ErrorResponse handleAllException(Exception e){
         logger.error("error 발생");
-        return new Exception();
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
     }
 }
