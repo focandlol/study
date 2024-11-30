@@ -22,4 +22,5 @@ class LoanReview(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
+
 }
