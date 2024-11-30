@@ -1,33 +1,29 @@
 package focandlol.api.loan.review
 
+import focandlol.api.exception.CustomErrorCode
+import focandlol.api.exception.CustomException
+import focandlol.domain.domain.LoanReview
 import focandlol.domain.repository.LoanReviewRepository
 import org.springframework.stereotype.Service
 
 @Service
 class LoanReviewServiceImpl(
     private val loanReviewRepository: LoanReviewRepository
-): LoanReviewService {
-
+) : LoanReviewService {
     override fun loanReviewMain(userKey: String): LoanReviewDto.LoanReviewResponseDto {
-
-        val loanResult = getLoanResult(userKey)
-
         return LoanReviewDto.LoanReviewResponseDto(
             userKey = userKey,
-            loanResult = LoanReviewDto.LoanResult(
-                userLoanInterest = loanResult.userLoanInterest,
-                userLimitAmount = loanResult.userLimitAmount
-            )
+            loanResult = getLoanResult(userKey)?.toResponseDto()
+                ?: throw CustomException(CustomErrorCode.RESULT_NOT_FOUND)
         )
     }
 
-    override fun getLoanResult(userKey: String): LoanReviewDto.LoanReview{
-        val loanReview = loanReviewRepository.findByUserKey(userKey)
+    override fun getLoanResult(userKey: String) =
+        loanReviewRepository.findByUserKey(userKey)
 
-        return LoanReviewDto.LoanReview(
-            loanReview.userKey,
-            loanReview.loanLimitedAmount,
-            loanReview.loanInterest
+    private fun LoanReview.toResponseDto() =
+        LoanReviewDto.LoanResult(
+            userLimitAmount = this.loanLimitedAmount,
+            userLoanInterest = this.loanInterest
         )
-    }
 }
