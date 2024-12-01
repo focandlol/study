@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootApplication
-@EntityScan(basePackages = ["focandlol.domain.domain"])
-//@ComponentScan(basePackages = ["focandlol"]) // 모든 모
+@EntityScan(basePackages = ["focandlol.domain"])
+@ComponentScan(basePackages = ["focandlol"]) // 모든 모
 class ApiApplication
 
 fun main(args: Array<String>) {
