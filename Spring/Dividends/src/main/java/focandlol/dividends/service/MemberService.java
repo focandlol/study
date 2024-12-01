@@ -1,6 +1,8 @@
 package focandlol.dividends.service;
 
 import focandlol.dividends.exception.impl.AlreadyExistUserException;
+import focandlol.dividends.exception.impl.NoUserException;
+import focandlol.dividends.exception.impl.PasswordUnMatchException;
 import focandlol.dividends.model.Auth;
 import focandlol.dividends.persist.entity.MemberEntity;
 import focandlol.dividends.persist.MemberRepository;
@@ -42,10 +44,10 @@ public class MemberService implements UserDetailsService {
 
     public MemberEntity authenticate(Auth.SignIn member){
         MemberEntity user = memberRepository.findByUsername(member.getUsername())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 id 입니다"));
+                .orElseThrow(() -> new NoUserException());
 
         if(!passwordEncoder.matches(member.getPassword(),user.getPassword())){
-            throw new RuntimeException("비밀번호가 일치하지 않습니다");
+            throw new PasswordUnMatchException();
         }
 
         return user;
