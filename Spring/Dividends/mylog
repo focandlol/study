@@ -2211,3 +2211,6 @@ Caused by: java.lang.IllegalStateException: StandardEngine[Tomcat].StandardHost[
 [2024-12-01 21:25:33:391442][http-nio-8080-exec-7] INFO  focandlol.dividends.aop.LogAspect - org.springframework.data.jpa.repository.support.SimpleJpaRepository@3a0ed073-> end to delete
 [2024-12-01 21:25:33:391442][http-nio-8080-exec-7] INFO  focandlol.dividends.aop.LogAspect - focandlol.dividends.service.CompanyService@5ec3689b-> end to deleteCompany
 [2024-12-01 21:25:33:391446][http-nio-8080-exec-7] INFO  focandlol.dividends.aop.LogAspect - focandlol.dividends.web.CompanyController@5f1c406e-> end to deleteCompany
+[2024-12-01 21:29:14:612459][SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+[2024-12-01 21:29:14:612461][SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+[2024-12-01 21:29:14:612463][SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
