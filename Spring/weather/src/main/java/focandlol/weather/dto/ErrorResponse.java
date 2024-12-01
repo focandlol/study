@@ -1,12 +1,14 @@
 package focandlol.weather.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
+import focandlol.weather.error.ErrorCode;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ErrorResponse {
-    private int code;
+    private ErrorCode code;
     private String message;
 }

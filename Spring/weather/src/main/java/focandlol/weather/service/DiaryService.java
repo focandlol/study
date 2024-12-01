@@ -3,6 +3,8 @@ package focandlol.weather.service;
 import focandlol.weather.WeatherApplication;
 import focandlol.weather.domain.DateWeather;
 import focandlol.weather.domain.Diary;
+import focandlol.weather.error.DiaryException;
+import focandlol.weather.error.ErrorCode;
 import focandlol.weather.error.InvalidDate;
 import focandlol.weather.repository.DateWeatherRepository;
 import focandlol.weather.repository.DiaryRepository;
@@ -65,9 +67,6 @@ public class DiaryService {
 
     public List<Diary> readDiary(LocalDate date) {
         logger.info("started to read diary");
-        if(date.isAfter(LocalDate.ofYearDay(3050,1))){
-            throw new InvalidDate();
-        }
         return diaryRepository.findAllByDate(date);
     }
 
@@ -80,8 +79,11 @@ public class DiaryService {
     public void updateDiary(LocalDate date, String text) {
         logger.info("started to update diary");
         Diary getDiary = diaryRepository.getFirstByDate(date)
-                        .orElseThrow(() -> new RuntimeException("해당 날짜에 일기가 없습니다"));
+                        .orElseThrow(() -> new DiaryException(ErrorCode.DIARY_NOT_FOUND));
         getDiary.setText(text);
+
+        //테스트를 위해
+        diaryRepository.save(getDiary);
     }
 
     @Transactional
@@ -89,7 +91,7 @@ public class DiaryService {
         diaryRepository.deleteAllByDate(date);
     }
 
-    private String getWeatherString(){
+    protected String getWeatherString(){
         String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=" + apiKey;
 
         try {
@@ -123,15 +125,7 @@ public class DiaryService {
         return (HttpURLConnection) url.openConnection();
     }
 
-    protected URL createURL(String apiUrl) throws Exception {
-        return new URL(apiUrl);
-    }
-
-    public String getWeatherStringForTest(){
-        return getWeatherString();
-    }
-
-    private Map<String,Object> parseWeather(String jsonString){
+    protected Map<String,Object> parseWeather(String jsonString){
         System.out.println("jsonString = " + jsonString);
         JSONParser parser = new JSONParser();
         JSONObject jsonObject;
@@ -155,11 +149,7 @@ public class DiaryService {
         return resultMap;
     }
 
-    public Map<String,Object> parseWeatherForTest(String jsonString){
-        return parseWeather(jsonString);
-    }
-
-    private DateWeather getWeatherFromApi(){
+    protected DateWeather getWeatherFromApi(){
         //날씨 데이터 가져오기
         String weatherData = getWeatherString();
 
@@ -174,11 +164,7 @@ public class DiaryService {
         return dateWeather;
     }
 
-    public DateWeather getWeatherFromApiForTest(){
-        return getWeatherFromApi();
-    }
-
-    private DateWeather getDateWeather(LocalDate date){
+    protected DateWeather getDateWeather(LocalDate date){
         List<DateWeather> dateWeatherListFromDb = dateWeatherRepository.findAllByDate(date);
         if(dateWeatherListFromDb.size() == 0){
             /**
@@ -188,6 +174,7 @@ public class DiaryService {
         }
         return dateWeatherListFromDb.get(0);
     }
+
 
 
 }
