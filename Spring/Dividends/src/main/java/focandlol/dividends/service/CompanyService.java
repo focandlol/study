@@ -1,6 +1,8 @@
 package focandlol.dividends.service;
 
+import focandlol.dividends.exception.impl.AlreadyExistCompanyException;
 import focandlol.dividends.exception.impl.NoCompanyException;
+import focandlol.dividends.exception.impl.NoTickerException;
 import focandlol.dividends.model.Company;
 import focandlol.dividends.model.ScrapedResult;
 import focandlol.dividends.persist.CompanyRepository;
@@ -34,7 +36,7 @@ public class CompanyService {
     public Company save(String ticker){
         boolean exists = companyRepository.existsByTicker(ticker);
         if(exists){
-            throw new RuntimeException("already exists ticker -> " + ticker);
+            throw new AlreadyExistCompanyException();
         }
         return storeCompanyAndDividend(ticker);
     }
@@ -42,7 +44,7 @@ public class CompanyService {
     private Company storeCompanyAndDividend(String ticker){
         Company company = yahooFinanceScraper.scrapCompanyByTicker(ticker);
         if(ObjectUtils.isEmpty(company)){
-            throw new RuntimeException("failed to scrap ticker -> " + ticker);
+            throw new NoTickerException();
         }
 
         ScrapedResult scrapedResult = yahooFinanceScraper.scrap(company);
@@ -75,7 +77,7 @@ public class CompanyService {
     }
 
     public List<String> autocomplete(String keyword){
-        return (List<String>) trie.prefixMap(keyword).keySet().stream()
+        return (List<String>) trie.prefixMap(keyword).keySet().stream().limit(10)
                 .collect(Collectors.toList());
     }
 

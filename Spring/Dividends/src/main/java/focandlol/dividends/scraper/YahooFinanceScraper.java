@@ -81,7 +81,14 @@ public class YahooFinanceScraper implements Scraper{
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
 
             Document document = connection.get();
+
+            /**
+             * 존재하지 않는 회사 ticker일 경우
+             * 이 코드에서 IndexOutOfBoundsException이 뜬다. (yahoo finance 사이트에서 잘못된 ticker 입력시 나오는 페이지에서 2번째 h1은 없기 때문)
+             * 따라서 IndexOutOfBounds catch 해서 처리 후 null 반환 -> CompanyService에서 적절한 예외 터뜨림
+             */
             Element titleEle = document.getElementsByTag("h1").get(1);
+
             int lastIndex = titleEle.text().lastIndexOf(" ");
             String title = titleEle.text().substring(0, lastIndex);
             //String title = titleEle.text().split(" - ")[1].trim();
@@ -91,6 +98,8 @@ public class YahooFinanceScraper implements Scraper{
                     .ticker(ticker)
                     .build();
         } catch (IOException e) {
+            e.printStackTrace();
+        }catch(IndexOutOfBoundsException e){
             e.printStackTrace();
         }
         return null;
