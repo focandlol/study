@@ -1,14 +1,10 @@
 package focandlol.weather.controller;
 
-import focandlol.weather.WeatherApplication;
-import focandlol.weather.domain.Diary;
 import focandlol.weather.dto.DiaryDto;
 import focandlol.weather.service.DiaryService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,20 +17,17 @@ import java.util.stream.Collectors;
 public class DiaryController {
 
     private final DiaryService diaryService;
-    private final Logger logger = LoggerFactory.getLogger(DiaryController.class);
 
     @ApiOperation(value = "일기 텍스트와 날씨를 이용해서 db에 일기 저장", notes = "This API fetches example data.")
     @PostMapping("/create/diary")
     void createDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date,
-                     @RequestBody String text) throws IllegalAccessException {
-        logger.info("create/diary 호출");
+                     @RequestBody String text){
         diaryService.createDiary(date,text);
     }
 
     @ApiOperation(value = "선택한 날짜의 모든 일기 데이터 가져옵니다")
     @GetMapping("/read/diary")
     List<DiaryDto> readDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date) throws IllegalAccessException {
-        logger.info("read/diary 호출");
         return diaryService.readDiary(date).stream()
                 .map(diary -> DiaryDto.from(diary))
                 .collect(Collectors.toList());
@@ -46,7 +39,6 @@ public class DiaryController {
                             @Parameter(description = "조회할 기간의 첫번째날", example = "2024-11-15")LocalDate startDate
     ,@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
                             @Parameter(description = "조회할 기간의 마지막날", example = "2024-11-21") LocalDate endDate){
-        logger.info("read/diaries 호출");
         return diaryService.readDiaries(startDate,endDate).stream()
                 .map(diary -> DiaryDto.from(diary))
                 .collect(Collectors.toList());
@@ -56,14 +48,12 @@ public class DiaryController {
     @PutMapping("/update/diary")
     void updateDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date,
                      @RequestBody String text){
-        logger.info("update/diary 호출");
         diaryService.updateDiary(date,text);
     }
 
     @ApiOperation(value = "선택한 기간중의 모든 일기 데이터 삭제합니다")
     @DeleteMapping("/delete/diary")
     void deleteDiary(@RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate date){
-        logger.info("delete/diary 호출");
         diaryService.deleteDiary(date);
     }
 

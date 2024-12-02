@@ -1,8 +1,6 @@
 package focandlol.weather.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import focandlol.weather.domain.Diary;
-import focandlol.weather.dto.DiaryDto;
 import focandlol.weather.service.DiaryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,11 +9,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -30,9 +29,6 @@ class DiaryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("일기 생성 성공")
@@ -56,7 +52,12 @@ class DiaryControllerTest {
                         .param("date", "2024-11-21-12-12")
                         .content(text)
                         .contentType(MediaType.TEXT_PLAIN))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("INVALID_FORMAT"))
+                .andExpect(result -> {
+                    Exception exception = result.getResolvedException();
+                    assertTrue(exception instanceof MethodArgumentTypeMismatchException);
+                });
     }
 
     @Test
