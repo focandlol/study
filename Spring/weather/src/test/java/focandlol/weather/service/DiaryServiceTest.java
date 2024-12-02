@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.ByteArrayInputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -48,7 +46,7 @@ class DiaryServiceTest {
 
         ArgumentCaptor<Diary> captor = ArgumentCaptor.forClass(Diary.class);
 
-        verify(diaryRepository).save(captor.capture());
+        verify(diaryRepository,times(1)).save(captor.capture());
 
         assertEquals("Clouds",captor.getValue().getWeather());
         assertEquals("as",captor.getValue().getIcon());

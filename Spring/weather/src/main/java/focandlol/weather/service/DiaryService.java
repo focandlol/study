@@ -1,11 +1,9 @@
 package focandlol.weather.service;
 
-import focandlol.weather.WeatherApplication;
 import focandlol.weather.domain.DateWeather;
 import focandlol.weather.domain.Diary;
 import focandlol.weather.error.DiaryException;
 import focandlol.weather.error.ErrorCode;
-import focandlol.weather.error.InvalidDate;
 import focandlol.weather.repository.DateWeatherRepository;
 import focandlol.weather.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +11,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -23,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -37,7 +32,6 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final DateWeatherRepository dateWeatherRepository;
-    private static final Logger logger = LoggerFactory.getLogger(WeatherApplication.class);
 
     @Value("${openweathermap.key}")
     private String apiKey;
@@ -45,13 +39,11 @@ public class DiaryService {
     @Transactional
     @Scheduled(cron = "0 0 1 * * *")
     public void saveWeatherDate(){
-        logger.info("날씨 데이터 가져옴");
         dateWeatherRepository.save(getWeatherFromApi());
     }
 
     @Transactional
     public void createDiary(LocalDate date, String text) {
-        logger.info("started to create diary");
         //날씨 데이터 가져오기
         DateWeather dateWeather = getDateWeather(date);
 
@@ -62,22 +54,18 @@ public class DiaryService {
         diary.setText(text);
 
         diaryRepository.save(diary);
-        logger.info("end to create diary");
     }
 
     public List<Diary> readDiary(LocalDate date) {
-        logger.info("started to read diary");
         return diaryRepository.findAllByDate(date);
     }
 
     public List<Diary> readDiaries(LocalDate startDate, LocalDate endDate) {
-        logger.info("started to read diaries");
         return diaryRepository.findAllByDateBetween(startDate, endDate);
     }
 
     @Transactional
     public void updateDiary(LocalDate date, String text) {
-        logger.info("started to update diary");
         Diary getDiary = diaryRepository.getFirstByDate(date)
                         .orElseThrow(() -> new DiaryException(ErrorCode.DIARY_NOT_FOUND));
         getDiary.setText(text);
@@ -95,8 +83,6 @@ public class DiaryService {
         String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=" + apiKey;
 
         try {
-            //URL url = createURL(apiUrl);
-            //HttpURLConnection con = (HttpURLConnection) url.openConnection();
             HttpURLConnection con = openHttpConnection(apiUrl);
             con.setRequestMethod("GET");
             int responseCode = con.getResponseCode();
@@ -104,7 +90,6 @@ public class DiaryService {
             if (responseCode == 200) {
                 br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             }else{
-                System.out.println("dddddd");
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
             }
 

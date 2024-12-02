@@ -4,12 +4,11 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@AllArgsConstructor
 public class DiaryException extends RuntimeException{
-    private ErrorCode errorCode;
-    private String errorMessage;
+    private final ErrorCode errorCode;
+    private final String errorMessage;
 
     public DiaryException(ErrorCode errorCode) {
         super(errorCode.getDescription());

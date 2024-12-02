@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
