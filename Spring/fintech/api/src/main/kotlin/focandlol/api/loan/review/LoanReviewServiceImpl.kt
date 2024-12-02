@@ -4,7 +4,9 @@ import focandlol.api.exception.CustomErrorCode
 import focandlol.api.exception.CustomException
 import focandlol.domain.domain.LoanReview
 import focandlol.domain.repository.LoanReviewRepository
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
+
 
 @Service
 class LoanReviewServiceImpl(
@@ -18,6 +20,7 @@ class LoanReviewServiceImpl(
         )
     }
 
+    @Cacheable(value = ["REVIEW"], key = "#userKey", cacheManager = "redisCacheManager")
     override fun getLoanResult(userKey: String) =
         loanReviewRepository.findByUserKey(userKey)
 
