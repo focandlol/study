@@ -1,6 +1,5 @@
 package focandlol.cms.user.client;
 
-import feign.Response;
 import focandlol.cms.user.client.mailgun.SendMailForm;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,6 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Qualifier("mailgun")
 public interface MailgunClient {
 
-    @PostMapping("sandbox987992d760f0444caa56b3ab7ed721f8.mailgun.org/messages")
+    @PostMapping("sandboxf2c6ed790d15420fb8d17cee47bdb7dc.mailgun.org/messages")
     ResponseEntity<String> sendEmail(@SpringQueryMap SendMailForm form);
 }
