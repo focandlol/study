@@ -1,6 +1,5 @@
-package focandlol.cms.user.client.service;
+package focandlol.cms.user.service;
 
-import feign.Response;
 import focandlol.cms.user.client.MailgunClient;
 import focandlol.cms.user.client.mailgun.SendMailForm;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +13,9 @@ public class EmailSendService {
 
     public String sendEmail(){
         SendMailForm form = SendMailForm.builder()
-                .from("admin@sandbox987992d760f0444caa56b3ab7ed721f8.mailgun.org")
-                .to("focandlol@naver.com")
-                .subject("Forandlol")
+                .from("admin@sandboxf2c6ed790d15420fb8d17cee47bdb7dc.mailgun.org")
+                .to("arther200017@gmail.com")
+                .subject("Foransddlol")
                 .text("my text")
                 .build();
 

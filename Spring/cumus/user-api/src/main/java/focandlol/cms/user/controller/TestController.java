@@ -1,7 +1,7 @@
-package focandlol.cms.user.client.controller;
+package focandlol.cms.user.controller;
 
 import feign.Response;
-import focandlol.cms.user.client.service.EmailSendService;
+import focandlol.cms.user.service.EmailSendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
