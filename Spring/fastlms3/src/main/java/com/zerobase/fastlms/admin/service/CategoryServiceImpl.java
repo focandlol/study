@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
     public boolean update(CategoryInput parameter) {
         
         Optional<Category> optionalCategory = categoryRepository.findById(parameter.getId());
-        if (optionalCategory.isPresent()) {
+       if (optionalCategory. isPresent()) {
             Category category = optionalCategory.get();
             category.setCategoryName(parameter.getCategoryName());
             category.setSortValue(parameter.getSortValue());

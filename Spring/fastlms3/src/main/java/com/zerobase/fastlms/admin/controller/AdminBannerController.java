@@ -1,0 +1,109 @@
+package com.zerobase.fastlms.admin.controller;
+
+import com.zerobase.fastlms.admin.dto.BannerDto;
+import com.zerobase.fastlms.admin.model.BannerInput;
+import com.zerobase.fastlms.admin.model.BannerParam;
+import com.zerobase.fastlms.admin.model.UploadFile;
+import com.zerobase.fastlms.admin.repository.BannerRepository;
+import com.zerobase.fastlms.admin.service.BannerService;
+import com.zerobase.fastlms.course.controller.BaseController;
+import com.zerobase.fastlms.util.FileUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
+
+@Slf4j
+@RequiredArgsConstructor
+@Controller
+public class AdminBannerController extends BaseController {
+
+    private final BannerService bannerService;
+    private final FileUtils fileUtils;
+
+
+    @GetMapping("/admin/banner/list.do")
+    public String list(Model model, BannerParam parameter) {
+
+        parameter.init();
+        List<BannerDto> banners = bannerService.list(parameter);
+
+        long totalCount = 0;
+        if (banners != null && !banners.isEmpty()) {
+            totalCount = banners.get(0).getTotalCount();
+        }
+
+        String queryString = parameter.getQueryString();
+        String pagerHtml = getPaperHtml(totalCount, parameter.getPageSize(), parameter.getPageIndex(), queryString);
+
+        model.addAttribute("list", banners);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("pager", pagerHtml);
+
+        return "admin/banner/list";
+    }
+
+
+    @GetMapping("/admin/banner/add.do")
+    public String add(Model model) {
+
+        BannerDto detail = new BannerDto();
+
+        model.addAttribute("detail", detail);
+
+        return "admin/banner/add";
+    }
+
+    @PostMapping("/admin/banner/add.do")
+    public String addSubmit(Model model, HttpServletRequest request
+            , MultipartFile file
+            , BannerInput parameter) throws IOException {
+
+        UploadFile uploadFile = fileUtils.storeFile(file);
+        parameter.setFileName(uploadFile.getUploadFileName());
+        parameter.setUrlFileName(uploadFile.getStoreFileName());
+
+        bannerService.add(parameter);
+
+        return "redirect:/admin/banner/list.do";
+    }
+
+    @GetMapping("/admin/banner/edit.do/{id}")
+    public String edit(Model model, @PathVariable long id) {
+
+        BannerDto detail = new BannerDto();
+
+        model.addAttribute("detail", detail);
+
+        return "admin/banner/edit";
+    }
+
+    @PostMapping("/admin/banner/edit.do/{id}")
+    public String editSubmit(Model model, HttpServletRequest request
+            , MultipartFile file
+            , BannerInput parameter) throws IOException {
+
+        UploadFile uploadFile = fileUtils.storeFile(file);
+        parameter.setFileName(uploadFile.getUploadFileName());
+        parameter.setUrlFileName(uploadFile.getStoreFileName());
+
+        bannerService.add(parameter);
+
+        return "redirect:/admin/banner/list.do";
+    }
+
+    @PostMapping("/admin/banner/delete.do")
+    public String del(BannerInput parameter) {
+        bannerService.del(parameter.getIdList());
+        return "redirect:/admin/banner/list.do";
+    }
+}
