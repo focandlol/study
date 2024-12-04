@@ -1,0 +1,27 @@
+version: '2'
+services:
+  product:
+    image: product:0.0.1
+    container_name: product
+    ports:
+      - "80:80"
+    networks:
+      - money
+  user:
+    image: user:0.0.1
+    container_name: user
+    ports:
+      - "8080:8080"
+    networks:
+      - money
+  nginx:
+    image: nginx:0.0.1
+    container_name: nginx
+    ports:
+      - "8085:8085"
+    networks:
+      - money
+
+networks:
+  money:
+    driver: bridge
