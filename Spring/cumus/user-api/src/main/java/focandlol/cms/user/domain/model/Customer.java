@@ -1,10 +1,7 @@
 package focandlol.cms.user.domain.model;
 
 import focandlol.cms.user.domain.SignUpForm;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.AuditOverride;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +12,7 @@ import java.util.Locale;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
