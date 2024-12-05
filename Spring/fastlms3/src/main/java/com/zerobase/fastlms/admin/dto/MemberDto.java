@@ -81,7 +81,7 @@ public class MemberDto {
     }
 
     public String getLogInText() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
         return lastLoginDate != null ? lastLoginDate.format(formatter) : "";
     }
 }

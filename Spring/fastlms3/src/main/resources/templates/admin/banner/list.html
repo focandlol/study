@@ -59,6 +59,14 @@
             $('#delete').on('click', function () {
 
                 var $checked = $('#dataList input[type=checkbox]:checked');
+                if ($checked.length < 1) {
+                    alert(' 삭제할 데이터를 선택해 주세요. ');
+                    return false;
+                }
+
+                if (!confirm(' 선택한 데이터를 삭제하시겠습니까? ')) {
+                    return false;
+                }
 
                 var idList = [];
                 $.each($checked, function (k, v) {
@@ -109,12 +117,11 @@
                 </p>
             </td>
             <td>
-                <img th:src="|/images/${x.urlFileName}|" style="width: 100px" th:alt="${x.alterText}" />
-
+                <img th:src="@{${x.urlFileName}}" style="width: 100px" th:alt="${x.alterText}" />
 
             </td>
             <td>
-                <p th:text="${x.getRegDtText()}">2023.11.01</p>
+                <p th:text="${x.getRegisterDateText()}">2023.11.01</p>
             </td>
         </tr>
         </tbody>
@@ -124,11 +131,8 @@
     </div>
 
 </div>
-
 <form name="deleteForm" method="post" action="/admin/banner/delete.do">
     <input type="hidden" name="idList"/>
 </form>
-
-
 </body>
 </html>

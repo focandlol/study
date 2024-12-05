@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface BannerService {
     List<BannerDto> list(BannerParam parameter);
-    boolean add(BannerInput parameter);
-    BannerDto getById(long id);
-    boolean set(BannerInput parameter);
-    boolean edit(BannerInput parameter);
-    boolean del(String idList);
-//    List<BannerDto> showList(BannerParam parameter);
+    boolean save(BannerInput parameter);
+    boolean update(BannerInput parameter);
+    BannerDto findById(long id);
+    boolean delete(String idList);
+    List<BannerDto> getBannerList();
+
 }

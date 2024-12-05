@@ -16,12 +16,4 @@
         order by register_date desc
             limit #{pageStart}, ${pageEnd}
     </select>
-
-    <select id="selectShowList" resultType="com.zerobase.fastlms.admin.dto.BannerDto">
-        select *
-        from banner
-        where is_show = true
-        order by sort desc
-    </select>
-
 </mapper>
