@@ -3,23 +3,17 @@ package com.zerobase.fastlms.admin.controller;
 import com.zerobase.fastlms.admin.dto.BannerDto;
 import com.zerobase.fastlms.admin.model.BannerInput;
 import com.zerobase.fastlms.admin.model.BannerParam;
-import com.zerobase.fastlms.admin.model.UploadFile;
-import com.zerobase.fastlms.admin.repository.BannerRepository;
 import com.zerobase.fastlms.admin.service.BannerService;
 import com.zerobase.fastlms.course.controller.BaseController;
-import com.zerobase.fastlms.util.FileUtils;
+import com.zerobase.fastlms.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 @Slf4j
@@ -28,7 +22,7 @@ import java.util.List;
 public class AdminBannerController extends BaseController {
 
     private final BannerService bannerService;
-    private final FileUtils fileUtils;
+    private final FileUtil fileUtil;
 
 
     @GetMapping("/admin/banner/list.do")
@@ -56,23 +50,21 @@ public class AdminBannerController extends BaseController {
     @GetMapping("/admin/banner/add.do")
     public String add(Model model) {
 
-        BannerDto detail = new BannerDto();
+        BannerDto bannerDto = new BannerDto();
 
-        model.addAttribute("detail", detail);
+        model.addAttribute("list", bannerDto);
 
         return "admin/banner/add";
     }
 
     @PostMapping("/admin/banner/add.do")
-    public String addSubmit(Model model, HttpServletRequest request
-            , MultipartFile file
-            , BannerInput parameter) throws IOException {
+    public String addSubmit(MultipartFile file, BannerInput parameter) throws IOException {
 
-        UploadFile uploadFile = fileUtils.storeFile(file);
-        parameter.setFileName(uploadFile.getUploadFileName());
-        parameter.setUrlFileName(uploadFile.getStoreFileName());
+        String[] filePath = fileUtil.saveFile(file);
+        parameter.setSaveFileName(filePath[0]);
+        parameter.setUrlFileName(filePath[1]);
 
-        bannerService.add(parameter);
+        bannerService.save(parameter);
 
         return "redirect:/admin/banner/list.do";
     }
@@ -80,30 +72,28 @@ public class AdminBannerController extends BaseController {
     @GetMapping("/admin/banner/edit.do/{id}")
     public String edit(Model model, @PathVariable long id) {
 
-        BannerDto detail = new BannerDto();
+        BannerDto bannerDto =  bannerService.findById(id);
 
-        model.addAttribute("detail", detail);
+        model.addAttribute("list", bannerDto);
 
         return "admin/banner/edit";
     }
 
     @PostMapping("/admin/banner/edit.do/{id}")
-    public String editSubmit(Model model, HttpServletRequest request
-            , MultipartFile file
-            , BannerInput parameter) throws IOException {
+    public String editSubmit(MultipartFile file, BannerInput parameter) throws IOException {
 
-        UploadFile uploadFile = fileUtils.storeFile(file);
-        parameter.setFileName(uploadFile.getUploadFileName());
-        parameter.setUrlFileName(uploadFile.getStoreFileName());
+        String[] filePath = fileUtil.saveFile(file);
+        parameter.setSaveFileName(filePath[0]);
+        parameter.setUrlFileName(filePath[1]);
 
-        bannerService.add(parameter);
+        bannerService.update(parameter);
 
         return "redirect:/admin/banner/list.do";
     }
 
     @PostMapping("/admin/banner/delete.do")
-    public String del(BannerInput parameter) {
-        bannerService.del(parameter.getIdList());
+    public String delete(BannerInput parameter) {
+        bannerService.delete(parameter.getIdList());
         return "redirect:/admin/banner/list.do";
     }
 }

@@ -9,17 +9,17 @@ public class BannerInput {
 
     Long id;
 
-    String bannerName;  //배너명
-    String bannerLink;   //배너 링크 주소
+    String bannerName;
+    String bannerLink;
 
-    int open;   //오픈 방법
-    int sortSequence;    //정렬 순서
-    boolean show; //공개 여부
+    int open;
+    int sortSequence;
+    boolean show;
     String alterText;
 
     LocalDateTime registerDate;
 
-    String fileName;
+    String saveFileName;
     String urlFileName;
 
     //삭제를 위한

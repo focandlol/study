@@ -1,6 +1,5 @@
 package com.zerobase.fastlms.configuration;
 
-import com.zerobase.fastlms.member.repository.MemberRepository;
 import com.zerobase.fastlms.member.service.HistoryService;
 import com.zerobase.fastlms.member.service.MemberService;
 import com.zerobase.fastlms.util.RequestUtils;

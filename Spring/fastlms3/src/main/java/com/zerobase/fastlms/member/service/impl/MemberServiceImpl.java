@@ -22,10 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +38,17 @@ public class MemberServiceImpl implements MemberService {
     
     private final MemberMapper memberMapper;
 
-    @Transactional
     @Override
     public void updateLoginDate(String userId, LocalDateTime loginDate) {
-        Member member = memberRepository.findById(userId).get();
+        Optional<Member> mem = memberRepository.findById(userId);
+        if (!mem.isPresent()) {
+            throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+        }
+
+        Member member = mem.get();
+
         member.setLastLoginDate(loginDate);
+        memberRepository.save(member);
     }
     
     /**
@@ -146,10 +149,7 @@ public class MemberServiceImpl implements MemberService {
                 i++;
             }
         }
-        
         return list;
-        
-        //return memberRepository.findAll();
     }
     
     @Override

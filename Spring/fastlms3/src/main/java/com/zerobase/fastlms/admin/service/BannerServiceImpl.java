@@ -8,12 +8,12 @@ import com.zerobase.fastlms.admin.model.BannerParam;
 import com.zerobase.fastlms.admin.repository.BannerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +40,17 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public boolean add(BannerInput parameter) {
+    public BannerDto findById(long id) {
+        Optional<Banner> optional = bannerRepository.findById(id);
+        if (optional.isPresent()) {
+            return BannerDto.of(optional.get());
+        }
+        return new BannerDto();
+    }
+
+    @Override
+    public boolean save(BannerInput parameter) {
+        LocalDateTime now = LocalDateTime.now();
         Banner banner = Banner.builder()
                 .id(parameter.getId())
                 .bannerName(parameter.getBannerName())
@@ -49,8 +59,9 @@ public class BannerServiceImpl implements BannerService {
                 .open(parameter.getOpen())
                 .isShow(parameter.isShow())
                 .sortSequence(parameter.getSortSequence())
-                .registerDate(LocalDateTime.now())
-                .fileName(parameter.getFileName())
+                .registerDate(now)
+                .updateDate(now)
+                .saveFileName(parameter.getSaveFileName())
                 .urlFileName(parameter.getUrlFileName())
                 .build();
 
@@ -60,18 +71,19 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public boolean edit(BannerInput parameter) {
+    public boolean update(BannerInput parameter) {
         Optional<Banner> ba = bannerRepository.findById(parameter.getId());
 
         if (ba.isPresent()) {
             Banner banner = ba.get();
             banner.setBannerName(parameter.getBannerName());
-            banner.setFileName(parameter.getFileName());
+            banner.setSaveFileName(parameter.getSaveFileName());
             banner.setAlterText(parameter.getAlterText());
             banner.setUrlFileName(parameter.getUrlFileName());
             banner.setBannerLink(parameter.getBannerLink());
             banner.setOpen(parameter.getOpen());
             banner.setSortSequence(parameter.getSortSequence());
+            banner.setUpdateDate(LocalDateTime.now());
             banner.setShow(parameter.isShow());
 
             bannerRepository.save(banner);
@@ -80,35 +92,7 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public BannerDto getById(long id) {
-        return this.bannerRepository.findById(id)
-                .map(BannerDto::of).orElse(null);
-    }
-
-    @Override
-    public boolean set(BannerInput parameter) {
-
-        Optional<Banner> optionalBanner = this.bannerRepository.findById(parameter.getId());
-        if (!optionalBanner.isPresent()) {
-            //수정할 데이터가 없음
-            return false;
-        }
-
-        Banner banner = optionalBanner.get();
-        banner.setBannerName(parameter.getBannerName());
-        banner.setBannerLink(parameter.getBannerLink());
-        banner.setOpen(parameter.getOpen());
-        banner.setSortSequence(parameter.getSortSequence());
-        banner.setShow(parameter.isShow());
-        banner.setFileName(parameter.getFileName());
-        banner.setUrlFileName(parameter.getUrlFileName());
-
-        this.bannerRepository.save(banner);
-        return true;
-    }
-
-    @Override
-    public boolean del(String idList) {
+    public boolean delete(String idList) {
         if (idList != null && !idList.isEmpty()) {
             String[] ids = idList.split(",");
             for (String x : ids) {
@@ -125,9 +109,10 @@ public class BannerServiceImpl implements BannerService {
         }
         return true;
     }
-//
-//    @Override
-//    public List<BannerDto> showList(BannerParam parameter) {
-//        return bannerMapper.selectShowList(parameter);
-//    }
+
+    public List<BannerDto> getBannerList() {
+        return bannerRepository.findByOrderBySortSequence().stream()
+                .map(a -> BannerDto.of(a))
+                .collect(Collectors.toList());
+    }
 }

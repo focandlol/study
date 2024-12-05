@@ -15,16 +15,16 @@ import java.time.format.DateTimeFormatter;
 public class BannerDto {
     Long id;
 
-    String bannerName;  //배너명
-    String bannerLink;   //배너 링크 주소
+    String bannerName;
+    String bannerLink;
 
-    int open;   //오픈 방법
-    int sortSequence;    //정렬 순서
-    boolean show; //공개 여부
+    int open;
+    int sortSequence;
+    boolean show;
     String alterText;
     LocalDateTime registerDate;
 
-    String fileName;
+    String saveFileName;
     String urlFileName;
 
     //추가컬럼
@@ -36,17 +36,18 @@ public class BannerDto {
                 .id(banner.getId())
                 .bannerName(banner.getBannerName())
                 .bannerLink(banner.getBannerLink())
+                .alterText(banner.getAlterText())
                 .open(banner.getOpen())
                 .sortSequence(banner.getSortSequence())
                 .show(banner.isShow())
                 .registerDate(banner.getRegisterDate())
-                .fileName(banner.getFileName())
+                .saveFileName(banner.getSaveFileName())
                 .urlFileName(banner.getUrlFileName())
                 .build();
     }
 
-    public String getRegDtText() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+    public String getRegisterDateText() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
         return registerDate != null ? registerDate.format(formatter) : "";
     }
 }

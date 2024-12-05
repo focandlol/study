@@ -11,7 +11,6 @@ import org.springframework.util.CollectionUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,8 +33,23 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public List<HistoryDto> getHistory(String userId) {
-        return historyRepository.findByUserId(userId)
-                .stream().map(a -> HistoryDto.of(a))
-                .collect(Collectors.toList());
+        List<History> historyList = historyRepository.findByUserId(userId);
+        long totalCount = this.historyRepository.countByUserId(userId);
+
+        List<HistoryDto> list = new ArrayList<>();
+        for (History history : historyList) {
+            list.add(HistoryDto.of(history));
+        }
+
+        if (!CollectionUtils.isEmpty(historyList)) {
+            int i = 0;
+            for(HistoryDto x : list) {
+                x.setTotalCount(totalCount);
+                x.setSeq(totalCount - i);
+                i++;
+            }
+        }
+
+        return list;
     }
 }

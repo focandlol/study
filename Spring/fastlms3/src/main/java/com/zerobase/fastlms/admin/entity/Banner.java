@@ -20,16 +20,17 @@ public class Banner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String bannerName;  //배너명
-    String bannerLink;   //배너 링크 주소
+    String bannerName;
+    String bannerLink;
     String alterText;
 
-    int open;   //오픈 방법
-    int sortSequence;    //정렬 순서
-    boolean isShow; //공개 여부
+    int open;
+    int sortSequence;
+    boolean isShow;
 
     LocalDateTime registerDate;
+    LocalDateTime updateDate;
 
-    String fileName;
+    String saveFileName;
     String urlFileName;
 }

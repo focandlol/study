@@ -19,6 +19,10 @@ public class HistoryDto {
     String ip;
     String userAgent;
 
+    // 추가 컬럼
+    private long totalCount;
+    private long seq;
+
     public static HistoryDto of(History history) {
         return HistoryDto.builder()
                 .id(history.getId())
@@ -30,7 +34,7 @@ public class HistoryDto {
     }
 
     public String getLogInText() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
         return loginDate != null ? loginDate.format(formatter) : "";
     }
 }
