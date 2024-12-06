@@ -1,5 +1,6 @@
 package focandlol.domain;
 
+import focandlol.annotation.Encrypt;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class UserInfo {
     @Column(name = "usr_key")
     private String userKey;
 
+    @Encrypt
     @Column(name = "usr_reg_num")
     private String userRegistrationNumber;
 

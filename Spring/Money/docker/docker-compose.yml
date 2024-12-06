@@ -21,7 +21,6 @@ services:
       - "8085:8085"
     networks:
       - money
-
 networks:
   money:
     driver: bridge
