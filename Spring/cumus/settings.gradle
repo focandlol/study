@@ -1,3 +1,4 @@
 rootProject.name = 'cumus'
 include 'user-api'
+include 'zerobase-domain'
 
