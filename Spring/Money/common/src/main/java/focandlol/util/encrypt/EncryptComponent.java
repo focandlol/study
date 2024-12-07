@@ -1,4 +1,4 @@
-package focandlol.encrypt;
+package focandlol.util.encrypt;
 
 import org.springframework.stereotype.Component;
 

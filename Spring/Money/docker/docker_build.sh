@@ -16,10 +16,6 @@ echo 'CONSUMER Image Build...'
 cd $SHELL_PATH/user && docker build -t user:$VERSION .
 echo 'CONSUMER Image Build... Done'
 
-echo 'CONSUMER Image Build...'
-cd $SHELL_PATH/swagger && docker build -t swagger:$VERSION .
-echo 'CONSUMER Image Build... Done'
-
 echo 'nginx Image Build...'
 cd $SHELL_PATH/nginx  && docker build -t nginx:$VERSION .
 echo 'nginx Image Build... Done'
