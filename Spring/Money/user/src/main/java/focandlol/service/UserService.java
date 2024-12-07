@@ -1,17 +1,16 @@
 package focandlol.service;
 
 import focandlol.domain.UserInfo;
-import focandlol.dto.PrivateUserInfoDto;
+import focandlol.dto.findUserInfoDto;
 import focandlol.dto.UserInfoDto;
-import focandlol.exception.ErrorCode;
-import focandlol.exception.UserException;
+import focandlol.exception.error.UserException;
 import focandlol.repository.UserInfoRepository;
 import focandlol.util.GenerateKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static focandlol.exception.ErrorCode.*;
+import static focandlol.exception.errorcode.UserErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +27,12 @@ public class UserService {
         return new UserInfoDto.Response(userKey);
     }
 
-    public PrivateUserInfoDto findUserInfo(String userKey){
+
+    public findUserInfoDto findUserInfo(String userKey){
         UserInfo userInfo = userInfoRepository.findByUserKey(userKey)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));
 
-        return PrivateUserInfoDto.from(userInfo);
+        return findUserInfoDto.from(userInfo);
 
     }
 }

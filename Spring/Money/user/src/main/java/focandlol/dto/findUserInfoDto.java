@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PrivateUserInfoDto {
+public class findUserInfoDto {
     private String userKey;
     private String userRegistrationNumber;
 
-    public static PrivateUserInfoDto from(UserInfo userInfo) {
-        return new PrivateUserInfoDto(userInfo.getUserKey(), userInfo.getUserRegistrationNumber());
+    public static findUserInfoDto from(UserInfo userInfo) {
+        return new findUserInfoDto(userInfo.getUserKey(), userInfo.getUserRegistrationNumber());
     }
 }

@@ -1,6 +1,7 @@
 package focandlol.dto;
 
 import focandlol.domain.UserInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 public class UserInfoDto {
@@ -12,8 +13,11 @@ public class UserInfoDto {
     @Builder
     public static class Request {
 
+        @Schema(description = "uiser Code", example = "001")
         private String userName;
+        @Schema(description = "uiser Code", example = "001")
         private String userRegistrationNumber;
+        @Schema(description = "uiser Code", example = "001")
         private Long userIncomeAmount;
 
         public UserInfo toEntity(String key) {
