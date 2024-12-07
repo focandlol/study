@@ -4,7 +4,7 @@ services:
     image: product:0.0.1
     container_name: product
     ports:
-      - "80:80"
+      - "8082:8082"
     networks:
       - money
   user:
@@ -12,6 +12,13 @@ services:
     container_name: user
     ports:
       - "8080:8080"
+    networks:
+      - money
+  swagger:
+    image: swagger:0.0.1
+    container_name: swagger
+    ports:
+      - "8086:8086"
     networks:
       - money
   nginx:

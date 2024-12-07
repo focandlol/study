@@ -3,5 +3,5 @@ include 'product'
 include 'user'
 include 'domain'
 include 'common'
-
+include 'swagger'
 
