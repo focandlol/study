@@ -1,6 +1,7 @@
 package focandlol.dividends.persist.entity;
 
 import focandlol.dividends.model.Company;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class CompanyEntity {
 
     @Id
