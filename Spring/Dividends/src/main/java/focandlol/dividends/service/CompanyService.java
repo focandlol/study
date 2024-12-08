@@ -63,22 +63,29 @@ public class CompanyService {
         return companyRepository.findAll(pageable);
     }
 
+    /**
+     * 자동 완성 db 사용 방법
+     */
     public List<String> getCompanyNamesByKeyword(String keyword){
         PageRequest limit = PageRequest.of(0, 10, Sort.by("name").descending());
         return companyRepository.findByNameStartingWithIgnoreCase(keyword,limit).stream()
                 .map(a -> a.getName()).collect(Collectors.toList());
     }
 
-    /**
-     * 자동 완성
-     */
-    public void addAutocompleteKeyword(String keyword){
-        trie.put(keyword,null);
-    }
 
+    /**
+     * 자동 완성 trie 사용 방법
+     */
     public List<String> autocomplete(String keyword){
         return (List<String>) trie.prefixMap(keyword).keySet().stream().limit(10)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 자동 완성 trie 사용 방법
+     */
+    public void addAutocompleteKeyword(String keyword){
+        trie.put(keyword,null);
     }
 
     public void deleteAutocompleteKeyword(String keyword){
