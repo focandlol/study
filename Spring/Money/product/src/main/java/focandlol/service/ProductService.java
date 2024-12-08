@@ -8,7 +8,10 @@ import focandlol.dto.ProductInfoDto;
 import focandlol.exception.error.ProductException;
 import focandlol.repository.ProductInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +21,10 @@ import static focandlol.exception.errorcode.ProductErrorCode.ALREADY_PRODUCT;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProductService {
+
+    private final CacheManager redisCacheManager;
 
     private final ProductInfoRepository productInfoRepository;
 
@@ -27,6 +33,11 @@ public class ProductService {
             throw new ProductException(ALREADY_PRODUCT);
         }
         productInfoRepository.save(request.toEntity());
+
+        /**
+         * 해당 기관 상품 정보가 추가되면 캐시 삭제
+         */
+        redisCacheManager.getCache("ORG_CODE").evict(request.getOrganizationCode());
     }
 
     private boolean check(ProductInfoDto.Request request) {
@@ -40,10 +51,13 @@ public class ProductService {
         return false;
     }
 
+    @Cacheable(key = "#organizationCode.code", value = "ORG_CODE")
     public List<FindProductInfoDto> findProductInfo(OrganizationCode organizationCode) {
+        System.out.println(organizationCode);
         return productInfoRepository.findByOrganizationCode(organizationCode)
                 .stream()
                 .map(a -> FindProductInfoDto.from(a))
                 .collect(Collectors.toList());
     }
+
 }
