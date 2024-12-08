@@ -17,4 +17,5 @@ spring:
     password: money
   redis:
     host: money-redis
+    #host: localhost
     port: 6379

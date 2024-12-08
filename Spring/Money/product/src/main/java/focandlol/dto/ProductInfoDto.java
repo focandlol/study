@@ -15,15 +15,15 @@ public class ProductInfoDto {
     @Builder
     public static class Request {
 
-        @Schema(description = "Product Code", example = "001")
+        @Schema(description = "Organization Code", example = "00001")
         private String organizationCode;
         @Schema(description = "Product Code", example = "001")
         private String productCode;
-        @Schema(description = "Product Code", example = "001")
+        @Schema(description = "Product Max", example = "9.9")
         private Double productMaximumInterest;
-        @Schema(description = "Product Code", example = "001")
+        @Schema(description = "Product Min", example = "1.1")
         private Double productMinimumInterest;
-        @Schema(description = "Product Code", example = "001")
+        @Schema(description = "Product Name", example = "물건1")
         private String productName;
 
         public ProductInfo toEntity() {

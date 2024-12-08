@@ -1,8 +1,6 @@
 package focandlol.converter;
 
 import focandlol.converter.code.OrganizationCode;
-import focandlol.exception.error.ProductException;
-import focandlol.exception.errorcode.ProductErrorCode;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

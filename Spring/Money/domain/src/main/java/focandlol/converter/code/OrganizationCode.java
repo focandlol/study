@@ -2,6 +2,8 @@ package focandlol.converter.code;
 
 import focandlol.exception.error.ProductException;
 import focandlol.exception.errorcode.ProductErrorCode;
+import lombok.ToString;
+
 
 public enum OrganizationCode {
     NONE("00000"),
@@ -25,5 +27,10 @@ public enum OrganizationCode {
             }
         }
         throw new ProductException(ProductErrorCode.WRONG_ORGANIZATION_CODE);
+    }
+
+    @Override
+    public String toString() {
+        return name(); // 캐시 키로 사용할 값 반환
     }
 }

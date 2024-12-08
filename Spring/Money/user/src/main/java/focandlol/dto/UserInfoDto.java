@@ -13,11 +13,11 @@ public class UserInfoDto {
     @Builder
     public static class Request {
 
-        @Schema(description = "uiser Code", example = "001")
+        @Schema(description = "UserName", example = "kkm")
         private String userName;
-        @Schema(description = "uiser Code", example = "001")
+        @Schema(description = "UserRegistrationNum", example = "11111111111")
         private String userRegistrationNumber;
-        @Schema(description = "uiser Code", example = "001")
+        @Schema(description = "userIncome", example = "1111111111")
         private Long userIncomeAmount;
 
         public UserInfo toEntity(String key) {

@@ -27,7 +27,7 @@ public class UserService {
         return new UserInfoDto.Response(userKey);
     }
 
-
+    @Transactional(readOnly = true)
     public findUserInfoDto findUserInfo(String userKey){
         UserInfo userInfo = userInfoRepository.findByUserKey(userKey)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND));

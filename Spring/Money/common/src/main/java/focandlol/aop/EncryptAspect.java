@@ -17,7 +17,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class EncryptAop{
+public class EncryptAspect {
 
     private final EncryptComponent encryptComponent;
 

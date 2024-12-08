@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EntityScan(basePackages = "focandlol.domain")
-//@ComponentScan(basePackages = "focandlol")
 @EnableCaching
 public class ProductApplication {
 
