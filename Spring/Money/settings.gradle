@@ -1,7 +1,0 @@
-rootProject.name = 'Money'
-include 'product'
-include 'user'
-include 'domain'
-include 'common'
-
-
