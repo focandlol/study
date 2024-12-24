@@ -1,6 +1,8 @@
 package focandlol.jwt.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import focandlol.jwt.jwt.JwtFilter;
+import focandlol.jwt.jwt.JwtUtil;
 import focandlol.jwt.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,7 @@ public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
     private final AuthenticationConfiguration configuration;
+    private final JwtUtil jwtUtil;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,7 +38,9 @@ public class SecurityConfig {
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
-        http.addFilterAt(new LoginFilter(objectMapper,authenticationManager(configuration)), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(new LoginFilter(objectMapper,authenticationManager(configuration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
+
         http.sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
