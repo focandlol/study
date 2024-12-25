@@ -2,6 +2,7 @@ package focandlol.jwt.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import focandlol.jwt.dto.CustomUserDetails;
+import focandlol.jwt.entity.UserEntity;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,6 +64,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
 
         String username = userDetails.getUsername();
+
 
         Collection<? extends GrantedAuthority> authorities = authResult.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
