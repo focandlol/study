@@ -1,8 +1,6 @@
 package focandlol.reservation.dto;
 
-import focandlol.reservation.entity.BaseEntity;
-import focandlol.reservation.type.UserType;
-import jakarta.validation.constraints.NotBlank;
+import focandlol.reservation.entity.auth.BasicContent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,11 +19,11 @@ public class UserDetailsDto {
     private String password;
     private List<String> roles;
 
-    public static UserDetailsDto from(BaseEntity baseEntity) {
+    public static UserDetailsDto from(BasicContent basicContent) {
         return UserDetailsDto.builder()
-                .username(baseEntity.getUsername())
-                .password(baseEntity.getPassword())
-                .roles(Collections.singletonList(baseEntity.getUserType().getRole()))
+                .username(basicContent.getUsername())
+                .password(basicContent.getPassword())
+                .roles(Collections.singletonList(basicContent.getUserType().getRole()))
                 .build();
     }
 }

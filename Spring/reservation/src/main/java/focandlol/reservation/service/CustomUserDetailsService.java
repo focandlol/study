@@ -2,11 +2,10 @@ package focandlol.reservation.service;
 
 import focandlol.reservation.dto.CustomUserDetails;
 import focandlol.reservation.dto.UserDetailsDto;
-import focandlol.reservation.entity.CustomerEntity;
-import focandlol.reservation.entity.ManagerEntity;
+import focandlol.reservation.entity.auth.CustomerEntity;
+import focandlol.reservation.entity.auth.ManagerEntity;
 import focandlol.reservation.repository.CustomerRepository;
 import focandlol.reservation.repository.ManagerRepository;
-import focandlol.reservation.type.UserType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
