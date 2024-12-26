@@ -15,22 +15,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@SuperBuilder
-@Getter
-@Setter
-@NoArgsConstructor
 public class BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String username;
-    private String password;
-    private String phoneNumber;
-
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
 
     @CreatedDate
     private LocalDateTime createdAt;

@@ -1,12 +1,12 @@
 package focandlol.reservation.dto;
 
-import focandlol.reservation.entity.auth.CustomerEntity;
+import focandlol.reservation.entity.auth.ManagerEntity;
 import focandlol.reservation.type.UserType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-public class CustomerSignUpDto {
+public class ManagerSignUpDto {
 
     @Getter
     @Setter
@@ -42,8 +42,8 @@ public class CustomerSignUpDto {
         @NotBlank
         private UserType type;
 
-        public static Response from(CustomerEntity customer){
-            return new Response(customer.getUsername(), customer.getPhoneNumber(),customer.getUserType());
+        public static Response from(ManagerEntity manager){
+            return new Response(manager.getUsername(), manager.getPhoneNumber(),manager.getUserType());
         }
     }
 }
