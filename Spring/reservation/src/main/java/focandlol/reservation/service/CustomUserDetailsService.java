@@ -24,18 +24,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<CustomerEntity> findCustomer = customerRepository.findByUsername(username);
-
-        if(findCustomer.isPresent()) {
-            CustomerEntity customer = findCustomer.get();
-            return new CustomUserDetails(UserDetailsDto.from(customer));
-        }
-
         Optional<ManagerEntity> findManager = managerRepository.findByUsername(username);
 
         if(findManager.isPresent()) {
             ManagerEntity manager = findManager.get();
             return new CustomUserDetails(UserDetailsDto.from(manager));
+        }
+
+        Optional<CustomerEntity> findCustomer = customerRepository.findByUsername(username);
+
+        if(findCustomer.isPresent()) {
+            CustomerEntity customer = findCustomer.get();
+            return new CustomUserDetails(UserDetailsDto.from(customer));
         }
 
         throw new UsernameNotFoundException("User not found");

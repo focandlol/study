@@ -32,4 +32,9 @@ public class StoreController {
 
         return ResponseEntity.ok().body(storeService.getAllStores(storeSearchCond, storeName, pageable));
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<?> getStoreDetails(@PathVariable Long id){
+        return ResponseEntity.ok().body(storeService.getStoreDetails(id));
+    }
 }

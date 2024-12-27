@@ -1,6 +1,7 @@
 package focandlol.reservation.service.store;
 
 import focandlol.reservation.dto.store.AddStoreDto;
+import focandlol.reservation.dto.store.StoreDetailDto;
 import focandlol.reservation.dto.store.StoreDto;
 import focandlol.reservation.dto.store.StoreSearchCond;
 import focandlol.reservation.entity.StoreEntity;
@@ -42,5 +43,12 @@ public class StoreService {
         Page<StoreEntity> stores = queryStoreRepository.findStores(storeSearchCond, storeName, pageable);
         return stores.stream().map(a -> StoreDto.from(a))
                 .collect(Collectors.toList());
+    }
+
+    public StoreDetailDto getStoreDetails(Long storeId){
+        StoreEntity store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new RuntimeException("Store not found"));
+
+        return StoreDetailDto.from(store);
     }
 }
