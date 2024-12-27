@@ -29,12 +29,16 @@ public class AddStoreDto {
 
         private boolean cesco;
 
+        @NotNull
+        private Integer totalSeat;
+
         public StoreEntity toEntity(ManagerEntity manager){
             return StoreEntity.builder()
                     .storeName(this.storeName)
                     .storePhoneNumber(this.storePhoneNumber)
                     .location(this.location)
                     .cesco(this.cesco)
+                    .totalSeat(this.totalSeat)
                     .manager(manager)
                     .build();
         }
@@ -55,6 +59,8 @@ public class AddStoreDto {
 
         private boolean cesco;
 
+        private Integer totalSeat;
+
         private Long managerId;
 
         public static Response from(StoreEntity store){
@@ -64,6 +70,7 @@ public class AddStoreDto {
                     .storePhoneNumber(store.getStorePhoneNumber())
                     .location(store.getLocation())
                     .cesco(store.isCesco())
+                    .totalSeat(store.getTotalSeat())
                     .managerId(store.getManager().getId())
                     .build();
         }

@@ -26,6 +26,8 @@ public class StoreEntity extends BaseEntity {
 
     private boolean cesco;
 
+    private Integer totalSeat;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "manager_id")
     private ManagerEntity manager;
