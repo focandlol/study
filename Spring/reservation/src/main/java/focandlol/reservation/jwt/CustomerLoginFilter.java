@@ -16,18 +16,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class LoginFilter extends UsernamePasswordAuthenticationFilter {
+public class CustomerLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public LoginFilter(ObjectMapper objectMapper, AuthenticationManager authenticationManager,JwtUtil jwtUtil) {
+    public CustomerLoginFilter(String filterProcessUrl, ObjectMapper objectMapper,
+                               AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.setFilterProcessesUrl(filterProcessUrl);
         this.objectMapper = objectMapper;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -52,6 +53,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         } catch (IOException e) {
             throw new AuthenticationServiceException("Failed to parse request body", e);
         }
+
+        System.out.println("customerLoginFilter");
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 

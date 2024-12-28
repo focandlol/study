@@ -1,9 +1,10 @@
 package focandlol.reservation.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import focandlol.reservation.jwt.CustomerLoginFilter;
 import focandlol.reservation.jwt.JwtFilter;
 import focandlol.reservation.jwt.JwtUtil;
-import focandlol.reservation.jwt.LoginFilter;
+import focandlol.reservation.jwt.ManagerLoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,13 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +33,9 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
     private final AuthenticationConfiguration configuration;
     private final JwtUtil jwtUtil;
+    private final UserDetailsService managerUserDetailsService;
+    private final UserDetailsService customerUserDetailsService;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,8 +49,11 @@ public class SecurityConfig {
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
-        http.addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
-        http.addFilterAt(new LoginFilter(objectMapper,authenticationManager(configuration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtFilter(jwtUtil), ManagerLoginFilter.class);
+       // http.addFilterAt(new LoginFilter(objectMapper,authenticationManager(configuration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterAt(new CustomerLoginFilter("/login/customer",objectMapper,customerAuthenticationManager(),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(new ManagerLoginFilter("/login/manager",objectMapper,managerAuthenticationManager(),jwtUtil), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -58,5 +68,19 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
 
+    }
+
+    public AuthenticationManager managerAuthenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(managerUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(Collections.singletonList(provider));
+    }
+
+    public AuthenticationManager customerAuthenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customerUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(Collections.singletonList(provider));
     }
 }

@@ -16,16 +16,14 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class ManagerUserDetailsService implements UserDetailsService {
 
-    private final CustomerRepository customerRepository;
     private final ManagerRepository managerRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        System.out.println("basic userDetailService");
-
+        System.out.println("managerUserDetailService");
         Optional<ManagerEntity> findManager = managerRepository.findByUsername(username);
 
         if(findManager.isPresent()) {
@@ -33,12 +31,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             return new CustomUserDetails(UserDetailsDto.from(manager));
         }
 
-        Optional<CustomerEntity> findCustomer = customerRepository.findByUsername(username);
-
-        if(findCustomer.isPresent()) {
-            CustomerEntity customer = findCustomer.get();
-            return new CustomUserDetails(UserDetailsDto.from(customer));
-        }
 
         throw new UsernameNotFoundException("User not found");
     }
