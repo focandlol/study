@@ -1,9 +1,6 @@
 package focandlol.reservation.service.store;
 
-import focandlol.reservation.dto.store.AddStoreDto;
-import focandlol.reservation.dto.store.StoreDetailDto;
-import focandlol.reservation.dto.store.StoreDto;
-import focandlol.reservation.dto.store.StoreSearchCond;
+import focandlol.reservation.dto.store.*;
 import focandlol.reservation.entity.StoreEntity;
 import focandlol.reservation.entity.auth.ManagerEntity;
 import focandlol.reservation.repository.ManagerRepository;
@@ -37,6 +34,27 @@ public class StoreService {
         }
 
         return AddStoreDto.Response.from(storeRepository.save(request.toEntity(manager)));
+    }
+
+
+    public UpdateStoreDto.Response updateStore(Long storeId, UpdateStoreDto.Request request){
+        ManagerEntity manager = managerRepository.findById(request.getManagerId())
+                .orElseThrow(() -> new RuntimeException("Manager not found"));
+
+        StoreEntity store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new RuntimeException("Store not found"));
+
+        if(!manager.getId().equals(store.getManager().getId())){
+            throw new RuntimeException("another people");
+        }
+
+        store.setStoreName(request.getStoreName());
+        store.setLocation(request.getLocation());
+        store.setStorePhoneNumber(request.getStorePhoneNumber());
+        store.setCesco(request.isCesco());
+        store.setTotalSeat(request.getTotalSeat());
+
+        return UpdateStoreDto.Response.from(store);
     }
 
     public List<StoreDto> getAllStores(StoreSearchCond storeSearchCond, String storeName, Pageable pageable){

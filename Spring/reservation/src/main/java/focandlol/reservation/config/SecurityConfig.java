@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,13 +38,12 @@ public class SecurityConfig {
         http.httpBasic(auth -> auth.disable());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login","/", "/signUp/**").permitAll()
+                .requestMatchers("/login/**","/", "/signUp/**").permitAll()
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
         http.addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
         http.addFilterAt(new LoginFilter(objectMapper,authenticationManager(configuration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
-
         http.sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

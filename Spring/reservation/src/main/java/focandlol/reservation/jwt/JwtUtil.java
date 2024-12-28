@@ -42,9 +42,10 @@ public class JwtUtil {
      * @param expiredMs
      * @return
      */
-    public String createJwt(String username, List<String> roles, Long expiredMs) {
+    public String createJwt(Long id, String username, List<String> roles, Long expiredMs) {
 
         return Jwts.builder()
+                .claim("id",id)
                 .claim("username", username)
                 .claim("roles", roles)
                 .issuedAt(new Date(System.currentTimeMillis()))

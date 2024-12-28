@@ -14,13 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UserDetailsDto {
-
+    private Long id;
     private String username;
     private String password;
     private List<String> roles;
 
     public static UserDetailsDto from(BasicContent basicContent) {
         return UserDetailsDto.builder()
+                .id(basicContent.getId())
                 .username(basicContent.getUsername())
                 .password(basicContent.getPassword())
                 .roles(Collections.singletonList(basicContent.getUserType().getRole()))
