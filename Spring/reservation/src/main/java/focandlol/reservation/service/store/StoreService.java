@@ -57,6 +57,20 @@ public class StoreService {
         return UpdateStoreDto.Response.from(store);
     }
 
+    public void deleteStore(Long storeId, Long managerId){
+        ManagerEntity manager = managerRepository.findById(managerId)
+                .orElseThrow(() -> new RuntimeException("Manager not found"));
+
+        StoreEntity store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new RuntimeException("Store not found"));
+
+        if(!manager.getId().equals(store.getManager().getId())){
+            throw new RuntimeException("another people");
+        }
+
+        storeRepository.delete(store);
+    }
+
     public List<StoreDto> getAllStores(StoreSearchCond storeSearchCond, String storeName, Pageable pageable){
         Page<StoreEntity> stores = queryStoreRepository.findStores(storeSearchCond, storeName, pageable);
         return stores.stream().map(a -> StoreDto.from(a))

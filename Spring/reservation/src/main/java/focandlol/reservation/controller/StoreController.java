@@ -33,6 +33,12 @@ public class StoreController {
         return ResponseEntity.ok().body(storeService.updateStore(id, request));
     }
 
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public void deleteStore(@PathVariable Long id, @RequestParam Long managerId){
+        storeService.deleteStore(id, managerId);
+    }
+
 
 
     @GetMapping
