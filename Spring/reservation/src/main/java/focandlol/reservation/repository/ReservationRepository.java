@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<ReservationEntity, Long> {
 
-    List<ReservationEntity> findByDate(LocalDate date);
+    List<ReservationEntity> findByDateAndStoreId(LocalDate date,Long storeId);
 }

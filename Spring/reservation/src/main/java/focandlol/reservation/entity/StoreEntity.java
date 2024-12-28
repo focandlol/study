@@ -28,7 +28,7 @@ public class StoreEntity extends BaseEntity {
 
     private Integer totalSeat;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     private ManagerEntity manager;
 }

@@ -4,6 +4,8 @@ import focandlol.reservation.entity.auth.CustomerEntity;
 import focandlol.reservation.type.ReservationType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -28,6 +30,7 @@ public class ReservationEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private StoreEntity store;
 
     private LocalDate date;
