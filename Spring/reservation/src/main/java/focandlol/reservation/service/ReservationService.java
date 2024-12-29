@@ -1,5 +1,6 @@
 package focandlol.reservation.service;
 
+import focandlol.reservation.dto.ReservationUpdateDto;
 import focandlol.reservation.dto.ReserveDto;
 import focandlol.reservation.entity.ReservationEntity;
 import focandlol.reservation.entity.StoreEntity;
@@ -48,5 +49,41 @@ public class ReservationService {
         }
 
         return ReserveDto.Response.from(reservationRepository.save(request.toEntity(store,customer)));
+    }
+
+    public ReservationUpdateDto.Response update(Long reservationId, ReservationUpdateDto.Request request){
+        ReservationEntity reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+
+        CustomerEntity customer = customerRepository.findById(request.getCustomerId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        if(!reservation.getCustomer().getId().equals(request.getCustomerId())){
+            throw new RuntimeException("another people");
+        }
+
+        List<ReservationEntity> byDateAndId = reservationRepository.findByDateAndStoreId(request.getDate(), reservation.getStore().getId());
+        int sum = byDateAndId.stream()
+                .map(a -> a.getNumOfPeople())
+                .mapToInt(a -> a)
+                .sum();
+
+
+        if(reservation.getDate().isEqual(request.getDate())){
+            if(reservation.getStore().getTotalSeat()
+                    < sum + request.getNumOfPeople() - reservation.getNumOfPeople()){
+                throw new RuntimeException("변경하려는 날짜의 예약이 다 찼습니다.");
+            }
+        }else{
+            if(reservation.getStore().getTotalSeat() < sum + request.getNumOfPeople()){
+                throw new RuntimeException("해당 날짜의 Reservation has already been reserved");
+            }
+        }
+
+        reservation.setDate(request.getDate());
+        reservation.setTime(request.getTime());
+        reservation.setNumOfPeople(request.getNumOfPeople());
+
+        return ReservationUpdateDto.Response.from(reservation);
     }
 }

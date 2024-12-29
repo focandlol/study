@@ -1,15 +1,13 @@
 package focandlol.reservation.controller;
 
+import focandlol.reservation.dto.ReservationUpdateDto;
 import focandlol.reservation.dto.ReserveDto;
 import focandlol.reservation.repository.ReservationRepository;
 import focandlol.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +20,13 @@ public class ReservationController {
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> reserve(@RequestBody ReserveDto.Request request){
         return ResponseEntity.ok().body(reservationService.reserve(request));
+    }
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<?> update(@PathVariable Long id
+            , @RequestBody ReservationUpdateDto.Request request){
+        return ResponseEntity.ok().body(reservationService.update(id,request));
     }
 
 }
