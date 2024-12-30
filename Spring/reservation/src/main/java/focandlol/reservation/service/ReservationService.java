@@ -1,18 +1,25 @@
 package focandlol.reservation.service;
 
+import focandlol.reservation.dto.ReservationDto;
+import focandlol.reservation.dto.ReservationSearchCond;
 import focandlol.reservation.dto.ReservationUpdateDto;
 import focandlol.reservation.dto.ReserveDto;
 import focandlol.reservation.entity.ReservationEntity;
 import focandlol.reservation.entity.StoreEntity;
 import focandlol.reservation.entity.auth.CustomerEntity;
 import focandlol.reservation.repository.CustomerRepository;
+import focandlol.reservation.repository.QueryReservationRepository;
 import focandlol.reservation.repository.ReservationRepository;
 import focandlol.reservation.repository.store.StoreRepository;
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,6 +29,7 @@ public class ReservationService {
     private final CustomerRepository customerRepository;
     private final StoreRepository storeRepository;
     private final ReservationRepository reservationRepository;
+    private final QueryReservationRepository queryReservationRepository;
 
     public ReserveDto.Response reserve(ReserveDto.Request request){
         CustomerEntity customer = customerRepository.findById(request.getCustomerId())
@@ -85,5 +93,17 @@ public class ReservationService {
         reservation.setNumOfPeople(request.getNumOfPeople());
 
         return ReservationUpdateDto.Response.from(reservation);
+    }
+
+    public List<ReservationDto> getReservationForCustomer(Long customerId, ReservationSearchCond reservationSearchCond
+            , Pageable pageable){
+
+        CustomerEntity customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        return queryReservationRepository.findReservationForCustomer(customerId, reservationSearchCond, pageable)
+                .stream().map(a -> ReservationDto.from(a))
+                .collect(Collectors.toList());
+
     }
 }

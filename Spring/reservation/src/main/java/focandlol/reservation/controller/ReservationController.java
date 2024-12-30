@@ -1,10 +1,12 @@
 package focandlol.reservation.controller;
 
+import focandlol.reservation.dto.ReservationSearchCond;
 import focandlol.reservation.dto.ReservationUpdateDto;
 import focandlol.reservation.dto.ReserveDto;
 import focandlol.reservation.repository.ReservationRepository;
 import focandlol.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -28,5 +30,14 @@ public class ReservationController {
             , @RequestBody ReservationUpdateDto.Request request){
         return ResponseEntity.ok().body(reservationService.update(id,request));
     }
+
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<?> getListForCustomer(@PathVariable(name = "id") Long customerId
+            , ReservationSearchCond reservationSearchCond, Pageable pageable){
+
+        return ResponseEntity.ok().body(
+                reservationService.getReservationForCustomer(customerId,reservationSearchCond,pageable));
+    }
+
 
 }
