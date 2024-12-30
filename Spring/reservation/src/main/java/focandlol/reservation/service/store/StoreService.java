@@ -71,6 +71,7 @@ public class StoreService {
         storeRepository.delete(store);
     }
 
+
     public List<StoreDto> getAllStores(StoreSearchCond storeSearchCond, String storeName, Pageable pageable){
         Page<StoreEntity> stores = queryStoreRepository.findStores(storeSearchCond, storeName, pageable);
         return stores.stream().map(a -> StoreDto.from(a))
