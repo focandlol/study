@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -41,5 +42,9 @@ public class ReservationEntity extends BaseEntity {
     private ReservationType reservationType;
 
     private Integer NumOfPeople;
+
+    public LocalDateTime getLocalDateTime() {
+        return LocalDateTime.of(date, time);
+    }
 
 }

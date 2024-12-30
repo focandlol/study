@@ -1,8 +1,6 @@
 package focandlol.reservation.controller;
 
-import focandlol.reservation.dto.ReservationSearchCond;
-import focandlol.reservation.dto.ReservationUpdateDto;
-import focandlol.reservation.dto.ReserveDto;
+import focandlol.reservation.dto.*;
 import focandlol.reservation.repository.ReservationRepository;
 import focandlol.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +35,24 @@ public class ReservationController {
 
         return ResponseEntity.ok().body(
                 reservationService.getReservationForCustomer(customerId,reservationSearchCond,pageable));
+    }
+
+    @GetMapping("/manager/{id}")
+    public ResponseEntity<?> getListForManager(@PathVariable(name = "id") Long managerId
+            , ReservationSearchCond reservationSearchCond, Pageable pageable){
+
+        return ResponseEntity.ok().body(
+                reservationService.getReservationForManager(managerId,reservationSearchCond,pageable));
+    }
+
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable(name = "id") Long reservationId, @RequestBody ReservationStatusDto.Request request){
+        return ResponseEntity.ok().body(reservationService.changeStatus(reservationId,request));
+    }
+
+    @PutMapping("/arrive")
+    public ResponseEntity<?> arrive(@RequestBody ReservationArriveDto.Request request){
+        return ResponseEntity.ok().body(reservationService.arrive(request));
     }
 
 
