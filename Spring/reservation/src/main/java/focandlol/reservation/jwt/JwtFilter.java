@@ -56,8 +56,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
         List<String> roles = jwtUtil.getRoles(token);
 
+        Long id = jwtUtil.getId(token);
+
         //UserDetails에 회원 정보 객체 담기
         CustomUserDetails customUserDetails = new CustomUserDetails(UserDetailsDto.builder()
+                .id(id)
                 .username(username)
                 .password("temppassword")
                 .roles(roles)

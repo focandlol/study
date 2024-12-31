@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,15 +44,12 @@ public class ReservationService {
                 .orElseThrow(() -> new RuntimeException("Store not found"));
 
 
-        List<ReservationEntity> byDateAndId = reservationRepository.findByDateAndStoreId(request.getDate(), store.getId());
+        List<ReservationEntity> byDateAndId = reservationRepository.findByDateAndStoreId(request.getDate(), store.getId()
+                , Arrays.asList(UNAPPROVED,APPROVED));
         int sum = byDateAndId.stream()
                 .map(a -> a.getNumOfPeople())
                 .mapToInt(a -> a)
                 .sum();
-//        int reservedNumOfPeople = reservationRepository.findByDateAndId(request.getDate(),store.getId()).stream()
-//                .map(a -> a.getNumOfPeople())
-//                .mapToInt(a -> a)
-//                .sum();
 
         System.out.println(sum);
         System.out.println("list.size" + byDateAndId.size());
@@ -74,7 +72,8 @@ public class ReservationService {
             throw new RuntimeException("another people");
         }
 
-        List<ReservationEntity> byDateAndId = reservationRepository.findByDateAndStoreId(request.getDate(), reservation.getStore().getId());
+        List<ReservationEntity> byDateAndId = reservationRepository.findByDateAndStoreId(request.getDate(), reservation.getStore().getId()
+                , Arrays.asList(UNAPPROVED,APPROVED));
         int sum = byDateAndId.stream()
                 .map(a -> a.getNumOfPeople())
                 .mapToInt(a -> a)
