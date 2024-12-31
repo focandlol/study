@@ -123,6 +123,9 @@ public class ReservationService {
         CustomerEntity customer = customerRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
+        StoreEntity store = storeRepository.findById(request.getStoreId())
+                .orElseThrow(() -> new RuntimeException("Store not found"));
+
         ReservationEntity reservation = reservationRepository.findReservation(request.getUsername(),
                         request.getStoreId(), request.getDate(), request.getTime())
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
