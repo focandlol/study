@@ -14,8 +14,6 @@ public class ReservationStatusDto {
     @Builder
     public static class Request{
         @NotNull
-        private Long managerId;
-        @NotNull
         private ReservationType reservationType;
     }
 

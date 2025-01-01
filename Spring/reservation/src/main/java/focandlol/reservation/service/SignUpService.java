@@ -1,5 +1,7 @@
 package focandlol.reservation.service;
 
+import focandlol.exception.CustomException;
+import focandlol.exception.ErrorCode;
 import focandlol.reservation.dto.CustomerSignUpDto;
 import focandlol.reservation.dto.ManagerSignUpDto;
 import focandlol.reservation.entity.auth.CustomerEntity;
@@ -11,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static focandlol.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +28,7 @@ public class SignUpService {
     public CustomerSignUpDto.Response customerSignUp(CustomerSignUpDto.Request request) {
 
         if(customerRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username is already in use");
-        }
-        if(managerRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username is already in other role");
+            throw new CustomException(USERNAME_ALREADY_USE);
         }
 
         return CustomerSignUpDto.Response.from(customerRepository.save(CustomerEntity.builder()
@@ -41,10 +42,7 @@ public class SignUpService {
     public ManagerSignUpDto.Response managerSignUp(ManagerSignUpDto.Request request) {
 
         if(managerRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username is already in use");
-        }
-        if(customerRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username is already in other role");
+            throw new CustomException(USERNAME_ALREADY_USE);
         }
 
         return ManagerSignUpDto.Response.from(managerRepository.save(ManagerEntity.builder()

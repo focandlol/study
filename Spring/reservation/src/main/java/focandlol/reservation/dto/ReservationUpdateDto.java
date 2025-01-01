@@ -18,9 +18,6 @@ public class ReservationUpdateDto {
     public static class Request {
 
         @NotNull
-        private Long customerId;
-
-        @NotNull
         private LocalDate date;
 
         @NotNull

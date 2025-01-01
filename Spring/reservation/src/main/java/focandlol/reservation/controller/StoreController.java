@@ -22,24 +22,25 @@ public class StoreController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<?> addStore(@RequestBody @Valid AddStoreDto.Request request){
-        return ResponseEntity.ok().body(storeService.addStore(request));
+    public ResponseEntity<?> addStore(@AuthenticationPrincipal CustomUserDetails user,
+                                          @RequestBody @Valid AddStoreDto.Request request){
+        return ResponseEntity.ok().body(storeService.addStore(user.getUserDetailsDto().getId(),request));
     }
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<?> updateStore(@RequestBody @Valid UpdateStoreDto.Request request,
+    public ResponseEntity<?> updateStore(
+            @AuthenticationPrincipal CustomUserDetails user,
+            @RequestBody @Valid UpdateStoreDto.Request request,
                                          @PathVariable Long id){
-        return ResponseEntity.ok().body(storeService.updateStore(id, request));
+        return ResponseEntity.ok().body(storeService.updateStore(id, user.getUserDetailsDto().getId(), request));
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('MANAGER')")
-    public void deleteStore(@PathVariable Long id, @RequestParam Long managerId){
-        storeService.deleteStore(id, managerId);
+    public void deleteStore(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails user){
+        storeService.deleteStore(id, user.getUserDetailsDto().getId());
     }
-
-
 
     @GetMapping
     public ResponseEntity<?> getAllStore(@RequestParam String storeName

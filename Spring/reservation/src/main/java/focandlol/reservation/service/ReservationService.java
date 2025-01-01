@@ -1,5 +1,7 @@
 package focandlol.reservation.service;
 
+import focandlol.exception.CustomException;
+import focandlol.exception.ErrorCode;
 import focandlol.reservation.dto.*;
 import focandlol.reservation.entity.ReservationEntity;
 import focandlol.reservation.entity.StoreEntity;
@@ -18,11 +20,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static focandlol.exception.ErrorCode.*;
 import static focandlol.reservation.type.ReservationType.*;
 
 @Service
@@ -36,58 +40,36 @@ public class ReservationService {
     private final QueryReservationRepository queryReservationRepository;
     private final ManagerRepository managerRepository;
 
-    public ReserveDto.Response reserve(ReserveDto.Request request){
-        CustomerEntity customer = customerRepository.findById(request.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    public ReserveDto.Response reserve(Long customerId, ReserveDto.Request request){
+        CustomerEntity customer = getCustomerOrElseThrow(customerId);
+        StoreEntity store = getStoreOrElseThrow(request);
 
-        StoreEntity store = storeRepository.findById(request.getStoreId())
-                .orElseThrow(() -> new RuntimeException("Store not found"));
+        int peopleSum = reservePeopleNumInDate(request.getDate(),store);
 
-
-        List<ReservationEntity> byDateAndId = reservationRepository.findByDateAndStoreId(request.getDate(), store.getId()
-                , Arrays.asList(UNAPPROVED,APPROVED));
-        int sum = byDateAndId.stream()
-                .map(a -> a.getNumOfPeople())
-                .mapToInt(a -> a)
-                .sum();
-
-        System.out.println(sum);
-        System.out.println("list.size" + byDateAndId.size());
-
-        if(store.getTotalSeat() < sum + request.getNumOfPeople()){
-            throw new RuntimeException("해당 날짜의 Reservation has already been reserved");
+        if(store.getTotalSeat() < peopleSum + request.getNumOfPeople()){
+            throw new CustomException(RESERVATION_IS_OVER);
         }
 
         return ReserveDto.Response.from(reservationRepository.save(request.toEntity(store,customer)));
     }
 
-    public ReservationUpdateDto.Response update(Long reservationId, ReservationUpdateDto.Request request){
-        ReservationEntity reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+    public ReservationUpdateDto.Response update(Long reservationId, Long customerId,ReservationUpdateDto.Request request){
+        ReservationEntity reservation = getReservationOrElseThrow(reservationId);
 
-        CustomerEntity customer = customerRepository.findById(request.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-
-        if(!reservation.getCustomer().getId().equals(request.getCustomerId())){
-            throw new RuntimeException("another people");
+        if(!reservation.getCustomer().getId().equals(customerId)){
+            throw new CustomException(ANOTHER_CUSTOMER);
         }
 
-        List<ReservationEntity> byDateAndId = reservationRepository.findByDateAndStoreId(request.getDate(), reservation.getStore().getId()
-                , Arrays.asList(UNAPPROVED,APPROVED));
-        int sum = byDateAndId.stream()
-                .map(a -> a.getNumOfPeople())
-                .mapToInt(a -> a)
-                .sum();
-
+        int peopleSum = reservePeopleNumInDate(request.getDate(),reservation.getStore());
 
         if(reservation.getDate().isEqual(request.getDate())){
             if(reservation.getStore().getTotalSeat()
-                    < sum + request.getNumOfPeople() - reservation.getNumOfPeople()){
-                throw new RuntimeException("변경하려는 날짜의 예약이 다 찼습니다.");
+                    < peopleSum + request.getNumOfPeople() - reservation.getNumOfPeople()){
+                throw new CustomException(RESERVATION_IS_OVER);
             }
         }else{
-            if(reservation.getStore().getTotalSeat() < sum + request.getNumOfPeople()){
-                throw new RuntimeException("해당 날짜의 Reservation has already been reserved");
+            if(reservation.getStore().getTotalSeat() < peopleSum + request.getNumOfPeople()){
+                throw new CustomException(RESERVATION_IS_OVER);
             }
         }
 
@@ -98,19 +80,16 @@ public class ReservationService {
         return ReservationUpdateDto.Response.from(reservation);
     }
 
-    public ReservationStatusDto.Response changeStatus(Long reservationId, ReservationStatusDto.Request request){
-        ReservationEntity reservation = reservationRepository.findByIdFetch(reservationId)
-                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+    public ReservationStatusDto.Response changeStatus(Long reservationId, Long managerId,
+                                                      ReservationStatusDto.Request request){
+        ReservationEntity reservation = getReservationOrElseThrow(reservationId);
 
-        ManagerEntity manager = managerRepository.findById(request.getManagerId())
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
-
-        if(!reservation.getStore().getManager().getId().equals(manager.getId())){
-            throw new RuntimeException("another manager");
+        if(!reservation.getStore().getManager().getId().equals(managerId)){
+            throw new CustomException(ANOTHER_MANAGER);
         }
 
         if(reservation.getReservationType() == request.getReservationType()){
-            throw new RuntimeException("same type");
+            throw new CustomException(RESERVATION_SAME_TYPE);
         }
 
         reservation.setReservationType(request.getReservationType());
@@ -119,22 +98,16 @@ public class ReservationService {
     }
 
     public ReservationArriveDto.Response arrive(ReservationArriveDto.Request request){
-        CustomerEntity customer = customerRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-
-        StoreEntity store = storeRepository.findById(request.getStoreId())
-                .orElseThrow(() -> new RuntimeException("Store not found"));
-
         ReservationEntity reservation = reservationRepository.findReservation(request.getUsername(),
                         request.getStoreId(), request.getDate(), request.getTime())
-                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+                .orElseThrow(() -> new CustomException(RESERVATION_NOT_FOUND));
 
         if(reservation.getReservationType() != APPROVED){
-            throw new RuntimeException("unapproved reservation");
+            throw new CustomException(RESERVATION_IS_NOT_APPROVE);
         }
 
         if(LocalDateTime.now().isAfter(reservation.getLocalDateTime().minusMinutes(10))){
-            throw new RuntimeException("time is over");
+            throw new CustomException(ARRIVE_TIME_IS_OVER);
         }
 
         reservation.setReservationType(VISITED);
@@ -144,10 +117,6 @@ public class ReservationService {
 
     public List<ReservationDto> getReservationForCustomer(Long customerId, ReservationSearchCond reservationSearchCond
             , Pageable pageable){
-
-        CustomerEntity customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-
         return queryReservationRepository.findReservationForCustomer(customerId, reservationSearchCond, pageable)
                 .stream().map(a -> ReservationDto.from(a))
                 .collect(Collectors.toList());
@@ -156,12 +125,32 @@ public class ReservationService {
 
     public List<ReservationDto> getReservationForManager(Long managerId, ReservationSearchCond reservationSearchCond,
                                                          Pageable pageable){
-
-        ManagerEntity manager = managerRepository.findById(managerId)
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
-
         return queryReservationRepository.findReservationForManager(managerId, reservationSearchCond, pageable)
                 .stream().map(a -> ReservationDto.from(a))
                 .collect(Collectors.toList());
+    }
+
+    private CustomerEntity getCustomerOrElseThrow(Long customerId) {
+        return customerRepository.findById(customerId)
+                .orElseThrow(() -> new CustomException(CUSTOMER_NOT_FOUND));
+    }
+
+    private StoreEntity getStoreOrElseThrow(ReserveDto.Request request) {
+        return storeRepository.findById(request.getStoreId())
+                .orElseThrow(() -> new CustomException(STORE_NOT_FOUND));
+    }
+
+    private ReservationEntity getReservationOrElseThrow(Long reservationId) {
+        return reservationRepository.findByIdFetch(reservationId)
+                .orElseThrow(() -> new CustomException(RESERVATION_NOT_FOUND));
+    }
+
+    private int reservePeopleNumInDate(LocalDate date, StoreEntity store){
+        return reservationRepository.findByDateAndStoreId(date, store.getId()
+                , Arrays.asList(UNAPPROVED,APPROVED)).stream()
+                .map(a -> a.getNumOfPeople())
+                .mapToInt(a -> a)
+                .sum();
+
     }
 }

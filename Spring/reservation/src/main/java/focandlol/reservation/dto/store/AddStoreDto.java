@@ -16,9 +16,6 @@ public class AddStoreDto {
     @AllArgsConstructor
     @Builder
     public static class Request{
-        @NotNull
-        private Long managerId;
-
         @NotBlank
         private String storeName;
 
