@@ -1,7 +1,21 @@
 package focandlol.reservation.jwt;
 
+import focandlol.exception.CustomException;
+import focandlol.exception.ErrorCode;
+import focandlol.reservation.dto.CustomUserDetails;
+import focandlol.reservation.dto.UserDetailsDto;
+import focandlol.reservation.repository.ManagerRepository;
+import focandlol.reservation.service.CustomUserDetailsService;
+import focandlol.reservation.service.ManagerUserDetailsService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -10,34 +24,78 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 
+import static focandlol.exception.ErrorCode.*;
+
 @Component
 public class JwtUtil {
 
     private final SecretKey secretKey;
+    private final CustomUserDetailsService customerUserDetailsService;
+    private final ManagerUserDetailsService managerUserDetailsService;
 
-    private JwtUtil(@Value("${spring.jwt.secret}") String secret) {
-        System.out.println(secret.getBytes().length);
+    private JwtUtil(@Value("${spring.jwt.secret}") String secret, CustomUserDetailsService userDetailsService, ManagerUserDetailsService managerUserDetailsService) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        this.customerUserDetailsService = userDetailsService;
+        this.managerUserDetailsService = managerUserDetailsService;
     }
 
-    public Long getId(String token) {
+    public Long getId(Jws<Claims> jws) {
 
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("id", Long.class);
+        return jws.getPayload().get("id", Long.class);
     }
 
-    public String getUsername(String token) {
+    public String getUsername(Jws<Claims> jws) {
 
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
+        return jws.getPayload().get("username", String.class);
     }
 
-    public List<String> getRoles(String token) {
+    public List<String> getRoles(Jws<Claims> jws) {
 
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("roles", List.class);
+        return jws.getPayload().get("roles", List.class);
     }
 
-    public Boolean isExpired(String token) {
+    public Boolean isExpired(Jws<Claims> jws) {
 
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+        return jws.getPayload().getExpiration().before(new Date());
+    }
+
+    public Jws<Claims> verifyToken(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+    }
+
+    public Authentication authentication(String token) {
+        Jws<Claims> jws;
+        try{
+            jws = verifyToken(token);
+        }catch (SignatureException e){
+            throw new CustomException(SIGNATURE_IS_NOT_VALID);
+        }
+        if (isExpired(jws)) {
+            throw new CustomException(TOKEN_IS_EXPIRED);
+        }
+
+        String username = getUsername(jws);
+        List<String> roles = getRoles(jws);
+        Long id = getId(jws);
+
+        CustomUserDetails userDetails;
+
+        if(roles.contains("ROLE_MANAGER")){
+            userDetails = (CustomUserDetails) managerUserDetailsService.loadUserByUsername(username);
+        }else if(roles.contains("ROLE_CUSTOMER")){
+            userDetails = (CustomUserDetails) customerUserDetailsService.loadUserByUsername(username);
+        }else{
+            throw new CustomException(WRONG_TOKEN);
+        }
+
+        if(!id.equals(userDetails.getId())) {
+            throw new CustomException(WRONG_TOKEN);
+        }
+
+        userDetails.setPassword("safePassword");
+
+        //스프링 시큐리티 인증 토큰 생성
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     /**

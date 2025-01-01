@@ -1,6 +1,9 @@
 package focandlol.reservation.dto;
 
 import focandlol.reservation.entity.ReviewEntity;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -16,6 +19,9 @@ public class UpdateReviewDto {
     public static class Request{
         private String content;
         @NotNull
+        @Digits(integer = 1, fraction = 1)
+        @Min(0)
+        @Max(5)
         private BigDecimal star;
     }
 

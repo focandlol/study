@@ -1,6 +1,9 @@
 package focandlol.reservation.service;
 
+import focandlol.exception.CustomException;
+import focandlol.exception.ErrorCode;
 import focandlol.reservation.dto.AddReviewDto;
+import focandlol.reservation.dto.CustomUserDetails;
 import focandlol.reservation.dto.UpdateReviewDto;
 import focandlol.reservation.entity.ReservationEntity;
 import focandlol.reservation.entity.ReviewEntity;
@@ -12,8 +15,14 @@ import focandlol.reservation.repository.ReviewRepository;
 import focandlol.reservation.repository.store.StoreRepository;
 import focandlol.reservation.type.ReservationType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.List;
+
+import static focandlol.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -54,17 +63,37 @@ public class ReviewService {
 
     public UpdateReviewDto.Response updateReview(Long customerId, Long reviewId, UpdateReviewDto.Request request) {
         System.out.println(customerId);
-        ReviewEntity review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new RuntimeException("Review not found"));
+        ReviewEntity review = getReviewOrElseThrow(reviewId);
 
         if(review.getCustomer().getId() != customerId) {
             throw new RuntimeException("Customer id mismatch");
         }
 
         review.setContent(request.getContent());
-        review.setStar(review.getStar());
+        review.setStar(request.getStar());
 
         return UpdateReviewDto.Response.from(review);
+    }
 
+    public void deleteReview(Long reviewId, CustomUserDetails user){
+        ReviewEntity review = getReviewOrElseThrow(reviewId);
+
+        List<String> roles = user.getUserDetailsDto().getRoles();
+
+        if(roles.contains("ROLE_MANAGER")){
+            if(user.getId() != review.getStore().getManager().getId()){
+                throw new CustomException(ANOTHER_MANAGER);
+            }
+        }else if(roles.contains("ROLE_CUSTOMER")){
+            if(user.getId() != review.getCustomer().getId()){
+                throw new CustomException(ANOTHER_CUSTOMER);
+            }
+        }
+        reviewRepository.deleteById(reviewId);
+    }
+
+    private ReviewEntity getReviewOrElseThrow(Long reviewId) {
+        return reviewRepository.findByIdFetch(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found"));
     }
 }

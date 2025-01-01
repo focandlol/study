@@ -1,10 +1,7 @@
 package focandlol.reservation.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import focandlol.reservation.jwt.CustomerLoginFilter;
-import focandlol.reservation.jwt.JwtFilter;
-import focandlol.reservation.jwt.JwtUtil;
-import focandlol.reservation.jwt.ManagerLoginFilter;
+import focandlol.reservation.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +46,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
-        http.addFilterBefore(new JwtFilter(jwtUtil), ManagerLoginFilter.class);
+        http.addFilterBefore(new JwtFilter(jwtUtil,objectMapper), ManagerLoginFilter.class);
        // http.addFilterAt(new LoginFilter(objectMapper,authenticationManager(configuration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         http.addFilterAt(new CustomerLoginFilter("/login/customer",objectMapper,customerAuthenticationManager(),jwtUtil), UsernamePasswordAuthenticationFilter.class);
