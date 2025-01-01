@@ -1,5 +1,7 @@
 package focandlol.reservation.service;
 
+import focandlol.exception.CustomException;
+import focandlol.exception.ErrorCode;
 import focandlol.reservation.dto.CustomUserDetails;
 import focandlol.reservation.dto.UserDetailsDto;
 import focandlol.reservation.entity.auth.CustomerEntity;
@@ -13,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static focandlol.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +36,7 @@ public class ManagerUserDetailsService implements UserDetailsService {
         }
 
 
-        throw new UsernameNotFoundException("User not found");
+        throw new CustomException(MANAGER_NOT_FOUND);
     }
 
 }

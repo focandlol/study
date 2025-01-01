@@ -61,4 +61,8 @@ public class CustomUserDetails implements UserDetails {
     public UserDetailsDto getUserDetailsDto() {
         return userDetailsDto;
     }
+
+    public void setPassword(String password) {
+        userDetailsDto.setPassword(password);
+    }
 }

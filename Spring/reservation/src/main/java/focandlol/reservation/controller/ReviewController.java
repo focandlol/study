@@ -5,6 +5,7 @@ import focandlol.reservation.dto.CustomUserDetails;
 import focandlol.reservation.dto.UpdateReviewDto;
 import focandlol.reservation.service.ReservationService;
 import focandlol.reservation.service.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,8 +30,15 @@ public class ReviewController {
     public ResponseEntity<?> update(
             @PathVariable(name = "id") Long reviewId,
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody UpdateReviewDto.Request request){
+            @Valid @RequestBody UpdateReviewDto.Request request){
         return ResponseEntity.ok().body(reviewService.updateReview(userDetails.getUserDetailsDto().getId()
                 , reviewId,request));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('CUSTOMER') or hasRole('MANAGER')")
+    public void delete(@PathVariable(name = "id") Long reviewId
+            , @AuthenticationPrincipal CustomUserDetails user){
+        reviewService.deleteReview(reviewId,user);
     }
 }
