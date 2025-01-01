@@ -13,7 +13,7 @@ public class UpdateStoreDto {
     @NoArgsConstructor
     @Builder
     public static class Request{
-        private Long managerId;
+
         @NotBlank
         private String storeName;
 

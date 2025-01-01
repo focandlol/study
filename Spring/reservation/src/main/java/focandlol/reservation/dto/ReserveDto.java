@@ -22,9 +22,6 @@ public class ReserveDto {
         private Long storeId;
 
         @NotNull
-        private Long customerId;
-
-        @NotNull
         private LocalDate date;
 
         @NotNull

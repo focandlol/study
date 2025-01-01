@@ -1,5 +1,7 @@
 package focandlol.reservation.service.store;
 
+import focandlol.exception.CustomException;
+import focandlol.exception.ErrorCode;
 import focandlol.reservation.dto.store.*;
 import focandlol.reservation.entity.StoreEntity;
 import focandlol.reservation.entity.auth.ManagerEntity;
@@ -15,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static focandlol.exception.ErrorCode.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -24,29 +28,23 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final QueryStoreRepository queryStoreRepository;
 
-    public AddStoreDto.Response addStore(AddStoreDto.Request request){
+    public AddStoreDto.Response addStore(Long managerId, AddStoreDto.Request request){
 
-        ManagerEntity manager = managerRepository.findById(request.getManagerId())
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
+        ManagerEntity manager = getManager(managerId);
 
         if(storeRepository.existsByStoreNameAndLocation(request.getStoreName(), request.getLocation())){
-            throw new RuntimeException("Store already exists");
+            throw new CustomException(ALREADY_EXISTS_STORE);
         }
 
         return AddStoreDto.Response.from(storeRepository.save(request.toEntity(manager)));
     }
 
 
-    public UpdateStoreDto.Response updateStore(Long storeId, UpdateStoreDto.Request request){
-        ManagerEntity manager = managerRepository.findById(request.getManagerId())
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
+    public UpdateStoreDto.Response updateStore(Long storeId, Long managerId,
+                                               UpdateStoreDto.Request request){
+        StoreEntity store = getStore(storeId);
 
-        StoreEntity store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("Store not found"));
-
-        if(!manager.getId().equals(store.getManager().getId())){
-            throw new RuntimeException("another people");
-        }
+        isSamePeople(managerId,store);
 
         store.setStoreName(request.getStoreName());
         store.setLocation(request.getLocation());
@@ -58,15 +56,9 @@ public class StoreService {
     }
 
     public void deleteStore(Long storeId, Long managerId){
-        ManagerEntity manager = managerRepository.findById(managerId)
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
+        StoreEntity store = getStore(storeId);
 
-        StoreEntity store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("Store not found"));
-
-        if(!manager.getId().equals(store.getManager().getId())){
-            throw new RuntimeException("another people");
-        }
+        isSamePeople(managerId,store);
 
         storeRepository.delete(store);
     }
@@ -79,9 +71,24 @@ public class StoreService {
     }
 
     public StoreDetailDto getStoreDetails(Long storeId){
-        StoreEntity store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("Store not found"));
+        StoreEntity store = getStore(storeId);
 
         return StoreDetailDto.from(store);
+    }
+
+    private ManagerEntity getManager(Long managerId) {
+        return managerRepository.findById(managerId)
+                .orElseThrow(() -> new CustomException(MANAGER_NOT_FOUND));
+    }
+
+    private StoreEntity getStore(Long storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new CustomException(STORE_NOT_FOUND));
+    }
+
+    private void isSamePeople(Long managerId, StoreEntity store){
+        if(!managerId.equals(store.getManager().getId())){
+            throw new CustomException(ANOTHER_MANAGER);
+        }
     }
 }
