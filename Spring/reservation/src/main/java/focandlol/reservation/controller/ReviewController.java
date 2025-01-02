@@ -30,13 +30,13 @@ public class ReviewController {
     public ResponseEntity<?> update(
             @PathVariable(name = "id") Long reviewId,
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @Valid @RequestBody UpdateReviewDto.Request request){
+            @RequestBody @Valid UpdateReviewDto.Request request){
         return ResponseEntity.ok().body(reviewService.updateReview(userDetails.getUserDetailsDto().getId()
                 , reviewId,request));
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('CUSTOMER') or hasRole('MANAGER')")
+    //@PreAuthorize("hasRole('CUSTOMER') or hasRole('MANAGER')")
     public void delete(@PathVariable(name = "id") Long reviewId
             , @AuthenticationPrincipal CustomUserDetails user){
         reviewService.deleteReview(reviewId,user);

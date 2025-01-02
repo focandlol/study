@@ -1,21 +1,16 @@
 package focandlol.reservation.service;
 
-import focandlol.exception.CustomException;
-import focandlol.exception.ErrorCode;
+import focandlol.reservation.exception.CustomException;
 import focandlol.reservation.dto.*;
 import focandlol.reservation.entity.ReservationEntity;
 import focandlol.reservation.entity.StoreEntity;
 import focandlol.reservation.entity.auth.CustomerEntity;
-import focandlol.reservation.entity.auth.ManagerEntity;
 import focandlol.reservation.repository.CustomerRepository;
 import focandlol.reservation.repository.ManagerRepository;
 import focandlol.reservation.repository.QueryReservationRepository;
 import focandlol.reservation.repository.ReservationRepository;
 import focandlol.reservation.repository.store.StoreRepository;
-import focandlol.reservation.type.ReservationType;
-import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static focandlol.exception.ErrorCode.*;
+import static focandlol.reservation.exception.ErrorCode.*;
 import static focandlol.reservation.type.ReservationType.*;
 
 @Service

@@ -1,4 +1,4 @@
-package focandlol.exception;
+package focandlol.reservation.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +23,10 @@ public enum ErrorCode {
     ARRIVE_TIME_IS_OVER("예약 시간 10분전에 도착해야합니다", BAD_REQUEST),
     TOKEN_IS_EXPIRED("토큰 만료 시간이 지났습니다",BAD_REQUEST),
     WRONG_TOKEN("잘못된 토큰입니다",BAD_REQUEST),
-    INTERNAL_SERVER_ERROR("서버 오류입닌다.",BAD_REQUEST),
+    INTERNAL_SERVER_ERROR("서버 오류입니다.",HttpStatus.INTERNAL_SERVER_ERROR),
     SIGNATURE_IS_NOT_VALID("잘못된 시그니처입니다",BAD_REQUEST),
     REVIEW_NOT_FOUND("해당 리뷰를 찾을 수 없습니다.",BAD_REQUEST),
-
-
+    TYPE_MISMATCH("타입이 다릅니다",BAD_REQUEST),
 
     ;
 

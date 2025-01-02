@@ -1,7 +1,6 @@
 package focandlol.reservation.service;
 
-import focandlol.exception.CustomException;
-import focandlol.exception.ErrorCode;
+import focandlol.reservation.exception.CustomException;
 import focandlol.reservation.dto.CustomerSignUpDto;
 import focandlol.reservation.dto.ManagerSignUpDto;
 import focandlol.reservation.entity.auth.CustomerEntity;
@@ -14,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static focandlol.exception.ErrorCode.*;
+import static focandlol.reservation.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor

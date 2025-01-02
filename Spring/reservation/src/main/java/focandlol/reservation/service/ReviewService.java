@@ -1,7 +1,6 @@
 package focandlol.reservation.service;
 
-import focandlol.exception.CustomException;
-import focandlol.exception.ErrorCode;
+import focandlol.reservation.exception.CustomException;
 import focandlol.reservation.dto.AddReviewDto;
 import focandlol.reservation.dto.CustomUserDetails;
 import focandlol.reservation.dto.UpdateReviewDto;
@@ -15,14 +14,12 @@ import focandlol.reservation.repository.ReviewRepository;
 import focandlol.reservation.repository.store.StoreRepository;
 import focandlol.reservation.type.ReservationType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 
-import static focandlol.exception.ErrorCode.*;
+import static focandlol.reservation.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +63,7 @@ public class ReviewService {
         ReviewEntity review = getReviewOrElseThrow(reviewId);
 
         if(review.getCustomer().getId() != customerId) {
+            System.out.println("Customer id mismatch");
             throw new RuntimeException("Customer id mismatch");
         }
 
@@ -86,6 +84,7 @@ public class ReviewService {
             }
         }else if(roles.contains("ROLE_CUSTOMER")){
             if(user.getId() != review.getCustomer().getId()){
+                System.out.println("Customer id mismatch");
                 throw new CustomException(ANOTHER_CUSTOMER);
             }
         }

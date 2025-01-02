@@ -1,4 +1,4 @@
-package focandlol.exception;
+package focandlol.reservation.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
