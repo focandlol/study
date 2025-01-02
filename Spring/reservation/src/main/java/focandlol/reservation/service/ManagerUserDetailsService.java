@@ -1,12 +1,9 @@
 package focandlol.reservation.service;
 
-import focandlol.exception.CustomException;
-import focandlol.exception.ErrorCode;
+import focandlol.reservation.exception.CustomException;
 import focandlol.reservation.dto.CustomUserDetails;
 import focandlol.reservation.dto.UserDetailsDto;
-import focandlol.reservation.entity.auth.CustomerEntity;
 import focandlol.reservation.entity.auth.ManagerEntity;
-import focandlol.reservation.repository.CustomerRepository;
 import focandlol.reservation.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static focandlol.exception.ErrorCode.*;
+import static focandlol.reservation.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor

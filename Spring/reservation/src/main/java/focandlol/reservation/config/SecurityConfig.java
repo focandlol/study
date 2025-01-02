@@ -42,12 +42,13 @@ public class SecurityConfig {
         http.httpBasic(auth -> auth.disable());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login/**","/", "/signUp/**").permitAll()
+                .requestMatchers("/login/**","/", "/signUp/**","/hello").permitAll()
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
+
         http.addFilterBefore(new JwtFilter(jwtUtil,objectMapper), ManagerLoginFilter.class);
-       // http.addFilterAt(new LoginFilter(objectMapper,authenticationManager(configuration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterAt(new LoginFilter(objectMapper,authenticationManager(configuration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         http.addFilterAt(new CustomerLoginFilter("/login/customer",objectMapper,customerAuthenticationManager(),jwtUtil), UsernamePasswordAuthenticationFilter.class);
         http.addFilterAt(new ManagerLoginFilter("/login/manager",objectMapper,managerAuthenticationManager(),jwtUtil), UsernamePasswordAuthenticationFilter.class);

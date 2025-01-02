@@ -1,6 +1,5 @@
-package focandlol.reservation.jwt;
+package focandlol.reservation.exception;
 
-import focandlol.exception.ErrorCode;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 

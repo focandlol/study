@@ -1,7 +1,6 @@
 package focandlol.reservation.service.store;
 
-import focandlol.exception.CustomException;
-import focandlol.exception.ErrorCode;
+import focandlol.reservation.exception.CustomException;
 import focandlol.reservation.dto.store.*;
 import focandlol.reservation.entity.StoreEntity;
 import focandlol.reservation.entity.auth.ManagerEntity;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static focandlol.exception.ErrorCode.*;
+import static focandlol.reservation.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor

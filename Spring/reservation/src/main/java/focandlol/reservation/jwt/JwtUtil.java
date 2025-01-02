@@ -1,21 +1,14 @@
 package focandlol.reservation.jwt;
 
-import focandlol.exception.CustomException;
-import focandlol.exception.ErrorCode;
+import focandlol.reservation.exception.CustomException;
 import focandlol.reservation.dto.CustomUserDetails;
-import focandlol.reservation.dto.UserDetailsDto;
-import focandlol.reservation.repository.ManagerRepository;
 import focandlol.reservation.service.CustomUserDetailsService;
 import focandlol.reservation.service.ManagerUserDetailsService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureException;
-import lombok.RequiredArgsConstructor;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -24,9 +17,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 
-import static focandlol.exception.ErrorCode.*;
+import static focandlol.reservation.exception.ErrorCode.*;
 
 @Component
+@Slf4j
 public class JwtUtil {
 
     private final SecretKey secretKey;
@@ -66,10 +60,18 @@ public class JwtUtil {
     public Authentication authentication(String token) {
         Jws<Claims> jws;
         try{
+            log.info("dddddddddddd");
             jws = verifyToken(token);
+            log.info("qqqqqqqqqqqqqq");
         }catch (SignatureException e){
             throw new CustomException(SIGNATURE_IS_NOT_VALID);
+        }catch (ExpiredJwtException e){
+            throw new CustomException(TOKEN_IS_EXPIRED);
         }
+
+        /**
+         * 필요한지 확인할 것
+         */
         if (isExpired(jws)) {
             throw new CustomException(TOKEN_IS_EXPIRED);
         }
