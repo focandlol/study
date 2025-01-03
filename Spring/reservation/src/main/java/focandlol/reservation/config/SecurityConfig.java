@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -28,10 +29,10 @@ import java.util.Collections;
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
-    private final AuthenticationConfiguration configuration;
     private final JwtUtil jwtUtil;
     private final UserDetailsService managerUserDetailsService;
     private final UserDetailsService customerUserDetailsService;
+    private final AuthenticationEntryPoint entryPoint;
 
 
     @Bean
@@ -46,7 +47,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
-
+        http.exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint));
         http.addFilterBefore(new JwtFilter(jwtUtil,objectMapper), ManagerLoginFilter.class);
         //http.addFilterAt(new LoginFilter(objectMapper,authenticationManager(configuration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
 

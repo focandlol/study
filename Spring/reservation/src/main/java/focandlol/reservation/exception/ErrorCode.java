@@ -21,12 +21,16 @@ public enum ErrorCode {
     RESERVATION_SAME_TYPE("이미 같은 예약 상태 입니다",BAD_REQUEST),
     RESERVATION_IS_NOT_APPROVE("승인된 예약이 아닙니다.",BAD_REQUEST),
     ARRIVE_TIME_IS_OVER("예약 시간 10분전에 도착해야합니다", BAD_REQUEST),
-    TOKEN_IS_EXPIRED("토큰 만료 시간이 지났습니다",BAD_REQUEST),
     WRONG_TOKEN("잘못된 토큰입니다",BAD_REQUEST),
     INTERNAL_SERVER_ERROR("서버 오류입니다.",HttpStatus.INTERNAL_SERVER_ERROR),
-    SIGNATURE_IS_NOT_VALID("잘못된 시그니처입니다",BAD_REQUEST),
+
     REVIEW_NOT_FOUND("해당 리뷰를 찾을 수 없습니다.",BAD_REQUEST),
     TYPE_MISMATCH("타입이 다릅니다",BAD_REQUEST),
+
+    SIGNATURE_IS_NOT_VALID("잘못된 시그니처입니다",BAD_REQUEST),
+    INCORRECT_TOKEN("토큰이 아닙니다.",UNAUTHORIZED),
+    EXPIRED_TOKEN("만료된 토큰입니다.",UNAUTHORIZED),
+    ACCESS_DENIED("잘못된 권한입니다.",UNAUTHORIZED),
 
     ;
 

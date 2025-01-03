@@ -43,14 +43,16 @@ public class JwtFilter extends OncePerRequestFilter {
             //세션에 사용자 등록
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            filterChain.doFilter(request, response);
-        }catch (CustomException e) {
-            ErrorResponse error = new ErrorResponse(e.getErrorCode());
 
-            response.setStatus(e.getStatus().value());
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json");
-            response.getWriter().write(mapper.writeValueAsString(error));
+        }catch (Exception e) {
+//            ErrorResponse error = new ErrorResponse(e.getErrorCode());
+//
+//            response.setStatus(e.getStatus().value());
+//            response.setCharacterEncoding("UTF-8");
+//            response.setContentType("application/json");
+//            response.getWriter().write(mapper.writeValueAsString(error));
+            request.setAttribute("exception", e);
         }
+        filterChain.doFilter(request, response);
     }
 }
