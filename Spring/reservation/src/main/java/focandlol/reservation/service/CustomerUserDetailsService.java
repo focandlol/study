@@ -15,17 +15,22 @@ import java.util.Optional;
 
 import static focandlol.reservation.exception.ErrorCode.*;
 
+/**
+ * custom 인증 요청 시 사용되는 UserDetailService
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomerUserDetailsService implements UserDetailsService {
 
     private final CustomerRepository customerRepository;
 
+    /**
+     * customerRepository에서 customer 정보 조회
+     * 값이 없을 경우 exception
+     * 값이 있을 경우 CustomUserDetails 만들어서 리턴
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        System.out.println("cusotmerUserDetailService");
-
         Optional<CustomerEntity> findCustomer = customerRepository.findByUsername(username);
 
         if(findCustomer.isPresent()) {

@@ -32,6 +32,8 @@ public enum ErrorCode {
     EXPIRED_TOKEN("만료된 토큰입니다.",UNAUTHORIZED),
     ACCESS_DENIED("잘못된 권한입니다.",UNAUTHORIZED),
 
+    FAILED_LOGIN("로그인 실패",BAD_REQUEST),
+
     ;
 
     private final String description;
