@@ -1,6 +1,7 @@
 package focandlol.reservation.dto;
 
 import focandlol.reservation.entity.auth.CustomerEntity;
+import focandlol.reservation.entity.auth.ManagerEntity;
 import focandlol.reservation.type.UserType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
