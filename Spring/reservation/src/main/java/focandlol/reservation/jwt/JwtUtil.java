@@ -59,22 +59,13 @@ public class JwtUtil {
 
     public Authentication authentication(String token) {
         Jws<Claims> jws;
-        try{
-            log.info("dddddddddddd");
-            jws = verifyToken(token);
-            log.info("qqqqqqqqqqqqqq");
-        }catch (SignatureException e){
-            throw new CustomException(SIGNATURE_IS_NOT_VALID);
-        }catch (ExpiredJwtException e){
-            throw new CustomException(TOKEN_IS_EXPIRED);
-        }
-
+        jws = verifyToken(token);
         /**
          * 필요한지 확인할 것
          */
-        if (isExpired(jws)) {
-            throw new CustomException(TOKEN_IS_EXPIRED);
-        }
+//        if (isExpired(jws)) {
+//            throw new CustomException(TOKEN_IS_EXPIRED);
+//        }
 
         String username = getUsername(jws);
         List<String> roles = getRoles(jws);
