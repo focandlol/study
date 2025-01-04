@@ -22,6 +22,9 @@ public class AddStoreDto {
         private String storePhoneNumber;
 
         @NotBlank
+        private String description;
+
+        @NotBlank
         private String location;
 
         private boolean cesco;
@@ -33,6 +36,7 @@ public class AddStoreDto {
             return StoreEntity.builder()
                     .storeName(this.storeName)
                     .storePhoneNumber(this.storePhoneNumber)
+                    .description(this.description)
                     .location(this.location)
                     .cesco(this.cesco)
                     .totalSeat(this.totalSeat)
@@ -52,6 +56,8 @@ public class AddStoreDto {
 
         private String storePhoneNumber;
 
+        private String description;
+
         private String location;
 
         private boolean cesco;
@@ -67,6 +73,7 @@ public class AddStoreDto {
                     .storePhoneNumber(store.getStorePhoneNumber())
                     .location(store.getLocation())
                     .cesco(store.isCesco())
+                    .description(store.getDescription())
                     .totalSeat(store.getTotalSeat())
                     .managerId(store.getManager().getId())
                     .build();
