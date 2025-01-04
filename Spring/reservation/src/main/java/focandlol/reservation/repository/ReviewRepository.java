@@ -1,6 +1,5 @@
 package focandlol.reservation.repository;
 
-import focandlol.reservation.entity.ReservationEntity;
 import focandlol.reservation.entity.ReviewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +13,6 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
             "JOIN FETCH r.store s " +
             "WHERE r.id = :reviewId")
     Optional<ReviewEntity> findByIdFetch(@Param("reviewId") Long reviewId);
+
+    long countByStoreId(Long storeId);
 }

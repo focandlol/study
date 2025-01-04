@@ -18,12 +18,12 @@ public class AddReviewDto {
     @Builder
     public static class Request{
         @NotNull
-        private Long customerId;
-        @NotNull
         private Long storeId;
         @NotNull
         private Long reservationId;
+
         private String content;
+
         @NotNull
         private BigDecimal star;
 

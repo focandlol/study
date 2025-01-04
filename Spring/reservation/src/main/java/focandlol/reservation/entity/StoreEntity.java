@@ -2,6 +2,9 @@ package focandlol.reservation.entity;
 
 import focandlol.reservation.entity.auth.ManagerEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -58,6 +61,10 @@ public class StoreEntity extends BaseEntity {
     /**
      * 별점
      */
+    @Column(precision = 2, scale = 1, nullable = false)
+    @Digits(integer = 1, fraction = 1)
+    @Min(0)
+    @Max(5)
     private BigDecimal star;
 
     /**
