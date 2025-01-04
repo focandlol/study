@@ -20,6 +20,9 @@ public class UpdateStoreDto {
         private String storePhoneNumber;
 
         @NotBlank
+        private String description;
+
+        @NotBlank
         private String location;
 
         private boolean cesco;
@@ -34,9 +37,6 @@ public class UpdateStoreDto {
     @NoArgsConstructor
     @Builder
     public static class Response{
-        private Long storeId;
-
-        private Long managerId;
 
         private String storeName;
 
@@ -44,17 +44,18 @@ public class UpdateStoreDto {
 
         private String location;
 
+        private String description;
+
         private boolean cesco;
 
         private Integer totalSeat;
 
         public static Response from(StoreEntity store){
             return Response.builder()
-                    .storeId(store.getId())
-                    .managerId(store.getManager().getId())
                     .storeName(store.getStoreName())
                     .storePhoneNumber(store.getStorePhoneNumber())
                     .location(store.getLocation())
+                    .description(store.getDescription())
                     .cesco(store.isCesco())
                     .totalSeat(store.getTotalSeat())
                     .build();

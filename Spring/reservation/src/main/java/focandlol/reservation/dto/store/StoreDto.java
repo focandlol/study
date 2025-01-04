@@ -3,6 +3,8 @@ package focandlol.reservation.dto.store;
 import focandlol.reservation.entity.StoreEntity;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,6 +17,8 @@ public class StoreDto {
 
     private String storePhoneNumber;
 
+    private BigDecimal star;
+
     private String location;
 
     public static StoreDto from(StoreEntity store) {
@@ -22,6 +26,7 @@ public class StoreDto {
                 .storeId(store.getId())
                 .storeName(store.getStoreName())
                 .storePhoneNumber(store.getStorePhoneNumber())
+                .star(store.getStar())
                 .location(store.getLocation())
                 .build();
     }

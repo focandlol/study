@@ -4,6 +4,8 @@ import focandlol.reservation.entity.StoreEntity;
 import focandlol.reservation.entity.auth.ManagerEntity;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +18,10 @@ public class StoreDetailDto {
     private String storeName;
 
     private String storePhoneNumber;
+
+    private String description;
+
+    private BigDecimal star;
 
     private String location;
 
@@ -30,6 +36,8 @@ public class StoreDetailDto {
                 .id(storeEntity.getId())
                 .storeName(storeEntity.getStoreName())
                 .storePhoneNumber(storeEntity.getStorePhoneNumber())
+                .description(storeEntity.getDescription())
+                .star(storeEntity.getStar())
                 .location(storeEntity.getLocation())
                 .cesco(storeEntity.isCesco())
                 .totalSeat(storeEntity.getTotalSeat())
