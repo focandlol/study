@@ -5,6 +5,7 @@ import focandlol.reservation.entity.ReviewEntity;
 import focandlol.reservation.entity.StoreEntity;
 import focandlol.reservation.entity.auth.CustomerEntity;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ public class AddReviewDto {
         @NotNull
         private Long reservationId;
 
+        @Size(max = 300)
         private String content;
 
         @NotNull

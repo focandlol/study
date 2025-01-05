@@ -85,7 +85,7 @@ public class QueryStoreRepository {
                     // 평점으로 정렬 (오름차순/내림차순 선택)
                     case STAR -> storeSearchCond.isAscending() ? storeEntity.star.asc() : storeEntity.star.desc();
                 })
-                // 정렬 조건이 없을 경우 기본값(ID 오름차순)을 반환
+                // 정렬 조건이 없을 경우 기본값(id 오름차순)을 반환
                 .orElse(storeEntity.id.asc());
     }
 

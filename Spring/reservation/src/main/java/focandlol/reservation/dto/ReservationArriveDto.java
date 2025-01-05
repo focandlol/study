@@ -2,6 +2,8 @@ package focandlol.reservation.dto;
 
 import focandlol.reservation.entity.ReservationEntity;
 import focandlol.reservation.type.ReservationType;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,9 +17,17 @@ public class ReservationArriveDto {
     @AllArgsConstructor
     @Builder
     public static class Request{
+        @NotNull
+        @Email
         private String username;
+
+        @NotNull
         private Long storeId;
+
+        @NotNull
         private LocalDate date;
+
+        @NotNull
         private LocalTime time;
     }
 

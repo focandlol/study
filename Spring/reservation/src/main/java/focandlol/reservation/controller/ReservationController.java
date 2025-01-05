@@ -2,6 +2,7 @@ package focandlol.reservation.controller;
 
 import focandlol.reservation.dto.*;
 import focandlol.reservation.service.ReservationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class ReservationController {
     @PostMapping("/reserve")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> reserve(@AuthenticationPrincipal CustomUserDetails user,
-                                         @RequestBody ReserveDto.Request request){
+                                         @RequestBody @Valid ReserveDto.Request request){
         return ResponseEntity.ok().body(reservationService.reserve(user
                 ,request));
     }
@@ -44,7 +45,7 @@ public class ReservationController {
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> update(@PathVariable Long id
             , @AuthenticationPrincipal CustomUserDetails user
-            , @RequestBody ReservationUpdateDto.Request request){
+            , @RequestBody @Valid ReservationUpdateDto.Request request){
         return ResponseEntity.ok().body(reservationService.update(id,user,request));
     }
 
@@ -112,7 +113,7 @@ public class ReservationController {
     @PutMapping("/status/{id}")
     public ResponseEntity<?> changeStatus(@PathVariable(name = "id") Long reservationId
             , @AuthenticationPrincipal CustomUserDetails user
-            , @RequestBody ReservationStatusDto.Request request){
+            , @RequestBody @Valid ReservationStatusDto.Request request){
         return ResponseEntity.ok().body(reservationService.changeStatus(reservationId,user,request));
     }
 
@@ -122,7 +123,7 @@ public class ReservationController {
      * @return : 변경된 예약 상태 -> VISITED
      */
     @PutMapping("/arrive/")
-    public ResponseEntity<?> arrive(@RequestBody ReservationArriveDto.Request request){
+    public ResponseEntity<?> arrive(@RequestBody @Valid ReservationArriveDto.Request request){
         return ResponseEntity.ok().body(reservationService.arrive(request));
     }
 
