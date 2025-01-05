@@ -35,18 +35,19 @@ public class StoreEntity extends BaseEntity {
     /**
      * 가게 이름
      */
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String storeName;
 
     /**
      * 가게 전화번호
      */
+    @Column(length = 12)
     private String storePhoneNumber;
 
     /**
      * 가게 설명
      */
-    @Column(nullable = false)
+    @Column(nullable = false, length = 300)
     private String description;
 
     /**
@@ -70,7 +71,7 @@ public class StoreEntity extends BaseEntity {
     private BigDecimal star;
 
     /**
-     * 가게 예약 가능 인원
+     * 가게 총 예약 가능 인원
      */
     @Column(nullable = false)
     private Integer totalSeat;
