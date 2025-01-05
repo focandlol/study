@@ -40,7 +40,7 @@ public class ManagerEntity extends BaseEntity implements BasicContent {
     /**
      * 가게 주인 핸드폰 번호
      */
-    @Column(nullable = false)
+    @Column(nullable = false, length = 12)
     private String phoneNumber;
 
     /**
