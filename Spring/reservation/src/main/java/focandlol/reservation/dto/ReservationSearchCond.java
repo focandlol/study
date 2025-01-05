@@ -1,5 +1,6 @@
 package focandlol.reservation.dto;
 
+import focandlol.reservation.type.ReservationSortType;
 import focandlol.reservation.type.ReservationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 public class ReservationSearchCond {
     private String storeName;
     private LocalDate date;
-    private String sortBy;
+    private ReservationSortType sortBy;
     private ReservationType reservationType;
     private boolean ascending;
 }

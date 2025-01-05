@@ -25,6 +25,7 @@ import java.util.List;
 import static focandlol.reservation.entity.QReservationEntity.*;
 import static focandlol.reservation.entity.QStoreEntity.storeEntity;
 import static focandlol.reservation.entity.auth.QManagerEntity.*;
+import static focandlol.reservation.type.ReservationSortType.STORE_NAME;
 
 @Repository
 public class QueryReservationRepository {
@@ -111,7 +112,7 @@ public class QueryReservationRepository {
 
     private OrderSpecifier<?> getOrderSpecifier(ReservationSearchCond reservationSearchCond){
         if(reservationSearchCond.getSortBy() != null &&
-                reservationSearchCond.getSortBy().equalsIgnoreCase("storeName")){
+                reservationSearchCond.getSortBy() == STORE_NAME){
             return reservationSearchCond.isAscending() ? reservationEntity.store.storeName.asc() : reservationEntity.store.storeName.desc();
         }
         return reservationEntity.id.asc();
