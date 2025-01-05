@@ -152,6 +152,7 @@ public class ReservationService {
      * CANCELED : 예약이 취소된 상태
      * reservation.isAscending : 오름차순 내림차순
      * @param pageable : 페이징
+     * 동적 퀴리 생성을 위해 querydsl 사용하는 queryReviewRepository 사용
      * @return : 조건에 따라 검색된 해당 고객이 예약한 리스트
      */
     public List<ReservationDto> getReservationForCustomer(CustomUserDetails user, ReservationSearchCond reservationSearchCond
@@ -179,6 +180,7 @@ public class ReservationService {
      * CANCELED : 예약이 취소된 상태
      * reservation.isAscending : 오름차순 내림차순
      * @param pageable : 페이징
+     * 동적 퀴리 생성을 위해 querydsl 사용하는 queryReviewRepository 사용
      * @return : 조건에 따라 검색된 해당 manager가 관리하는 가게의 예약 리스트
      */
     public List<ReservationDto> getReservationForManager(CustomUserDetails user, ReservationSearchCond reservationSearchCond,

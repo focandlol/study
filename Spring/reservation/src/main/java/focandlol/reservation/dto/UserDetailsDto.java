@@ -6,6 +6,9 @@ import lombok.*;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * customUserDetails 에 들어갈 정보
+ */
 @Getter
 @Setter
 @NoArgsConstructor

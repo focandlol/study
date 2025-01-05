@@ -7,6 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ * 사용자 인증과 권한 관리를 위한 사용자 세부 정보 클래스
+ */
 public class CustomUserDetails implements UserDetails {
 
     private final UserDetailsDto userDetailsDto;
