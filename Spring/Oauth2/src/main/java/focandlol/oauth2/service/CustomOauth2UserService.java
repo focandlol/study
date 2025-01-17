@@ -1,14 +1,22 @@
 package focandlol.oauth2.service;
 
 import focandlol.oauth2.dto.*;
+import focandlol.oauth2.entity.UserEntity;
+import focandlol.oauth2.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@RequiredArgsConstructor
 public class CustomOauth2UserService extends DefaultOAuth2UserService {
+
+    private final UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -30,9 +38,32 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
 
         String username = oauth2Response.getProvider()+ " " + oauth2Response.getProviderId();
 
-        return new CustomOauth2User(UserDto.builder()
-                .name(oauth2Response.getName())
-                .username(username)
-                .role("ROLE_USER").build());
+        Optional<UserEntity> user = userRepository.findByUsername(username);
+
+        if(user.isPresent()) {
+            UserEntity userEntity = user.get();
+            userEntity.setName(oauth2Response.getName());
+            userEntity.setEmail(oauth2Response.getEmail());
+
+            userRepository.save(userEntity);
+
+            return new CustomOauth2User(UserDto.builder()
+                    .name(oauth2Response.getName())
+                    .username(userEntity.getUsername())
+                    .role(userEntity.getRole()).build());
+        }else{
+            userRepository.save(UserEntity.builder()
+                    .username(username)
+                    .email(oauth2Response.getEmail())
+                    .name(oauth2Response.getName())
+                    .role("ROLE_USER").build());
+
+            return new CustomOauth2User(UserDto.builder()
+                    .name(oauth2Response.getName())
+                    .username(username)
+                    .role("ROLE_USER").build());
+        }
+
+
     }
 }
