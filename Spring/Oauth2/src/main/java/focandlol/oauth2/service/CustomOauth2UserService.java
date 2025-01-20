@@ -38,7 +38,9 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
 
         String username = oauth2Response.getProvider()+ " " + oauth2Response.getProviderId();
 
+
         Optional<UserEntity> user = userRepository.findByUsername(username);
+        System.out.println(oauth2Response.getEmail());
 
         if(user.isPresent()) {
             UserEntity userEntity = user.get();
@@ -50,6 +52,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
             return new CustomOauth2User(UserDto.builder()
                     .name(oauth2Response.getName())
                     .username(userEntity.getUsername())
+                    .email(oauth2Response.getEmail())
                     .role(userEntity.getRole()).build());
         }else{
             userRepository.save(UserEntity.builder()
@@ -60,6 +63,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
 
             return new CustomOauth2User(UserDto.builder()
                     .name(oauth2Response.getName())
+                    .email(oauth2Response.getEmail())
                     .username(username)
                     .role("ROLE_USER").build());
         }
