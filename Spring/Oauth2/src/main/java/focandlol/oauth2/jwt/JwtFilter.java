@@ -45,9 +45,11 @@ public class JwtFilter extends OncePerRequestFilter {
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
         String name = jwtUtil.getName(token);
+        String email = jwtUtil.getEmail(token);
 
         UserDto userDto = UserDto.builder()
                 .username(username)
+            .email(email)
                 .name(name)
                 .role(role)
                 .build();

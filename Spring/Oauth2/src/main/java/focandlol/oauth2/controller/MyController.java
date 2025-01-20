@@ -11,6 +11,6 @@ public class MyController {
 
     @GetMapping("/my")
     public String myAPI(@AuthenticationPrincipal CustomOauth2User user){
-        return user.getName() + " " + user.getUsername();
+        return user.getName() + " " + user.getUsername() + " " + user.getEmail();
     }
 }
