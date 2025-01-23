@@ -1,0 +1,27 @@
+= User API Documentation
+
+== Get User by ID
+
+Retrieve a user by their unique ID.
+
+=== HTTP Request
+
+----
+GET /users/{id}
+----
+
+=== Path Parameters
+
+include::{snippets}/get-user/path-parameters.adoc[]
+
+=== Response Fields
+
+include::{snippets}/get-user/response-fields.adoc[]
+
+=== Example Request
+
+include::{snippets}/get-user/curl-request.adoc[]
+
+=== Example Response
+
+include::{snippets}/get-user/response-body.adoc[]
