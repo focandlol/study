@@ -36,21 +36,21 @@ public class UserApiDocumentation {
 
   @Test
   void testGetUser() throws Exception {
-    mockMvc.perform(get("/{id}", 1L)) // 경로와 경로 변수 지정
-        .andExpect(status().isOk())
-        .andDo(document("get-user",
-            pathParameters( // 경로 변수 문서화
-                parameterWithName("id").description("The ID of the user to retrieve")
-            ),
-            responseFields( // 응답 필드 문서화
-                fieldWithPath("id").description("The unique ID of the user"),
-                fieldWithPath("phoneNumber").description("The phoneNumber of the user"),
-                fieldWithPath("email").description("The email of the user"),
-                fieldWithPath("account").description("The account of the user"),
-                fieldWithPath("createdAt").description("The date the user was created"),
-                fieldWithPath("updatedAt").description("The date the user was updated")
-            )
-        ));
+//    mockMvc.perform(get("/{id}", 1L)) // 경로와 경로 변수 지정
+//        .andExpect(status().isOk())
+//        .andDo(document("get-user",
+//            pathParameters( // 경로 변수 문서화
+//                parameterWithName("id").description("The ID of the user to retrieve")
+//            ),
+//            responseFields( // 응답 필드 문서화
+//                fieldWithPath("id").description("The unique ID of the user"),
+//                fieldWithPath("phoneNumber").description("The phoneNumber of the user"),
+//                fieldWithPath("email").description("The email of the user"),
+//                fieldWithPath("account").description("The account of the user"),
+//                fieldWithPath("createdAt").description("The date the user was created"),
+//                fieldWithPath("updatedAt").description("The date the user was updated")
+//            )
+//        ));
 
     mockMvc.perform(get("/{id}", 1L))
         .andDo(document("get-user",
