@@ -1,0 +1,59 @@
+openapi: 3.0.1
+info:
+  title: My API
+  description: My API description
+  version: 0.1.0
+servers:
+- url: http://localhost:8080
+tags: []
+paths:
+  /{id}:
+    get:
+      tags:
+      - "{id}"
+      summary: 사용자 정보
+      description: 사용자의 정보를 생성/조회/수정/삭제 합니다.
+      operationId: get-user
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the user to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/id-1829037898'
+              examples:
+                get-user:
+                  value: "{\r\n  \"id\" : 1,\r\n  \"account\" : \"ss\",\r\n  \"email\"\
+                    \ : \"focandlol@naver.com\",\r\n  \"phoneNumber\" : \"01072900725\"\
+                    ,\r\n  \"createdAt\" : \"2025-01-23T12:23:40.956325\",\r\n  \"\
+                    updatedAt\" : \"2025-01-23T12:23:40.956325\"\r\n}"
+components:
+  schemas:
+    id-1829037898:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: The date the user was created
+        phoneNumber:
+          type: string
+          description: The phoneNumber of the user
+        id:
+          type: number
+          description: The unique ID of the user
+        account:
+          type: string
+          description: The account of the user
+        email:
+          type: string
+          description: The email of the user
+        updatedAt:
+          type: string
+          description: The date the user was updated
