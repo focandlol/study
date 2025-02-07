@@ -18,12 +18,12 @@ public class ApiService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String generateRecipeInKorean(String ingredients) {
+    public String generateRecipeInKorean(String ingredients, double a) {
         // Chat model 요청 메시지 작성
         OpenAiChatRequest.Message userMessage = new OpenAiChatRequest.Message(
                 "user",
-                "다음 재료를 사용하여 레시피를 작성해 주세요: " + ingredients +
-                        ". 필요한 재료 목록, 조리 과정, 예상 조리 시간을 포함해 주세요. 한식 느낌으로 해주세요"
+                "다른 재료 넣지말고 반드시 다음 내용만 포함하여 레시피를 작성해 주세요: " + ingredients +
+                        ". 필요한 재료 목록, 조리 과정, 예상 조리 시간을 포함해 주세요"
         );
 
         // 요청 객체 생성
@@ -31,7 +31,7 @@ public class ApiService {
                 "gpt-4", // 또는 "gpt-4"
                 Collections.singletonList(userMessage),
                 1000,
-                0.2
+                a
         );
 
         // 요청 헤더 설정

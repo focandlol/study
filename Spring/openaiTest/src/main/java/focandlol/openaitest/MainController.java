@@ -13,6 +13,6 @@ public class MainController {
 
     @GetMapping("/api")
     public String api() {
-        return apiService.generateRecipeInKorean("감자,돼지고기,파,양파");
+        return apiService.generateRecipeInKorean("감자,돼지고기,파,양파, 매운, 30분 이내, 한식, 매우 특이한 음식",1.0);
     }
 }
