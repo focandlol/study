@@ -13,7 +13,9 @@ programmers 이진 변환 반복하기
 programmers 문자열 내 p와 y의 개수   
 programmers 숫자 문자열과 영단어      
 programmers 문자열 다루기 기본   
-programmers 신규 아이디 추천
+programmers 신규 아이디 추천   
+programmers 쿼드압축 후 개수 세기   
+programmers 하노이의 탑   
 
 
 
