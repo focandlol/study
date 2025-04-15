@@ -17,7 +17,8 @@ programmers 신규 아이디 추천
 programmers 쿼드압축 후 개수 세기   
 programmers 하노이의 탑   
 programmers 모음 사전   
-elasticsearch
+4 15 elasticsearch 인덱스 생성
+4 16 elasticsearch index template 적용, 데이터 저장
 
 
 
