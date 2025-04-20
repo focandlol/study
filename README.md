@@ -18,7 +18,10 @@ programmers 쿼드압축 후 개수 세기
 programmers 하노이의 탑   
 programmers 모음 사전   
 4 15 elasticsearch 인덱스 생성
-4 16 elasticsearch index template 적용, 데이터 저장
+4 16 elasticsearch index template 적용, 데이터 저장   
+programmers 모음 사전   
+programmerd 모의고사   
+programmers 카펫
 
 
 
