@@ -23,7 +23,9 @@ programmers 모음 사전
 programmerd 모의고사   
 programmers 카펫   
 programmers 소수 찾기   
-programmers 불량 사용자
+programmers 불량 사용자   
+programmers k번째 수   
+programmers 두 개 뽑아서 더하기
 
 
 
