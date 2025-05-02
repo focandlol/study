@@ -28,8 +28,11 @@ programmers k번째 수
 programmers 두 개 뽑아서 더하기   
 programmers h-index   
 programmers 문자열 내림차순으로 배치하기   
-programmers 징검다리
-programmers 평행
+programmers 징검다리   
+programmers 평행   
+programmers 전화번호 목록   
+programmers 중복된 문자 제거   
+programmers a로 b 만들기
 
 
 
