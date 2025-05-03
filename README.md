@@ -32,7 +32,9 @@ programmers 징검다리
 programmers 평행   
 programmers 전화번호 목록   
 programmers 중복된 문자 제거   
-programmers a로 b 만들기
+programmers a로 b 만들기   
+programmers 없는 숫자 더하기   
+programmers 완주하지 못한 선수
 
 
 
