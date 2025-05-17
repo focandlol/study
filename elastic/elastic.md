@@ -12,7 +12,7 @@ GET /{인덱스명}
 
 ## 인덱스 매핑 추가
 ```
-PUT /{인덱스명}/_mappings
+PUT /{인덱스명}/_mapping
 {
   "properties":{
      "name": {"type": "keyword"},
@@ -55,7 +55,7 @@ PUT /{인덱스명}/_doc/{_id 값}
 
 ## 특정 필드만 update
 ```
-PUT /{인덱스명}/_update/{_id 값}
+POST /{인덱스명}/_update/{_id 값}
 {
   "doc": {
       "age": 33,
@@ -66,7 +66,7 @@ PUT /{인덱스명}/_update/{_id 값}
 
 ## 삭제
 ```
-DELETE /{인덱스명}/_doc_/{_id 값}
+DELETE /{인덱스명}/_doc/{_id 값}
 ```
 ## 기본 조회
 ```
