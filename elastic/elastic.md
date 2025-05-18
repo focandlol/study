@@ -73,9 +73,21 @@ POST /{인덱스명}/_update/{_id 값}
 ```
 DELETE /{인덱스명}/_doc/{_id 값}
 ```
-## 기본 조회
+## 기본 검색
 ```
 GET /{인덱스명}/_search
+```
+
+## 조건 검색 예시
+```
+get /products/_search
+{
+    "query":{
+        "match": {
+          "name": "서울특별시 ㅁㅁ구 ㅁㅁ동"
+        }
+    }
+}
 ```
 
 ---
