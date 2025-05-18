@@ -77,3 +77,62 @@ DELETE /{인덱스명}/_doc/{_id 값}
 ```
 GET /{인덱스명}/_search
 ```
+
+---
+
+# spring data elasticsearch
+
+## 인덱스 정의
+```
+@Document(indexName = "users")
+@AllArgsConstructor
+@Getter
+@Setter
+public class UserDocument {
+  @Id
+  private String id;
+
+  @Field(type = FieldType.Keyword)
+  private String name;
+
+  @Field(type = FieldType.Long)
+  private Long age;
+
+  @Field(type = FieldType.Boolean)
+  private Boolean isActive;
+}
+```
+- 만약 elasticsaerch에 정의한 인덱스가 존재하지 않는다면 스프링 부트 실행 시 정의한 대로 인덱스 자동 생성
+
+## 기본 CRUD
+### CREATE
+```
+userDocumentRepository.save(request.to());
+```
+### READ ALL
+```
+userDocumentRepository.findAll(PageRequest.of(0,10));
+```
+### READ ONE
+```
+userDocumentRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("존재하지 않는 문서"));
+```
+### UPDATE
+```
+UserDocument exist = userDocumentRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("존재하지 않는 문서"));
+
+    exist.setAge(request.getAge());
+    exist.setName(request.getName());
+    exist.setIsActive(request.getIsActive());
+
+    return userDocumentRepository.save(exist);
+```
+### DELETE
+```
+UserDocument exist = userDocumentRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("존재하지 않는 문서"));
+
+    userDocumentRepository.delete(exist);
+```
