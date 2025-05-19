@@ -27,6 +27,44 @@ PUT /{인덱스명}/_mapping
 }
 ```
 
+## 인덱스 + 분석기 + 매핑 생성
+```
+PUT /{인덱스명}
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "custom_synonym_filter": {
+          "type": "synonym",
+          "synonyms": ["seoul, 서울울"]
+        }
+      },
+      "analyzer": {
+        "custom_analyzer": {
+          "char_filter": [],
+          "tokenizer": "standard",
+          "filter": ["lowercase", "custom_synonym_filter"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "text",
+        "analyzer": "custom_analyzer"
+      },
+      "price": {
+        "type": "integer"
+      },
+      "in_stock": {
+        "type": "boolean"
+      }
+    }
+  }
+}
+```
+
 ## 기본 색인 (_id 랜덤)
 ```
 POST /{인덱스명}/_doc
@@ -90,7 +128,24 @@ get /products/_search
 }
 ```
 
----
+## 분석기 테스트
+```
+GET /_analyze
+{
+  "text": "",
+  "tokenizer": "standard",
+  "filter": ["lowercase"]
+}
+```
+
+## 특정 인덱스 필드 분석기 테스트
+```
+GET /{인덱스명}/_analyze
+{
+  "field": "name",
+  "text": "서울특별시 ㅁㅁ구 ㅁㅁ동"
+}
+```
 
 # spring data elasticsearch
 
