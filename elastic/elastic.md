@@ -266,8 +266,8 @@ UserDocument exist = userDocumentRepository.findById(id)
 
 ## 매핑(Mapping)이란?
 
-**매핑(mapping)**은 Elasticsearch에서 각 필드가 어떤 **데이터 타입(type)**을 가지는지 정의하는 구조입니다.  
-관계형 DB의 스키마(schema)와 유사한 개념입니다.
+매핑은 Elasticsearch에서 각 필드가 어떤 데이터 타입을 가지는지 정의하는 구조 
+관계형 DB의 스키마와 유사한 개념
 
 예시:
 
@@ -327,7 +327,7 @@ UserDocument exist = userDocumentRepository.findById(id)
 
 ###  배열 허용
 
-- `array` 타입이 따로 없고, 하나의 필드에 여러 값 넣으면 자동으로 배열처럼 처리됨
+- `array` 타입이 따로 없고, 하나의 필드에 여러 값 넣으면 자동으로 배열처럼 처리
 - 예시:
 
 ```json
@@ -335,13 +335,13 @@ UserDocument exist = userDocumentRepository.findById(id)
 { "tags": ["사과", "바나나"] }
 ```
 
-→ `"사과"`로 검색하면 두 문서 모두 검색됨
+→ `"사과"`로 검색하면 두 문서 모두 검색
 
 ---
 
 > **정리**
 > - 매핑: 필드의 데이터 타입 구조 정의
-> - `text`: 분석된 문자열 (검색용)
+> - `text`: 분석된 문자열 (유사 검색용)
 > - `keyword`: 분석 안 된 문자열 (정확 매칭용)
 > - null/배열 허용: 유연한 스키마 구조
 
