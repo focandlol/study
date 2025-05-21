@@ -272,6 +272,32 @@ get /addresses/_search
 }
 ```
 
+## highlighting 예시
+```
+get /addresses/_search
+{
+    "query":{
+        "multi_match": {
+          "query": "서울특별시",
+          "fields": ["city^2","adderss"]
+        }
+    },
+    "highlight": {
+        "fields": {
+            "city":{
+                "pre_tags": ["<mark>"],
+                "post_tags":["</mark>"]
+            },
+            "adderss":{
+                "pre_tags":["<b>"],
+                "post_tags":["</b>"]
+
+            }
+        }
+    }
+}
+```
+
 
 # spring data elasticsearch
 
