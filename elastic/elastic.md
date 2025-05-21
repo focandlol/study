@@ -147,6 +147,70 @@ GET /{인덱스명}/_analyze
 }
 ```
 
+## 다중 조건 쿼리 예시 and
+
+```json
+GET /addresses/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "term":{
+            "category": "도시"
+          }
+        }
+      ],
+      "must": [
+        {
+          "match": {
+            "full_address": "서울특별시"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "term": {
+            "is_public_data": false
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+---
+
+## 2. term 쿼리 예시시
+
+```json
+GET /addresses/_search
+{
+  "query": {
+    "term": {
+      "region_code": "1111000000"
+    }
+  }
+}
+```
+
+---
+
+## terms = IN 쿼리 예시시
+
+```json
+GET /addresses/_search
+{
+  "query": {
+    "terms": {
+      "district": ["종로구", "중구", "강남구"]
+    }
+  }
+}
+```
+
+
 # spring data elasticsearch
 
 ## 인덱스 정의
