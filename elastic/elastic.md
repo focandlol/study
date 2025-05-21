@@ -147,7 +147,7 @@ GET /{인덱스명}/_analyze
 }
 ```
 
-## 다중 조건 쿼리 예시 and
+## 다중 조건 쿼리 예시 bool 쿼리 and
 
 ```json
 GET /addresses/_search
@@ -174,6 +174,15 @@ GET /addresses/_search
             "is_public_data": false
           }
         }
+      ],
+      "should": [
+        {
+          "range":{
+             "rating":{
+                "gte":4.5
+              }
+           }
+        }
       ]
     }
   }
@@ -182,7 +191,7 @@ GET /addresses/_search
 
 ---
 
-## 2. term 쿼리 예시시
+##  term 쿼리 예시
 
 ```json
 GET /addresses/_search
@@ -197,7 +206,7 @@ GET /addresses/_search
 
 ---
 
-## terms = IN 쿼리 예시시
+## terms = IN 쿼리 예시
 
 ```json
 GET /addresses/_search
@@ -234,6 +243,20 @@ get /addresses/_search
       ]
     }
   }
+}
+```
+## fuzziness 예시
+```
+get /addresses/_search
+{
+    "query":{
+        "match":{
+            "address":{
+                "query":"서울별특시",
+                "fuzziness":"auto"
+            }
+        }
+    }
 }
 ```
 
