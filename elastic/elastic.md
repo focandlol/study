@@ -297,6 +297,26 @@ get /addresses/_search
     }
 }
 ```
+## paging, sort
+```
+get /addersses/_search
+{
+    "query":{
+        "match": {
+          "address": "서울특별시"
+        }
+    },
+    "size":3,
+    "from":0,
+    "sort": [
+      {
+        "id": {
+          "order": "desc"
+        }
+      }
+    ]
+}
+```
 
 
 # spring data elasticsearch
