@@ -259,6 +259,18 @@ get /addresses/_search
     }
 }
 ```
+## multi_match 예시
+```
+get /addresses/_search
+{
+    "query":{
+        "multi_match": {
+          "query": "서울특별시",
+          "fields": ["city^2","adderss"]
+        }
+    }
+}
+```
 
 
 # spring data elasticsearch
