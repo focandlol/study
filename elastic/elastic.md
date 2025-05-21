@@ -210,6 +210,33 @@ GET /addresses/_search
 }
 ```
 
+## range 쿼리
+```
+get /addresses/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "size": {
+              "gte": 30
+            }
+          }
+        },
+        {
+          "range": {
+            "created_at": {
+              "gte": "2025-01-01"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
 
 # spring data elasticsearch
 
