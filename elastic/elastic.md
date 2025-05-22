@@ -64,6 +64,55 @@ PUT /{인덱스명}
   }
 }
 ```
+## multi-field mapping
+```
+PUT /addresses
+{
+  "mappings": {
+    "properties": {
+      "city": {
+        "type": "text",
+        "analyzer": "nori"
+      },
+      "address": {
+        "type": "text",
+        "analyzer": "nori",
+        "fields":{
+          "raw":{
+            "type":"keyword"
+          }
+        }
+      }
+    }
+  }
+}
+```
+## search_as_you_type mapping
+```
+PUT /addresses
+{
+  "mappings": {
+    "properties": {
+      "address": {
+        "type": "search_as_you_type",
+        "analyzer": "nori"
+      }
+    }
+  }
+}
+```
+## search_as_you_type 조회
+```
+get /addresses/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "서울특별시",
+      "fields": ["address","address._2gram","address._3gram"]
+    }
+  }
+}
+```
 
 ## 기본 색인 (_id 랜덤)
 ```
