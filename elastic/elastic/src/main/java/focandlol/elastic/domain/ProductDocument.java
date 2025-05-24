@@ -45,4 +45,15 @@ public class ProductDocument {
       }
   )
   private String category;
+
+  public static ProductDocument fromEntity(Product product) {
+    return ProductDocument.builder()
+        .id(product.getId().toString())
+        .name(product.getName())
+        .description(product.getDescription())
+        .price(product.getPrice())
+        .rating(product.getRating())
+        .category(product.getCategory())
+        .build();
+  }
 }
