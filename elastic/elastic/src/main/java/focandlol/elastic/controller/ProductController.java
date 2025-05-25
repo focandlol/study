@@ -1,9 +1,11 @@
 package focandlol.elastic.controller;
 
 import focandlol.elastic.domain.Product;
+import focandlol.elastic.domain.ProductDocument;
 import focandlol.elastic.dto.CreateProductRequestDto;
 import focandlol.elastic.service.ProductService;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +27,35 @@ public class ProductController {
   }
 
   @GetMapping()
-  public ResponseEntity<List<Product>> getProducts(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+  public ResponseEntity<List<Product>> getProducts(@RequestParam(defaultValue = "1") int page,
+      @RequestParam(defaultValue = "10") int size) {
     List<Product> products = productService.getProducts(page, size);
+    return ResponseEntity.ok(products);
+  }
+
+  @GetMapping("/auto_complete")
+  public ResponseEntity<List<String>> getSuggestions(@RequestParam String query) {
+    return ResponseEntity.ok(productService.getSuggestions(query));
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<List<ProductDocument>> searchProducts(
+      @RequestParam String query,
+      @RequestParam(required = false) String category,
+      @RequestParam(defaultValue = "0") double minPrice,
+      @RequestParam(defaultValue = "100000000") double maxPrice,
+      Pageable pageable) {
+
+    List<ProductDocument> products = productService.searchProducts(query, category, minPrice,
+        maxPrice, pageable);
+
     return ResponseEntity.ok(products);
   }
 
 
   @PostMapping()
-  public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequestDto createProductRequestDto) {
+  public ResponseEntity<Product> createProduct(
+      @RequestBody CreateProductRequestDto createProductRequestDto) {
     Product product = productService.createProduct(createProductRequestDto);
     return ResponseEntity.ok(product);
   }
