@@ -53,7 +53,8 @@ programmers 네트워크
 programmers 단어 변환  
 programmers 게임 맵 최단거리   
 programmers 신고 결과 받기   
-programmers k진수에서 소수 개수 구하기
+programmers k진수에서 소수 개수 구하기   
+programmers 파괴되지 않은 건물
 
 
 
