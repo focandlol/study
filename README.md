@@ -56,7 +56,9 @@ programmers 신고 결과 받기
 programmers k진수에서 소수 개수 구하기   
 programmers 파괴되지 않은 건물   
 programmers 외톨이 알파벳   
-programmers 체육대회
+programmers 체육대회   
+programmers 유전법칙   
+programmers 운영체제
 
 
 
