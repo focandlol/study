@@ -64,7 +64,8 @@ programmers 신입사원 교육
 programmers 카페 확장   
 programmers 보물 지도   
 programmers 서버 증설 횟수   
-programmers 비밀 코드 해독
+programmers 비밀 코드 해독   
+programmers pccp 퍼즐 게임 챌린지
 
 
 
