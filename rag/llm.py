@@ -11,6 +11,8 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
+from config import answer_examples
+
 store = {}
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
@@ -30,22 +32,7 @@ def get_retriever():
 
     return retriever
 
-def get_dictionary_chain():
-    llm = get_llm()
-    dictionary = ["사람을 나타내는 표현 -> 거주자"]
-    prompt = ChatPromptTemplate.from_template(f"""
-        사용자의 질문을 보고, 우리의 사전을 참고해서 사용자의 질문을 변경해주세요.
-        만약 변경할 필요가 없다고 판단된다면, 사용자의 질문을 변경하지 않아도 됩니다.
-        그런 경우에는 질문만 리턴해주세요.
-        사전 : {dictionary}
-
-        질문 : {{question}}                           
-    """)
-
-    dictionary_chain = prompt | llm | StrOutputParser()
-    return dictionary_chain
-
-def get_rag_chain():
+def get_history_retriever():
     llm = get_llm()
     retriever = get_retriever()
     
@@ -67,7 +54,37 @@ def get_rag_chain():
     history_aware_retriever = create_history_aware_retriever(
         llm, retriever, contextualize_q_prompt
     )
+    return history_aware_retriever
 
+def get_dictionary_chain():
+    llm = get_llm()
+    dictionary = ["사람을 나타내는 표현 -> 거주자"]
+    prompt = ChatPromptTemplate.from_template(f"""
+        사용자의 질문을 보고, 우리의 사전을 참고해서 사용자의 질문을 변경해주세요.
+        만약 변경할 필요가 없다고 판단된다면, 사용자의 질문을 변경하지 않아도 됩니다.
+        그런 경우에는 질문만 리턴해주세요.
+        사전 : {dictionary}
+
+        질문 : {{question}}                           
+    """)
+
+    dictionary_chain = prompt | llm | StrOutputParser()
+    return dictionary_chain
+
+def get_rag_chain():
+    llm = get_llm()
+
+    example_prompt = ChatPromptTemplate.from_messages(
+        [
+            ("human","{input}"),
+            ("ai","{answer}"),
+        ]
+    )
+    few_shot_prompt = FewShotChatMessagePromptTemplate(
+        example_prompt=example_prompt,
+        examples=answer_examples
+    )
+    
     system_prompt = (
         "당신은 소득세법 전문가입니다. 사용자의 소득세법에 관한 질문에 답변해주세요"
         "아래에 제공된 문서를 활용해서 답변해주시고"
@@ -81,6 +98,7 @@ def get_rag_chain():
     qa_prompt = ChatPromptTemplate.from_messages(
         [
             ("system", system_prompt),
+            few_shot_prompt,
             MessagesPlaceholder("chat_history"),
             ("human", "{input}"),
         ]
@@ -88,6 +106,7 @@ def get_rag_chain():
 
     question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
 
+    history_aware_retriever = get_history_retriever()
     rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
 
     conversational_rag_chain = RunnableWithMessageHistory(
