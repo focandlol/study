@@ -54,6 +54,7 @@ def get_history_retriever():
     history_aware_retriever = create_history_aware_retriever(
         llm, retriever, contextualize_q_prompt
     )
+    print(history_aware_retriever)
     return history_aware_retriever
 
 def get_dictionary_chain():
@@ -103,6 +104,8 @@ def get_rag_chain():
             ("human", "{input}"),
         ]
     )
+
+    print(qa_prompt)
 
     question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
 
