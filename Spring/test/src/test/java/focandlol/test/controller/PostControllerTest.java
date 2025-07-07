@@ -3,6 +3,7 @@ package focandlol.test.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -22,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureH
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -39,7 +41,8 @@ class PostControllerTest {
 
   @Test
   @DisplayName("receive 200 ok")
-  void post_method_테스트() throws Exception {
+  @WithMockUser(username = "admin", roles = {"ADMIN"})
+  void post_method_테스트1() throws Exception {
     //given
     PostRequestDto dto = new PostRequestDto();
     dto.setTitle("title");
@@ -47,14 +50,32 @@ class PostControllerTest {
 
     //when, then
     mockMvc.perform(post("/post")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(dto)))
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto)))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON));
   }
 
   @Test
+  @DisplayName("receive 403")
+  void post_method_테스트1_1() throws Exception {
+    //given
+    PostRequestDto dto = new PostRequestDto();
+    dto.setTitle("title");
+    dto.setContent("content");
+
+    //when, then
+    mockMvc.perform(post("/post")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto)))
+        .andExpect(status().is4xxClientError());
+  }
+
+  @Test
   @DisplayName("call dependencies")
+  @WithMockUser(username = "admin", roles = {"ADMIN"})
   void post_method_테스트2() throws Exception {
     //given
     PostRequestDto dto = new PostRequestDto();
@@ -65,8 +86,9 @@ class PostControllerTest {
 
     //when,then
     mockMvc.perform(post("/post")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(dto)))
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto)))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.id").value(1));
@@ -76,6 +98,7 @@ class PostControllerTest {
 
   @Test
   @DisplayName("400")
+  @WithMockUser(username = "admin", roles = {"ADMIN"})
   void post_method_테스트3() throws Exception {
     //given
     PostRequestDto dto = new PostRequestDto();
@@ -86,8 +109,9 @@ class PostControllerTest {
 
     //when, then
     mockMvc.perform(post("/post")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(dto)))
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto)))
         .andExpect(status().isBadRequest())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
