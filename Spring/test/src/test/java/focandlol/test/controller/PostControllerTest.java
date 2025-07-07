@@ -73,4 +73,23 @@ class PostControllerTest {
 
     verify(postService).create(any(PostRequestDto.class));
   }
+
+  @Test
+  @DisplayName("400")
+  void post_method_테스트3() throws Exception {
+    //given
+    PostRequestDto dto = new PostRequestDto();
+    dto.setTitle("");
+    dto.setContent("content");
+
+    given(postService.create(any(PostRequestDto.class))).willThrow(new IllegalArgumentException());
+
+    //when, then
+    mockMvc.perform(post("/post")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(dto)))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+  }
 }
