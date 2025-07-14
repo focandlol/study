@@ -1,4 +1,6 @@
 .env
 chroma_db/
+chroma.db/
 data/
 requirements.txt
+faiss_ai_smaple_index/
