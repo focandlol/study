@@ -1,13 +1,11 @@
 package focandlol.relastic.controller;
 
-import focandlol.relastic.document.UserDocument;
 import focandlol.relastic.dto.UserCreateRequestDto;
 import focandlol.relastic.dto.UserDocumentDto;
 import focandlol.relastic.dto.UserUpdateRequestDto;
 import focandlol.relastic.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

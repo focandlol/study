@@ -1,6 +1,6 @@
 package focandlol.relastic.dto;
 
-import focandlol.relastic.document.UserDocument;
+import focandlol.relastic.domain.UserDocument;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

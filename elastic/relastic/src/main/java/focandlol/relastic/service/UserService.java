@@ -1,6 +1,6 @@
 package focandlol.relastic.service;
 
-import focandlol.relastic.document.UserDocument;
+import focandlol.relastic.domain.UserDocument;
 import focandlol.relastic.dto.UserCreateRequestDto;
 import focandlol.relastic.dto.UserDocumentDto;
 import focandlol.relastic.dto.UserUpdateRequestDto;

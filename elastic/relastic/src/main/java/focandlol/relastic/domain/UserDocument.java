@@ -1,4 +1,4 @@
-package focandlol.relastic.document;
+package focandlol.relastic.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
