@@ -1,7 +1,9 @@
 package focandlol.relastic.service;
 
 import focandlol.relastic.domain.Product;
+import focandlol.relastic.domain.ProductDocument;
 import focandlol.relastic.dto.CreateProductRequestDto;
+import focandlol.relastic.repository.ProductDocumentRepository;
 import focandlol.relastic.repository.ProductRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
   private final ProductRepository productRepository;
+  private final ProductDocumentRepository productDocumentRepository;
 
   public List<Product> getProducts(int page, int size) {
     Pageable pageable = PageRequest.of(page - 1, size);
@@ -24,10 +27,14 @@ public class ProductService {
     Product save = productRepository.save(
         Product.fromCreateProductRequestDto(createProductRequestDto));
 
+    productDocumentRepository.save(ProductDocument.from(save));
+
     return save;
   }
 
   public void deleteProduct(Long id) {
     productRepository.deleteById(id);
+
+    productDocumentRepository.deleteById(id.toString());
   }
 }
