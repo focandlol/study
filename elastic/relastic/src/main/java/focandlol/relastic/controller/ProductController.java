@@ -5,6 +5,7 @@ import focandlol.relastic.dto.CreateProductRequestDto;
 import focandlol.relastic.service.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,12 @@ public class ProductController {
     List<Product> products = productService.getProducts(page, size);
     return ResponseEntity.ok(products);
   }
+
+  @GetMapping("/suggestions")
+  public ResponseEntity<List<String>> getSuggestions(@RequestParam String query){
+    return ResponseEntity.ok(productService.getSuggestions(query));
+  }
+
 
   @PostMapping()
   public ResponseEntity<Product> createProduct(
