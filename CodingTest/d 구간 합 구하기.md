@@ -1,0 +1,89 @@
+```
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+    static long[] arr;
+    static long pow;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
+
+        int depth = 0;
+        while(Math.pow(2,depth) < n){
+            depth++;
+        }
+        pow = (int) Math.pow(2,depth);
+        arr = new long[(int) (pow*2)];
+
+        for(long i = pow; i<pow+n; i++){
+            st = new StringTokenizer(br.readLine());
+            arr[(int) i] = Long.parseLong(st.nextToken());
+        }
+
+        //System.out.println(Arrays.toString(arr));
+
+        for(long i = pow*2-1; i>1; i--){
+            int num = (int) (i/2);
+            arr[num] += arr[(int) i];
+        }
+        //System.out.println(Arrays.toString(arr));
+
+        for(int i=0; i<m+k; i++){
+            st = new StringTokenizer(br.readLine());
+            long a = Long.parseLong(st.nextToken());
+            long b = Long.parseLong(st.nextToken());
+            long c = Long.parseLong(st.nextToken());
+
+            if(a == 1){
+                change(b,c);
+            }else{
+                sum(b,c);
+            }
+        }
+    }
+
+    private static void sum(long b, long c) {
+        long count = 0;
+        long start = b + pow -1;
+        long end = c + pow -1;
+
+        while(start<=end){
+            if(start % 2 == 1){
+                count += arr[(int) start];
+                start = (start+1)/2;
+            }else{
+                start = start / 2;
+            }
+            if(end % 2 == 0){
+                count += arr[(int) end];
+                end = (end-1)/2;
+            }else{
+                end = end/2;
+            }
+        }
+        System.out.println(count);
+    }
+
+    private static void change(long b, long c) {
+        long num = (int) (b + pow -1);
+        boolean a = arr[(int) num] > c;
+        long cha = Math.abs(arr[(int) num] - c);
+        arr[(int) num] = c;
+        while(num > 1){
+            num = num/2;
+            if(a){
+                arr[(int) num] -= cha;
+            }else{
+                arr[(int) num] += cha;
+            }
+        }
+    }
+}
+
+```
